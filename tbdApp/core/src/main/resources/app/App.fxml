@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.GridPane?>
 
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="app.AppController">
-    <children>
-        <CheckBox fx:id="checkBox" text="Check me" layoutX="150" layoutY="100" onAction="#handleCheckBoxAction"/>
-        <Label fx:id="messageLabel" layoutX="150" layoutY="150"/>
-    </children>
-</AnchorPane>
+<GridPane fx:id="gridPane" xmlns:fx="http://javafx.com/fxml" fx:controller="app.AppController"
+          hgap="0.1" vgap="0.1" alignment="center">
+
+</GridPane>
