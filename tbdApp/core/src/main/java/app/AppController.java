@@ -63,7 +63,7 @@ public class AppController {
         Canvas imageCanvas = MainCanvas[i][j];
     }*/
 
-    private void startedDrawing(String state){
+    public void startedDrawing(String state){
         // Need to build a filepath to txt, now it's just hanging in src...
         String filepath = "checkboxState.txt";
         try(FileWriter writer = new FileWriter(filepath)){
