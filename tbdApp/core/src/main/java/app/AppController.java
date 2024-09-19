@@ -12,12 +12,19 @@ import java.awt.*;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * AppController is the main controller class for the JavaFX application tbdApp.
+ * It controls the interaction between the user and the 100x100 (may change) grid of canvases.
+ * The users can draw or erase on the different pixels  using left and right mouse clicks. More to come.
+ * Which pixels that are coloured in are saved in a text file.
+ */
+
 public class AppController {
 
     @FXML
     private GridPane gridPane;
     @FXML
-    private Canvas[][] MainCanvas = new Canvas[100][100];
+    private Canvas[][] MainCanvas = new Canvas[100][100]; //Size may change
 
     private final int pixelSize = 10;//Not less than this, it's too small to be visually pleasing.
 
@@ -42,7 +49,7 @@ public class AppController {
             System.out.println(event.getButton()); //Had issues with right mouseclick, "sout" for log.
             Canvas canvas = MainCanvas[i][j];
             GraphicsContext gc = canvas.getGraphicsContext2D(); //ChatGPT "How does GraphicsContext work?"
-            gc.setFill(Color.WHITE);
+            gc.setFill(Color.WHITE); //Erasing, sets the colour back to white.
             startedDrawing("Ereased!");//Changes the state, when using the right mousebutton. Should instead update filegrid.
             System.out.println("ereased?");
             gc.fillRect(0, 0, pixelSize,pixelSize);
@@ -64,7 +71,7 @@ public class AppController {
 
     public void startedDrawing(String state){
         // Need to build a filepath to txt, now it's just hanging in src...
-        String filepath = "checkboxState.txt";
+        String filepath = "checkboxState.txt"; //file where the "art" is saved to.
         try(FileWriter writer = new FileWriter(filepath)){
             writer.write(state);
         }catch(IOException e){

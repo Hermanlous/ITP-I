@@ -9,6 +9,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * The App class is the starter for the JavaFX application tdbApp
+ * It sets up the FXML layout, sets up the scene, and displays the app.
+ * The application is for making pixel art.
+ */
 public class App extends Application {
 
     @Override
