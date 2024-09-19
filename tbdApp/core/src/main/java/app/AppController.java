@@ -32,7 +32,6 @@ public class AppController {
                 int row = r;
                 int column = c;
                 canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> pixelClick(row, column, event)); //Calls pixelClick
-
             }
         }
     }
