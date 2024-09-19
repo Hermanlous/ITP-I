@@ -2,7 +2,8 @@
 Appen ligger i core/src/main/java/app.
 [open in Eclipse Che](https://che.stud.ntnu.no/#https://gitlab.stud.idi.ntnu.no/it1901/groups-2024/gr2452/gr2452?new)
 
-Vi har laget en pixel-kunst app. Vi ønsket å lage en simpel tegne app som ikke har forstyrrende elementer. Vi ønsker å lage en plattform for kreative sjeler som har lyst til å bidra med pixelkunst. Vi har derfor laget en enkel app som oppfyller disse kravene.
+Vi har laget en pixel-kunst app. Vi ønsket å lage en simpel tegne app som ikke har forstyrrende elementer. Vi ønsker å 
+lage en plattform for kreative sjeler som har lyst til å bidra med pixelkunst. Vi har derfor laget en enkel app som oppfyller disse kravene.
 
 [Brukerhistorier](Brukerhistorier.md)
 [Bruksanvisning](Bruksanvisning.md)

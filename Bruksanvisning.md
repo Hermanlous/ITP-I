@@ -13,5 +13,6 @@ Hvis du ønsker å viske ut kan du bruke høyreklikk på samme pixel.
 Tilhører brukerhistorie 2: 
 coming soon
 
-### Eksemple bilde av kunst: 
-![img.png](Bilder/EksempelBilde1.png) 
+# Eksempelbilde av hvordan vi ser for oss at en ferdig versjon av prosjektet kan se ut. Vi ser også for oss at det kan
+# komme endringer.
+![img.png](img/ferdigVersjon.png) 
