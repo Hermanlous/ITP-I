@@ -9,5 +9,8 @@
         <module name="pixelart" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="tbdApp" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>

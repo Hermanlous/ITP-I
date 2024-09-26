@@ -8,7 +8,7 @@ components:
       memoryLimit: 3Gi
       endpoints:
         - exposure: public
-          name: 6080-tcp-desktop-ui
+          name: 6080-tcp-desktop-pixelart
           protocol: https
           targetPort: 6080
         - exposure: public

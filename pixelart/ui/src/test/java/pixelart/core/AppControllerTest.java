@@ -1,7 +1,5 @@
-package app;
+package pixelart.core;
 
-import javafx.scene.canvas.Canvas;
-import javafx.scene.layout.GridPane;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +16,7 @@ public class AppControllerTest {
     }
 
     @Test
-    public void startedDrawingTest(){
+    public void startedDrawingTest() throws FileNotFoundException {
         appController.startedDrawing("Test-state for testing");
         String filepath = "checkboxState.txt";
         File file = new File(filepath);
