@@ -1,4 +1,4 @@
-package pixelart.core;
+package pixelart.ui;
 
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;

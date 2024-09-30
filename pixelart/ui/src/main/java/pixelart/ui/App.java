@@ -1,4 +1,4 @@
-package pixelart.core;
+package pixelart.ui;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +17,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/pixelart/core/App.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/pixelart/ui/App.fxml"));
         GridPane root = loader.load();
         Scene scene = new Scene(root, 400, 450);
         primaryStage.setTitle("PixelArt");
