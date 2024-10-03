@@ -1,1 +1,1 @@
-java main resources for pixelart pixelart goes here
+java main resources for pixelart ui goes here

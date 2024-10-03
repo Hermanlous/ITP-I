@@ -1,0 +1,82 @@
+package app;
+
+import javafx.fxml.FXML;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseButton;
+import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.scene.input.MouseEvent;
+
+import java.awt.*;
+import java.io.FileWriter;
+import java.io.IOException;
+
+/**
+ * AppController is the main controller class for the JavaFX application pixelart.
+ * It controls the interaction between the user and the 100x100 (may change) grid of canvases.
+ * The users can draw or erase on the different pixels  using left and right mouse clicks. More to come.
+ * Which pixels that are coloured in are saved in a text file.
+ */
+
+public class AppController {
+
+    @FXML
+    private GridPane gridPane;
+    @FXML
+    private Canvas[][] MainCanvas = new Canvas[100][100]; //Size may change
+
+    private final int pixelSize = 10;//Not less than this, it's too small to be visually pleasing.
+
+    @FXML
+    public void initialize() {
+        for (int r = 0; r < 100; r++) {
+            for (int c = 0; c < 100; c++) {
+                Canvas canvas = new Canvas(pixelSize, pixelSize); //ChatGPT "How would one initialize a Canvas in a GridPane" from here
+                //Initialize grid in file here.
+                gridPane.add(canvas, r, c);
+                MainCanvas[r][c] = canvas; //to here
+                int row = r;
+                int column = c;
+                canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> pixelClick(row, column, event)); //Calls pixelClick
+            }
+        }
+    }
+    /*This function aims to draw and erase colours from the canvas. In order to erase, the user should right-click on a pixel
+    and in order to draw, the user should left-click on a pixel */
+    private void pixelClick(int i, int j, MouseEvent event) {
+        if(event.getButton() == MouseButton.SECONDARY){//Used stackOverflow: https://stackoverflow.com/questions/1515547/right-click-in-javafx downloaded 13.09
+            System.out.println(event.getButton()); //Had issues with right mouseclick, "sout" for log.
+            Canvas canvas = MainCanvas[i][j];
+            GraphicsContext gc = canvas.getGraphicsContext2D(); //ChatGPT "How does GraphicsContext work?"
+            gc.setFill(Color.WHITE); //Erasing, sets the colour back to white.
+            startedDrawing("Ereased!");//Changes the state, when using the right mousebutton. Should instead update filegrid.
+            System.out.println("ereased?");
+            gc.fillRect(0, 0, pixelSize,pixelSize);
+        }
+        else {
+            Canvas canvas = MainCanvas[i][j];
+            GraphicsContext gc = canvas.getGraphicsContext2D();
+            gc.setFill(Color.BLACK);
+            startedDrawing("Wow! You can draw!"); //Changes the state, when using the left mousebutton. Should instead update filegrid.
+            System.out.println("wow, you can draw?");
+            gc.fillRect(0, 0, pixelSize,pixelSize);
+        }
+
+    }
+
+    /*TO-DO: private void pixelImage(Canvas canvas, int i, int j) { //Write your image to another file.
+        Canvas imageCanvas = MainCanvas[i][j];
+    }*/
+
+    public void startedDrawing(String state){
+        // Need to build a filepath to txt, now it's just hanging in src...
+        String filepath = "checkboxState.txt"; //file where the "art" is saved to.
+        try(FileWriter writer = new FileWriter(filepath)){
+            writer.write(state);
+        }catch(IOException e){
+            e.printStackTrace();
+            /*TO-DO: Append more text and save state*/
+        }
+    }
+}
