@@ -1,7 +1,8 @@
-module app {
+module pixelart.ui {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.desktop;
+    requires org.json;
 
-    opens app to javafx.graphics, javafx.fxml;
+    opens pixelart.ui to javafx.graphics, javafx.fxml;
 }
