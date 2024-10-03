@@ -1,5 +1,5 @@
 ## TbdApp
-Appen ligger i core/src/main/java/app.
+Appen ligger i core/src/main/java/pixelart.
 [open in Eclipse Che](coming soon)
 
 Vi har laget en pixel-kunst app. Vi ønsket å lage en simpel tegne app som ikke har forstyrrende elementer. Vi ønsker å lage en plattform for kreative sjeler som har lyst til å bidra med pixelkunst, og vi har derfor laget en enkel app som oppfyller disse kravene.

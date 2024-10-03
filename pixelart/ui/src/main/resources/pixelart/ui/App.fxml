@@ -2,7 +2,7 @@
 <?import javafx.scene.layout.GridPane?>
 
 
-<GridPane fx:id="gridPane" xmlns:fx="http://javafx.com/fxml" fx:controller="app.AppController"
+<GridPane fx:id="gridPane" xmlns:fx="http://javafx.com/fxml" fx:controller="pixelart.ui.AppController"
           hgap="0.1" vgap="0.1" alignment="center">
 
 </GridPane>

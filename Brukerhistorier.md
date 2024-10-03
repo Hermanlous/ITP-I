@@ -1,6 +1,6 @@
 # Brukerhistorer
 ## Brukerhistore 1: Logodesigneren
-Som en kunstner eller hobbyist, ønsker jeg en fin og enkel plattform til å designe loger. Jeg trenger en app som ikke har forstyrrende elementer. 
+Som en kunstner eller hobbyist, ønsker jeg en fin og enkel plattform til å designe loger. Jeg trenger en pixelart som ikke har forstyrrende elementer. 
 
 Brukeren har behov for et enkel og ryddig lerret, som har tegne og angre funksjon. 
 Kunstneren har behov for et passende lerret, med 10 000 pixler. 
