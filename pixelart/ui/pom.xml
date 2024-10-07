@@ -11,9 +11,14 @@
     </parent>
 
     <artifactId>pixelart-ui</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
 
-    <dependencies>
+    <dependencies> <!-- Dependency for the pixelart-core module, which contains the core logic of the PixelArt application -->
+        <dependency>
+            <groupId>gr2452</groupId>
+            <artifactId>pixelart-core</artifactId> 
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
