@@ -1,8 +1,8 @@
 module pixelart.ui {
-    requires javafx.controls;
-    requires javafx.fxml;
-    requires java.desktop;
-    requires org.json;
+    requires javafx.graphics; // Requires JavaFX modules for graphics 
+    requires javafx.fxml; //Requires FXML to build the UI
+    requires pixelart.core; // Requires pixelart.core to access the core logic. 
 
-    opens pixelart.ui to javafx.graphics, javafx.fxml;
+    exports pixelart.ui; // Exports the pixelart.ui package to allow other modules access.
+    opens pixelart.ui to javafx.fxml; //Opens
 }
