@@ -7,7 +7,7 @@
 
 
 ## Arkitektur
-Arkitekturen har to muduler, core og ui. I core modulen er kjerneklassen GridManager og i ui modulen er brukergrensesnittet. Videre benytter vi oss også av en "server" komponent, her ligger jsonfilene som vår fungerende bakside.
+Arkitekturen har to moduler, core og ui. I core modulen er kjerneklassen GridManager og i ui modulen er brukergrensesnittet. Videre benytter vi oss også av en "server" komponent, her ligger jsonfilene som vår fungerende bakside.
 Baktanken bak funksjonaliteten er så enkelt som at vi lager 10 000 små canvas objekter som fyller ut hver sin gridPane, når vi ønsker en piksel farget, så fyller vi rektangelet som har riktig matrise indeks.
 
 ### Core
@@ -16,7 +16,13 @@ I core er kjerneloggikken for lesing, oppdatering og lagring av lerretet. Den ta
 ### UI
 UI har frontendklassen som styrer fxml filen. Den bruker kjerneklassen GridManager fra core til å hente matrisen som forteller tilstanden til hvert pixel. Deretter lager den et pixel-grid som brukeren kan trykke på. Når et pixel oppdateres kaller den på GridManager i core til å oppdatere filen.
 
+## Testing
+Vi bruker Jacoco for å holde orden på testdekningsgraden, slik at vi har god oversikt over hvor forbedringer til koden kan gjøres. Ved å se dekningsgraden har vi selv blitt oppmerksomme på hvordan vi kan forbedre koden, samt se svakheter.
+Spotbugs utnyttes for å få hjelp til å oppdage bugs som eksisterer i koden vår. Denne synes vi er vanskelig å bruke for nå, men vi ser verdien av å bruke dette!
+Checkstyle brukes for å holde kodestilen til en viss standard. Dette hjelper oss med å gjøre koden leselig og kan hjelpe med å forbedre kvaliteten.
+
 ![Diagram](ClassDiagram.png)
+
 PlantUML kode: se vedlegg A 
 
 ### Persistance

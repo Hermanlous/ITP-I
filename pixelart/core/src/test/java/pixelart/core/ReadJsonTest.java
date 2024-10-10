@@ -35,7 +35,7 @@ public class ReadJsonTest {
 
     @Test
     public void successfullyReadJson() {
-        String filepathJson = "./server/JSON/jsonCanvas.json";
+        String filepathJson = "jsonCanvas.json";
         try {
             String content = gridManager.readJsonFile(filepathJson);
             assertNotNull(content);
@@ -62,7 +62,7 @@ public class ReadJsonTest {
         for (int row = 0; row < gridSize; row++) {
             for (int col = 0; col < gridSize; col++) {
                 String expectedColor = (row + col) % 2 == 0 ? "B" : "W";
-                assertEquals(expectedColor, gridManagerSpy.jsonGrid[row].getString(col));
+                assertEquals(expectedColor, gridManagerSpy.getJsonGrid()[row].getString(col));
             }
         }
 

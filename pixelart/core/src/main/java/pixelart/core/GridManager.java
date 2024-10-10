@@ -26,7 +26,7 @@ public class GridManager {
         this.pixelSize = pixelSize;
         this.grid = new Canvas[gridSize][gridSize];
         this.jsonGrid = new JSONArray[gridSize];
-        this.filepathJson = "pixelart/server/JSON/jsonCanvas.json";
+        this.filepathJson = "jsonCanvas.json";
         initializeGrid();
     }
 
@@ -44,7 +44,7 @@ public class GridManager {
         }
     }
 
-    public Canvas[][] getGrid() {
+    public javafx.scene.canvas.Canvas[][] getGrid() {
         return grid;
     }
 
