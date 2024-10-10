@@ -16,7 +16,7 @@ Bygg prosjektet `mvn install`
 
 ### 2. Kjøre
 Navigere til ui-mappen `cd ui`
-Start appen `mvn javafx:run:app`
+Start appen `mvn javafx:run`
 
 ## Funksjon
 I GridManager i core-modulen ligger hovedlogikken til appen. Brukergrensesnittet ligger i UI modulen. Vi bruker javafx med canvas, som initialiserer et 100x100 grid.
@@ -41,4 +41,4 @@ Her kan lese om brukerhistorier som støtter utviklingsarbeidet:
 
 ## Bruksanvisning
 Her kan du lese dokumentasjon om hvordan du bruker appen.
-[Bruksanvisning](Bruksanvisning.md)
+[Bruksanvisning](pixelart/docs/Bruksanvisning.md)
