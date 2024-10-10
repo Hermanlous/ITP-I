@@ -7,6 +7,8 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="pixelart" />
+        <module name="pixelart-core" />
+        <module name="pixelart-ui" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
