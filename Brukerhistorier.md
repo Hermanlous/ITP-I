@@ -7,6 +7,7 @@ Kunstneren har behov for et passende lerret, med 10 000 pixler.
 
 ### Viktig å kunne se
 Lerretet sitt og pixelstørrelse
+
 ### Viktig å kunne gjøre
 Kunne tegne og viske. 
 
@@ -18,5 +19,6 @@ Brukeren har behov for fillagring, som sier noe om lerret har blitt redigert.
 
 ### Viktig å kunne se
 Om appen har blitt brukt
+
 ### Viktig å kunne gjøre
 Filoppdatering
