@@ -11,29 +11,32 @@ import java.io.*;
 /**
  * GridManager handles the making and management of a grid of pixels.
  * It updates individual pixels, saves the grid state to a JSON file, and loads the grid state from a JSON file.
- * The grid consists of Canvas elements, where each canvas represents a pixel. Each Canvas is black or white. 
+ * The grid consists of Canvas elements, where each canvas represents a pixel. Each Canvas is black or white.
  */
 
 public class GridManager {
-    private final int gridSize = 100;
-    private final int pixelSize = 10;
-    private final Canvas[][] grid = new Canvas[gridSize][gridSize];
-    private JSONArray[] jsonGrid = new JSONArray[gridSize];
-    private final String filepathJson = "jsonCanvas.json";
+    private final int gridSize;
+    private final int pixelSize;
+    private final Canvas[][] grid;
+    JSONArray[] jsonGrid;
+    private final String filepathJson;
 
-    public GridManager() {
+    public GridManager(int gridSize, int pixelSize) {
+        this.gridSize = gridSize;
+        this.pixelSize = pixelSize;
+        this.grid = new Canvas[gridSize][gridSize];
+        this.jsonGrid = new JSONArray[gridSize];
+        this.filepathJson = "pixelart/server/JSON/jsonCanvas.json";
         initializeGrid();
     }
 
-    private void initializeGrid() {
-        for (int row = 0; row < gridSize; row++) {
-            jsonGrid[row] = new JSONArray();  
+    public void initializeGrid() {
+        for (int row = 0; row < gridSize; row ++) {
+            jsonGrid[row] = new JSONArray();
             for (int col = 0; col < gridSize; col++) {
                 Canvas canvas = new Canvas(pixelSize, pixelSize);
                 jsonGrid[row].put("W");
                 grid[row][col] = canvas;
-                
-                // Initialize canvas to white
                 GraphicsContext gc = canvas.getGraphicsContext2D();
                 gc.setFill(Color.WHITE);
                 gc.fillRect(0, 0, pixelSize, pixelSize);
@@ -44,9 +47,14 @@ public class GridManager {
     public Canvas[][] getGrid() {
         return grid;
     }
- 
+
+    public JSONArray[] getJsonGrid() {
+        return jsonGrid;
+    }
+
+
     // Updates the color of a pixel in the grid.
-    public void updatePixel(int row, int col, boolean isBlack) { 
+    public void updatePixel(int row, int col, boolean isBlack) {
         Canvas pixel = grid[row][col];
         GraphicsContext gc = pixel.getGraphicsContext2D();
         gc.setFill(isBlack ? Color.BLACK : Color.WHITE); // If isBlack is true, the pixel is set to black. If isBlack is false, it is set to white.
@@ -57,7 +65,7 @@ public class GridManager {
 
     public void loadState() {
         try {
-            String jsonContent = readJsonFile();
+            String jsonContent = readJsonFile(filepathJson);
             if (jsonContent.isEmpty()) {
                 // If file is empty, it uses the defaulted white grid (already initialized)
                 return;
@@ -87,7 +95,7 @@ public class GridManager {
         }
     }
 
-    private void saveJsonState() { // Saves the current grid state to the JSON file.
+    public void saveJsonState() { // Saves the current grid state to the JSON file.
         JSONObject jsonObjBuilder = new JSONObject();
         jsonObjBuilder.put("canvas", jsonGrid);
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filepathJson))) {
@@ -97,13 +105,15 @@ public class GridManager {
         }
     }
 
-    private String readJsonFile() throws IOException { // Reads the content of the JSON file into a string.
+    public String readJsonFile(String filepathJson) throws IOException { // Reads the content of the JSON file into a string.
         StringBuilder content = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new FileReader(filepathJson))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 content.append(line);
             }
+        } catch (FileNotFoundException e) {
+            throw new IOException("File not found: " + filepathJson);
         }
         return content.toString();
     }

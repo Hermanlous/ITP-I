@@ -16,7 +16,7 @@
     <dependencies> <!-- Dependency for the pixelart-core module, which contains the core logic of the PixelArt application -->
         <dependency>
             <groupId>gr2452</groupId>
-            <artifactId>pixelart-core</artifactId> 
+            <artifactId>pixelart-core</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
