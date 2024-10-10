@@ -21,6 +21,9 @@ Vi bruker Jacoco for å holde orden på testdekningsgraden, slik at vi har god o
 Spotbugs utnyttes for å få hjelp til å oppdage bugs som eksisterer i koden vår. Denne synes vi er vanskelig å bruke for nå, men vi ser verdien av å bruke dette!
 Checkstyle brukes for å holde kodestilen til en viss standard. Dette hjelper oss med å gjøre koden leselig og kan hjelpe med å forbedre kvaliteten.
 
+## Klassediagram
+Vi har valgt å vise deler av appen vår gjennom et klassediagram. 
+
 ![Diagram](ClassDiagram.png)
 
 PlantUML kode: se vedlegg A 
@@ -60,44 +63,68 @@ PlantUML code
 
 ```
 @startuml
+package "pixelart.core" {
+    class GridManager {
+        - int gridSize
+        - int pixelSize
+        - Canvas[][] grid
+        - JSONArray[] jsonGrid
+        - String filepathJson
+        --
+        + GridManager(int gridSize, int pixelSize)
+        + void initializeGrid()
+        + Canvas[][] getGrid()
+        + JSONArray[] getJsonGrid()
+        + void updatePixel(int row, int col, boolean isBlack)
+        + void loadState()
+        + void saveJsonState()
+        + String readJsonFile(String filepathJson)
+    }
 
-class pixelart.core.GridManager {
-    -int gridSize = 100
-    -int pixelSize = 10
-    -Canvas[][] grid
-    -JSONArray[] jsonGrid
-    -String filepathJson = "jsonCanvas.json"
-    
-    +GridManager()
-    -void initializeGrid()
-    +Canvas[][] getGrid()
-    +void updatePixel(int row, int col, boolean isBlack)
-    +void loadState()
-    -void saveJsonState()
-    -String readJsonFile()
+    ' Test Classes in pixelart.core
+    class GridInitializationTest {
+        - GridManager gridManager
+        - int gridSize = 5
+        - int pixelSize = 10
+        --
+        + void setUp()
+        + void testGridSize()
+        + void testJSONGridSize()
+        + void testJSONGridContent()
+        + void testCanvasProperties()
+    }
+
+    class WriteJsonTest {
+        - GridManager gridManager
+        - int gridSize = 5
+        - int pixelSize = 10
+        --
+        + void setUp()
+        + void testSaveJsonState()
+        + void testUpdatePixel()
+    }
 }
 
-class pixelart.ui.App {
-    +void start(Stage primaryStage)
+package "pixelart.ui" {
+    class App {
+        + void start(Stage primaryStage)
+    }
+
+    class AppController {
+        - GridPane gridPane
+        - GridManager gridManager
+        - int gridSize = 100
+        - int pixelSize = 10
+        --
+        + void initialize()
+        + void pixelClick(int row, int column, MouseEvent event)
+    }
 }
 
-class pixelart.ui.AppController {
-    -GridPane gridPane
-    -GridManager gridManager
+AppController --> GridManager : "manages grid logic"
+App --> AppController
 
-    +void initialize()
-    -void pixelClick(int row, int column, MouseEvent event)
-}
-
-class pixelart.server.JsonFileTests {
-    +void testSaveJsonCanvasState()
-    +void testLoadState()
-}
-
-pixelart.core.GridManager --> pixelart.ui.AppController : "uses"
-pixelart.ui.AppController --> pixelart.core.GridManager : "manages"
-pixelart.ui.App --> pixelart.ui.AppController : "manages"
-pixelart.server.JsonFileTests --> pixelart.core.GridManager : "tests"
-
+GridInitializationTest --> GridManager : Tests
+WriteJsonTest --> GridManager : Tests
 @enduml
 ```
