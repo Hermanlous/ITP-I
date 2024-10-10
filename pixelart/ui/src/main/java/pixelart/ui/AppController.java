@@ -19,10 +19,13 @@ public class AppController {
     private GridPane gridPane;
 
     private GridManager gridManager;
+    private final int gridSize = 100;
+    private final int pixelSize = 10;
 
     @FXML
     public void initialize() {
-        gridManager = new GridManager();
+
+        gridManager = new GridManager(gridSize, pixelSize);
         Canvas[][] grid = gridManager.getGrid();
 
         for (int r = 0; r < 100; r++) {
