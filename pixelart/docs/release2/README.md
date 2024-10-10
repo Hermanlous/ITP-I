@@ -19,6 +19,14 @@ UI har frontendklassen som styrer fxml filen. Den bruker kjerneklassen GridManag
 ![Diagram](ClassDiagram.png)
 PlantUML kode: se vedlegg A 
 
+### Persistance
+
+#### Implicit persistance
+We decided upon a "start" where you "stopped" solution, the thought process where to continue drawing right where you stopped, and while the grid is pretty big, there is a lot of space to fill out. We're also eyeing developing this further into a save and upload as you go.
+
+#### Userdata
+The data is saved as "canvas" where the canvas key in the json canvas file has a matrix of a 100 * 100 first initialized strings of "W". With clicking on a pixel canvas the "W" is changed to a "B", representing "White" and "Black".
+{"canvas":[["W","W","W".....
 ## Valg vi har tatt
 
 ### Gitlab
