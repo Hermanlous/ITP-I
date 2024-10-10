@@ -1,0 +1,1 @@
+java resources for pixelart core goes here
