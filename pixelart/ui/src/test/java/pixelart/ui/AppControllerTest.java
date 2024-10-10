@@ -7,17 +7,22 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 
+import java.util.Random;
+
 public class AppControllerTest extends ApplicationTest {
+    //This codeblock is sourced from https://www.youtube.com/watch?v=NG03nNpSmgU downloaded 07.10.2024, from here
     @BeforeEach
     public void setup() throws Exception{
         ApplicationTest.launch(App.class);
-    }
+    }//To here
     
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -30,7 +35,21 @@ public class AppControllerTest extends ApplicationTest {
         Image taskbarLogo = new Image(getClass().getResourceAsStream("/pixelart/ui/taskbarLogo.png"));  // To change taskbar logo
         primaryStage.getIcons().add(taskbarLogo);
     }
-
+    @Test
+    public void testHowManyCanvases(){
+        GridPane gridPane = lookup("#gridPane").query();
+        Assertions.assertEquals(gridPane.getColumnCount(), 100);
+        Assertions.assertEquals(gridPane.getRowCount(), 100);
+    }
+    @Test
+    public void initGrid(){
+        GridPane gridPane = lookup("#gridPane").query();
+        Random rand = new Random();
+        int random = rand.nextInt(gridPane.getColumnCount());
+        Node node = gridPane.getChildren().get(random);
+        Canvas canvas = (Canvas) node;
+        Assertions.assertEquals(canvas.getGraphicsContext2D().getFill(), Color.WHITE);
+    }
     @Test
     public void testClickOnCanvas() {
         
@@ -48,6 +67,7 @@ public class AppControllerTest extends ApplicationTest {
 
             // draw smily
             clickOn(canvas);
+            Assertions.assertEquals(canvas.getGraphicsContext2D().getFill(), Color.BLACK);
         }
     }
 
@@ -55,7 +75,6 @@ public class AppControllerTest extends ApplicationTest {
     public void testClickOnCanvasSecondary() {
         
         GridPane gridPane = lookup("#gridPane").query();
-        
         sleep(3000);
 
         // smily
@@ -68,6 +87,7 @@ public class AppControllerTest extends ApplicationTest {
 
             // erease smily
             clickOn(canvas, MouseButton.SECONDARY);
+            Assertions.assertEquals(canvas.getGraphicsContext2D().getFill(), Color.WHITE);
         }
     }
 }
