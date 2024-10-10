@@ -9,12 +9,11 @@ import pixelart.core.GridManager; // Allows it to use the logic in GridManager
 
 public class AppController {
     
-    /**
+/**
  * AppController is the main controller class for the JavaFX application pixelart.
  * It controls the interaction between the user and the 100x100 (may change) grid of canvases.
  * The users can draw or erase on the different pixels  using left and right mouse clicks. More to come.
  * Which pixels that are coloured in are saved in a text file.
-
 */
     @FXML
     private GridPane gridPane;
