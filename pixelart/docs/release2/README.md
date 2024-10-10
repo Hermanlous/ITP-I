@@ -7,7 +7,8 @@
 
 
 ## Arkitektur
-Arkitekturen har to muduler, core og ui. I core modulen er kjerneklassen GridManager og i ui modulen er brukergrensesnittet.
+Arkitekturen har to muduler, core og ui. I core modulen er kjerneklassen GridManager og i ui modulen er brukergrensesnittet. Videre benytter vi oss også av en "server" komponent, her ligger jsonfilene som vår fungerende bakside.
+Baktanken bak funksjonaliteten er så enkelt som at vi lager 10 000 små canvas objekter som fyller ut hver sin gridPane, når vi ønsker en piksel farget, så fyller vi rektangelet som har riktig matrise indeks.
 
 ### Core
 I core er kjerneloggikken for lesing, oppdatering og lagring av lerretet. Den tar seg av fillagring, og henter lagrede data ved oppstart slik at UI kan hente lerretet som er lagret. 
@@ -18,7 +19,7 @@ UI har frontendklassen som styrer fxml filen. Den bruker kjerneklassen GridManag
 ![Diagram](ClassDiagram.png)
 PlantUML kode: se vedlegg A 
 
-## Valg vi tatt
+## Valg vi har tatt
 
 ### Gitlab
 Vi har prøvd å forbedre vår bruk a standard prosedyre. Vi har begynt å bruke standard commit melding oppsett. Med bruk av denne malen:
@@ -33,6 +34,7 @@ Vi har prøvd å forbedre vår bruk a standard prosedyre. Vi har begynt å bruke
 Vi har som mål at alle commits som er synlige på main branchen følger denne malen.
 Vi sletter overflødige grener. Vi har valgt å bruke squash commits for å slå sammen tidligere commits når vi merger til master.
 
+Vi benytter oss av spotbugs og checkstyle, selvom det er vanskelig å anvende nå i starten. Vi har manglende erfaring med begge, men ser viktigheten bak det.
 
 ## Bruk av KI
 [Release 2](ai-tools.md)

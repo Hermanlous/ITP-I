@@ -11,4 +11,4 @@ coming soon...
 ## Eksempelbilde
 Bilde av hvordan vi ser for oss at en ferdig versjon av prosjektet kan se ut. Vi ser også for oss at det kan komme endringer.
 
-![img.png](img/ferdigVersjon.png) 
+![img.png](../../img/ferdigVersjon.png) 
