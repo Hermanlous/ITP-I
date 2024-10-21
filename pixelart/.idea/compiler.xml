@@ -12,6 +12,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="pixelart-parent" target="17" />
       <module name="pixelart-server" target="17" />
     </bytecodeTargetLevel>
   </component>

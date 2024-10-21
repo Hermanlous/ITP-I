@@ -1,4 +1,4 @@
-package com.server.server;
+package pixelart.server;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

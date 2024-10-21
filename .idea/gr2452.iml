@@ -9,6 +9,8 @@
       <sourceFolder url="file://$MODULE_DIR$/pixelart/server/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/pixelart/server/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/pixelart/server/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/pixelart/util/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/pixelart/util/src/test/java" isTestSource="true" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
