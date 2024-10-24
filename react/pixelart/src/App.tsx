@@ -58,7 +58,7 @@ const App: React.FC = () => {
 
         <div>
           <p className='text-2xl'>
-            Selected Color:
+            Selected Color:{' '}
             <span style={{ color: selectedColor.onColor, backgroundColor: selectedColor.color }}>
               {selectedColor.color}
             </span>
