@@ -3,17 +3,6 @@ import Canvas from './components/Canvas';
 
 
 const App: React.FC = () => {
-  const [selectedColor, setSelectedColor] = useState<string>('#000000'); // default color is black
-
-  // TODO: get pixelData from api
-  const [pixelData, setPixelData] = useState<string[][]>(Array.from({ length: 50 }, () => Array(50).fill('#ffffff')));
-
-  // Function to update a specific pixel's color
-  const handlePixelChange = (x: number, y: number, color: string) => {
-    const newPixelData = [...pixelData];
-    newPixelData[y][x] = color;
-    setPixelData(newPixelData);
-  };
 
   // List of colors to choose from + contrast color for text
   const colors = [
@@ -27,38 +16,61 @@ const App: React.FC = () => {
     { color: '#ffffff', onColor: '#000000' }, // white bg, black text
   ];
 
+  const [selectedColor, setSelectedColor] = useState<typeof colors[0]>(colors[0]); // default to the first color object
+
+  // TODO: get pixelData from api
+  const [pixelData, setPixelData] = useState<string[][]>(Array.from({ length: 50 }, () => Array(50).fill('#ffffff')));
+
+  // Function to update a specific pixel's color
+  const handlePixelChange = (x: number, y: number, color: string) => {
+    const newPixelData = [...pixelData];
+    newPixelData[y][x] = color;
+    setPixelData(newPixelData);
+  };
+
   return (
     <main className="w-full max-w-5xl mx-auto p-4">
       <h1 className="text-red-500 text-center p-4">Pixel Art</h1>
 
+      {/* TODO: create color selection panel component */}
       <div className='flex justify-center'>
-        {/* Color Palette */}
         <div className="flex flex-col gap-2 m-4 pt-4">
           {colors.map((color) => (
             <div
               key={color.color}
-              className={`w-10 h-10 border-2 cursor-pointer ${selectedColor === color.color ? 'border-black' : 'border-transparent'}`}
-              style={{ backgroundColor: color.color }}
-              onClick={() => setSelectedColor(color.color)}
+              className={`w-10 h-10 border-2 cursor-pointer`}
+              style={{
+                backgroundColor: color.color,
+                borderColor: selectedColor.color === color.color ? color.onColor : 'transparent'
+              }}
+              onClick={() => setSelectedColor(color)}
             >
-              {selectedColor === color.color && (
-                <div style={{ color: color.onColor }} className={`text-center text-2xl p-0.5`}>✓</div>
+              {selectedColor.color === color.color && (
+                <div
+                  style={{ color: color.onColor }}
+                  className={`text-center text-2xl p-0.5`}>
+                    ✓
+                </div>
               )}
             </div>
           ))}
         </div>
 
-        {/* Canvas */}
         <div>
-          <p className='text-xl'>Selected Color: <span style={{ color: selectedColor }}>{selectedColor}</span></p>
-          <Canvas
+          <p className='text-2xl'>
+            Selected Color:
+            <span style={{ color: selectedColor.onColor, backgroundColor: selectedColor.color }}>
+              {selectedColor.color}
+            </span>
+          </p>
 
+          <Canvas
             // TODO: set width, height and pixel size based on pixeldata fetched from api
             width={600}
             height={600}
             pixelSize={12}
             initialData={pixelData}
-            selectedColor={selectedColor}
+            selectedColor={selectedColor.color}
             onPixelChange={handlePixelChange}
           />
         </div>
