@@ -1,11 +1,15 @@
 package pixelart.ui;
 
+//import org.checkerframework.checker.units.qual.g; why did we have this?
+
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.input.MouseEvent;
-import pixelart.core.GridManager; // Allows it to use the logic in GridManager
+import pixelart.core.Grid;
+import pixelart.core.GridStateHandler;
+import pixelart.core.Pixel;
 
 public class AppController {
     
@@ -18,19 +22,21 @@ public class AppController {
     @FXML
     private GridPane gridPane;
 
-    private GridManager gridManager;
+    private Grid grid;
+    private GridStateHandler gridStateHandler;
     private final int gridSize = 100;
     private final int pixelSize = 10;
 
     @FXML
     public void initialize() {
 
-        gridManager = new GridManager(gridSize, pixelSize);
-        Canvas[][] grid = gridManager.getGrid();
+        grid = new Grid(gridSize, pixelSize);
+        gridStateHandler = new GridStateHandler(grid);
+        Pixel[][] pixelGrid = grid.getAllPixels(); 
 
-        for (int r = 0; r < 100; r++) {
-            for (int c = 0; c < 100; c++) {
-                Canvas canvas = grid[r][c];
+        for (int r = 0; r < gridSize; r++) {
+            for (int c = 0; c < gridSize; c++) {
+                Canvas canvas = pixelGrid[r][c].getCanvas();
                 gridPane.add(canvas, r, c);
                 int row = r;
                 int column = c;
@@ -38,12 +44,12 @@ public class AppController {
             }
         }
 
-        gridManager.loadState();
+        gridStateHandler.loadState();
     }
 
     private void pixelClick(int row, int column, MouseEvent event) {
         boolean isBlack = event.getButton() != MouseButton.SECONDARY;
-        gridManager.updatePixel(row, column, isBlack); 
+        grid.getPixel(row, column).updateColor(isBlack);; 
     }
 
 }
