@@ -1,66 +1,23 @@
 package pixelart.core;
 
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+
 import java.io.*;
 
-/**
- * GridManager handles the making and management of a grid of pixels.
- * It updates individual pixels, saves the grid state to a JSON file, and loads the grid state from a JSON file.
- * The grid consists of Canvas elements, where each canvas represents a pixel. Each Canvas is black or white.
- */
-
-public class GridManager {
-    private final int gridSize;
-    private final int pixelSize;
-    private final Canvas[][] grid;
-    JSONArray[] jsonGrid;
+public class GridStateHandler {
     private final String filepathJson;
+    private final Grid grid;
+    private JSONArray[][] jsonGrid;
 
-    public GridManager(int gridSize, int pixelSize) {
-        this.gridSize = gridSize;
-        this.pixelSize = pixelSize;
-        this.grid = new Canvas[gridSize][gridSize];
-        this.jsonGrid = new JSONArray[gridSize];
-        this.filepathJson = "jsonCanvas.json";
-        initializeGrid();
-    }
-
-    public void initializeGrid() {
-        for (int row = 0; row < gridSize; row ++) {
-            jsonGrid[row] = new JSONArray();
-            for (int col = 0; col < gridSize; col++) {
-                Canvas canvas = new Canvas(pixelSize, pixelSize);
-                jsonGrid[row].put("W");
-                grid[row][col] = canvas;
-                GraphicsContext gc = canvas.getGraphicsContext2D();
-                gc.setFill(Color.WHITE);
-                gc.fillRect(0, 0, pixelSize, pixelSize);
-            }
-        }
-    }
-
-    public javafx.scene.canvas.Canvas[][] getGrid() {
-        return grid;
-    }
-
-    public JSONArray[] getJsonGrid() {
-        return jsonGrid;
-    }
-
-
-    // Updates the color of a pixel in the grid.
-    public void updatePixel(int row, int col, boolean isBlack) {
-        Canvas pixel = grid[row][col];
-        GraphicsContext gc = pixel.getGraphicsContext2D();
-        gc.setFill(isBlack ? Color.BLACK : Color.WHITE); // If isBlack is true, the pixel is set to black. If isBlack is false, it is set to white.
-        gc.fillRect(0, 0, pixelSize, pixelSize);
-        jsonGrid[row].put(col, isBlack ? "B" : "W");
-        saveJsonState(); // The grid state is updated in the JSON grid and saved.
+    public GridStateHandler (Grid grid){
+        this.grid = grid;
+        this.filepathJson =  "jsonCanvas.json";
+        this.jsonGrid = new JSONArray[grid.getGridSize()][grid.getGridSize()];
     }
 
     public void loadState() {
@@ -74,17 +31,17 @@ public class GridManager {
             JSONObject jsonObjReader = new JSONObject(jsonContent);
             JSONArray canvasJson = jsonObjReader.getJSONArray("canvas");
 
-            for (int row = 0; row < gridSize; row++) {
+            for (int row = 0; row < grid.getGridSize(); row++) {
 
                 JSONArray jsonRow = canvasJson.getJSONArray(row);
 
-                for (int col = 0; col < gridSize; col++) {
+                for (int col = 0; col < grid.getGridSize(); col++) {
                     String pixelColor = jsonRow.getString(col);
-                    Canvas canvas = grid[row][col];
+                    Canvas canvas = grid.getPixel(row, col).getCanvas();
                     GraphicsContext gc = canvas.getGraphicsContext2D();
                     gc.setFill(pixelColor.equals("B") ? Color.BLACK : Color.WHITE);
+                    int pixelSize = grid.getPixel(row, col).getPixelSize();
                     gc.fillRect(0, 0, pixelSize, pixelSize);
-                    jsonGrid[row].put(col, pixelColor);
                 }
             }
         } catch (FileNotFoundException e) {
