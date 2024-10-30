@@ -7,7 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -18,20 +17,21 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class WriteJsonTest {
     private GridManager gridManager;
-    private static int gridSize = 5;
-    private static int pixelSize = 10;
+    private static final int gridSizeHeight = 5;
+    private static final int gridSizeWidth = 10;
+    private static final int pixelSize = 10;
 
     @BeforeEach
-    public void setUp(){
-        this.gridManager = new GridManager(gridSize,pixelSize);
+    public void setUp() {
+        this.gridManager = new GridManager(gridSizeHeight, gridSizeWidth, pixelSize);
     }
 
     @Test
     public void testSaveJsonState() throws Exception {
-        JSONArray[] testJsonGrid = new JSONArray[gridSize];
-        for (int i = 0; i < gridSize; i++) {
+        JSONArray[] testJsonGrid = new JSONArray[gridSizeHeight];
+        for (int i = 0; i < gridSizeHeight; i++) {
             testJsonGrid[i] = new JSONArray();
-            for (int j = 0; j < gridSize; j++) {
+            for (int j = 0; j < gridSizeWidth; j++) {
                 testJsonGrid[i].put("B");
             }
         }
@@ -68,10 +68,11 @@ public class WriteJsonTest {
         int col = 3;
         boolean isBlack = true;
         gridManagerSpy.updatePixel(row, col, isBlack);
-        assertEquals("B", gridManagerSpy.jsonGrid[row].getString(col));
+        assertEquals("B", gridManagerSpy.getJsonGrid()[row].getString(col));
+        
         isBlack = false;
         gridManagerSpy.updatePixel(row, col, isBlack);
-        assertEquals("W", gridManagerSpy.jsonGrid[row].getString(col));
+        assertEquals("W", gridManagerSpy.getJsonGrid()[row].getString(col));
 
         /*ChatGPT: How can I ensure that saveJsonState is called?*/
         Mockito.verify(gridManagerSpy, Mockito.times(2)).saveJsonState();

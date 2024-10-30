@@ -15,27 +15,29 @@ import java.io.*;
  */
 
 public class GridManager {
-    private final int gridSize;
+    private final int gridSizeHeight;
+    private final int gridSizeWidth;
     private final int pixelSize;
     private final Canvas[][] grid;
     JSONArray[] jsonGrid;
     private final String filepathJson;
 
-    public GridManager(int gridSize, int pixelSize) {
-        this.gridSize = gridSize;
+    public GridManager(int gridSizeHeight, int gridSizeWidth, int pixelSize) {
+        this.gridSizeHeight = gridSizeHeight;
+        this.gridSizeWidth = gridSizeWidth;
         this.pixelSize = pixelSize;
-        this.grid = new Canvas[gridSize][gridSize];
-        this.jsonGrid = new JSONArray[gridSize];
+        this.grid = new Canvas[gridSizeHeight][gridSizeWidth];
+        this.jsonGrid = new JSONArray[gridSizeHeight];
         this.filepathJson = "jsonCanvas.json";
         initializeGrid();
     }
 
     public void initializeGrid() {
-        for (int row = 0; row < gridSize; row ++) {
+        for (int row = 0; row < gridSizeHeight; row++) {
             jsonGrid[row] = new JSONArray();
-            for (int col = 0; col < gridSize; col++) {
+            for (int col = 0; col < gridSizeWidth; col++) {
                 Canvas canvas = new Canvas(pixelSize, pixelSize);
-                jsonGrid[row].put("W");
+                jsonGrid[row].put(col, "W");
                 grid[row][col] = canvas;
                 GraphicsContext gc = canvas.getGraphicsContext2D();
                 gc.setFill(Color.WHITE);
@@ -63,7 +65,7 @@ public class GridManager {
         saveJsonState(); // The grid state is updated in the JSON grid and saved.
     }
 
-    public void loadState() {
+    public void loadState() throws IOException {
         try {
             String jsonContent = readJsonFile(filepathJson);
             if (jsonContent.isEmpty()) {
@@ -74,11 +76,11 @@ public class GridManager {
             JSONObject jsonObjReader = new JSONObject(jsonContent);
             JSONArray canvasJson = jsonObjReader.getJSONArray("canvas");
 
-            for (int row = 0; row < gridSize; row++) {
+            for (int row = 0; row < gridSizeHeight; row++) {
 
                 JSONArray jsonRow = canvasJson.getJSONArray(row);
 
-                for (int col = 0; col < gridSize; col++) {
+                for (int col = 0; col < gridSizeWidth; col++) {
                     String pixelColor = jsonRow.getString(col);
                     Canvas canvas = grid[row][col];
                     GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -92,6 +94,7 @@ public class GridManager {
             System.out.println("No existing save file found. Initialize a blank canvas.");
         } catch (IOException e) {
             e.printStackTrace();
+            throw e;  // throw the IOException
         }
     }
 

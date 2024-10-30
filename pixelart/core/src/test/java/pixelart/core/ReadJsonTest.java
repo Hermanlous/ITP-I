@@ -14,15 +14,14 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 
 public class ReadJsonTest {
-
     private GridManager gridManager;
-    private int gridSize;
+    private static final int gridSizeHeight = 5;
+    private static final int gridSizeWidth = 7;
+    private static final int pixelSize = 10;
 
     @BeforeEach
     public void setup() {
-        int gridSize = 5;
-        int pixelSize = 10;
-        this.gridManager = new GridManager(gridSize,pixelSize);
+        this.gridManager = new GridManager(gridSizeHeight, gridSizeWidth, pixelSize);
     }
 
     @AfterEach
@@ -54,13 +53,14 @@ public class ReadJsonTest {
 
     @Test
     public void testLoadJsonFileWithValidFileName() throws IOException {
-        String validJsonContent = "{ \"canvas\": [[\"B\", \"W\", \"B\", \"W\", \"B\"], [\"W\", \"B\", \"W\", \"B\", \"W\"], [\"B\", \"W\", \"B\", \"W\", \"B\"], [\"W\", \"B\", \"W\", \"B\", \"W\"], [\"B\", \"W\", \"B\", \"W\", \"B\"]]}";
+        String validJsonContent = "{ \"canvas\": [[\"B\", \"W\", \"B\", \"W\", \"B\", \"W\", \"B\"], [\"W\", \"B\", \"W\", \"B\", \"W\", \"B\", \"W\"], [\"B\", \"W\", \"B\", \"W\", \"B\", \"W\", \"B\"], [\"W\", \"B\", \"W\", \"B\", \"W\", \"B\", \"W\"], [\"B\", \"W\", \"B\", \"W\", \"B\", \"W\", \"B\"]]}";
         GridManager gridManagerSpy = Mockito.spy(gridManager);
 
         doReturn(validJsonContent).when(gridManagerSpy).readJsonFile(anyString());
         gridManagerSpy.loadState();
-        for (int row = 0; row < gridSize; row++) {
-            for (int col = 0; col < gridSize; col++) {
+
+        for (int row = 0; row < gridSizeHeight; row++) {
+            for (int col = 0; col < gridSizeWidth; col++) {
                 String expectedColor = (row + col) % 2 == 0 ? "B" : "W";
                 assertEquals(expectedColor, gridManagerSpy.getJsonGrid()[row].getString(col));
             }
@@ -74,10 +74,10 @@ public class ReadJsonTest {
         GridManager gridManagerSpy = Mockito.spy(gridManager);
 
         File file = new File(emptyTestFile);
-        for (int row = 0; row < gridSize; row++ ) {
-            for (int col = 0; col < gridSize; col++ ) {
+        for (int row = 0; row < gridSizeHeight; row++) {
+            for (int col = 0; col < gridSizeWidth; col++) {
                 String expectedColor = "W";
-                String actualColor = gridManagerSpy.jsonGrid[row].getString(col);
+                String actualColor = gridManagerSpy.getJsonGrid()[row].getString(col);
                 assertEquals(expectedColor, actualColor);
             }
         }
@@ -87,10 +87,21 @@ public class ReadJsonTest {
     @Test
     public void testLoadJsonFileOnInvalidFile() throws IOException {
         String invalidFilepath = "invalidFilePath.json";
-        GridManager gridManagerSpy = Mockito.spy(gridManager);
-        doThrow(new FileNotFoundException(invalidFilepath)).when(gridManagerSpy).readJsonFile(anyString());
-        gridManagerSpy.loadState();
-        doThrow(new IOException()).when(gridManagerSpy).readJsonFile(anyString());
-        gridManagerSpy.loadState();
+        
+        // Test FileNotFoundException case
+        GridManager gridManagerSpy1 = Mockito.spy(gridManager);
+        doThrow(new FileNotFoundException(invalidFilepath))
+            .when(gridManagerSpy1)
+            .readJsonFile(anyString());
+        gridManagerSpy1.loadState(); // Should not throw
+        
+        // Test IOException case
+        GridManager gridManagerSpy2 = Mockito.spy(gridManager);
+        doThrow(new IOException())
+            .when(gridManagerSpy2)
+            .readJsonFile(anyString());
+        assertThrows(IOException.class, () -> {
+            gridManagerSpy2.loadState();
+        });
     }
 }
