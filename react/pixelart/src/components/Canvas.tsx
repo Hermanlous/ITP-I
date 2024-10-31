@@ -9,6 +9,8 @@ interface CanvasProps {
   onPixelChange: (x: number, y: number, color: string) => void;
 }
 
+
+
 const Canvas: React.FC<CanvasProps> = ({ width, height, pixelSize, initialData, selectedColor, onPixelChange }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [hoveredPixel, setHoveredPixel] = useState<{ x: number; y: number } | null>(null);
@@ -79,6 +81,8 @@ const Canvas: React.FC<CanvasProps> = ({ width, height, pixelSize, initialData, 
       drawHoveredPixelBorder(ctx, hoveredPixel.x, hoveredPixel.y);
     }
   }, [hoveredPixel, initialData]);
+
+
 
   return (
     <canvas

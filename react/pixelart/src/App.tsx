@@ -1,19 +1,78 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Canvas from './components/Canvas';
+import useCanvas from "./hook/useCanvas.ts";
 
 
 const App: React.FC = () => {
   const [selectedColor, setSelectedColor] = useState<string>('#000000'); // default color is black
+  const  canvasData  = useCanvas();
 
-  // TODO: get pixelData from api
-  const [pixelData, setPixelData] = useState<string[][]>(Array.from({ length: 50 }, () => Array(50).fill('#ffffff')));
+
+  const [pixelData, setPixelData] = useState<string[][]>([]);
+
+  /* Chatgpt promt from 14 to line 32 */
+  useEffect(() => {
+    if (canvasData) {
+      try {
+        const canvasString = canvasData.canvas;
+        //console.log( canvasString);
+
+        const parsed = JSON.parse(canvasString);
+        console.log( parsed);
+        if (Array.isArray(parsed.canvas)) {
+          const translatedFromApiData = parsed.canvas.map((row: string[]) =>
+              row.map((col: string) => col === 'W' ? '#ffffff' : col === 'B' ? '#000000' : col) //Subject to change, may not need to convert, still need to iterate.
+          );
+          //console.log(translatedFromApiData)
+          setPixelData(translatedFromApiData);
+        }
+      } catch (error) {
+        console.error('Error parsing canvas:', error);
+      }
+    }
+  }, [canvasData]);
+
 
   // Function to update a specific pixel's color
   const handlePixelChange = (x: number, y: number, color: string) => {
-    const newPixelData = [...pixelData];
-    newPixelData[y][x] = color;
-    setPixelData(newPixelData);
+    //const newPixelData = [...pixelData];
+    //newPixelData[y][x] = color;
+    //setPixelData(newPixelData);
+    if (canvasData) {
+      //console.log(canvasData.canvas, "want to return")
+      const canvasString = canvasData.canvas; //first parse
+      //console.log(canvasString, "middle")
+      const parsed = JSON.parse(canvasString);
+      //console.log(parsed);
+      parsed.canvas[y][x] = 'B'
+      //console.log(parsed.canvas)
+      const newPixelData = [...pixelData];
+      newPixelData[y][x] = color
+      //console.log(newPixelData)
+      setPixelData(newPixelData)
+
+      canvasData.canvas = JSON.stringify(parsed);
+      //console.log(canvasData)
+
+      fetch('http://localhost:8080/canvas',{
+        method: "PUT",
+        body: canvasData.canvas,
+        headers:{
+          "Content-type":"application/json; charset=utf-8",
+          'Accept': 'application/json'
+        },
+
+      }).then(response => response.json())
+    }
+    //console.log(pixelData)
+
+
+
+
+
+
   };
+  // TODO - handlePixelChange, function above may be redundant. We may change 'W' to hex code for color
 
   // List of colors to choose from + contrast color for text
   const colors = [

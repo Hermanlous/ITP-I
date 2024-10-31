@@ -1,14 +1,14 @@
 package pixelart.server;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import pixelart.service.CanvasResponse;
 
 
 import java.io.*;
 
-
+@CrossOrigin
 @RestController
 @RequestMapping("/")
 public class ServerPixelartController {
@@ -31,11 +31,23 @@ public class ServerPixelartController {
         }
         return content.toString();
     }
-    @GetMapping("canvas")
+    @GetMapping("/canvas")
     public CanvasResponse getUsers() throws IOException {
         String jsonContent = jsonToString();
 
         return new CanvasResponse( jsonContent );
 
+    }
+    /*ChatGPT prompt from 41 to 53 */
+    @PutMapping("/canvas")
+    public ResponseEntity<String> putCanvas(@RequestBody String canvasUpdate) throws IOException {
+        String filepathJson = "./pixelart/server/src/main/java/pixelart/persistence/jsonCanvas.json";
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filepathJson))) {
+            writer.write(canvasUpdate);
+            return ResponseEntity.ok(HttpStatus.OK.toString());
+
+        }catch(IOException error){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("failed"+error.getMessage());
+        }
     }
 }
