@@ -17,7 +17,6 @@ class GridInitializationTest {
         grid.initializeGrid();
     }
 
-
     @Test
     void testGridSize() {
         assertEquals(gridSize, grid.getAllPixels().length);
@@ -53,6 +52,3 @@ class GridInitializationTest {
         }
     }
 }
-
-
-
