@@ -15,18 +15,36 @@ import java.io.IOException;
  * The application is for making pixel art.
  */
 public class App extends Application {
-    
+
+    /**
+     * The width of the application scene in pixels.
+     */
+    private static final int SCENE_WIDTH = 400;
+
+    /**
+     * The height of the application scene in pixels.
+     */
+    private static final int SCENE_HEIGHT = 450;
+
+    /**
+     * Initializes and displays the main application window for PixelArt.
+     *
+     * @param primaryStage the primary stage for this application, where
+     *                     the application scene is set.
+     * @throws IOException if the FXML file cannot be loaded.
+     */
     @Override
-    public void start(Stage primaryStage) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/pixelart/ui/App.fxml"));
+    public void start(final Stage primaryStage) throws IOException {
+        FXMLLoader loader =
+        new FXMLLoader(getClass().getResource("/pixelart/ui/App.fxml"));
         GridPane root = loader.load();
-        Scene scene = new Scene(root, 400, 450);
+        Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
 
         primaryStage.setTitle("PixelArt");
         primaryStage.setScene(scene);
         primaryStage.show();
-        Image taskbarLogo = new Image(getClass().getResourceAsStream("/pixelart/ui/taskbarLogo.png"));  // To change taskbar logo
+        Image taskbarLogo = new
+        Image(getClass().getResourceAsStream("/pixelart/ui/taskbarLogo.png"));
         primaryStage.getIcons().add(taskbarLogo);
-        
     }
 }
