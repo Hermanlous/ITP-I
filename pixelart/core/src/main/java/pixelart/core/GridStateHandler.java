@@ -1,3 +1,4 @@
+
 package pixelart.core;
 
 import com.fasterxml.jackson.databind.ObjectMapper;

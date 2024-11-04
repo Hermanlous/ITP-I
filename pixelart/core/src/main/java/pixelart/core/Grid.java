@@ -10,8 +10,21 @@ public class Grid {
     private Pixel[][] pixels; //Here we need the [][] because we have many, not just one
     private GridStateHandler gridStateHandler;
 
-    public Grid (int gridSize, int pixelSize) {
-        this.gridSize = gridSize;
+    /**
+     * The defaultet size of our pixel.
+     * Each square the app has, use 10x10 pixels on screen to represent it.
+     */
+    private static final int DEFAULT_PIXEL_SIZE = 10;
+
+    /**
+     * Constructs a new instance of the {@code Grid} class.
+     * This makes a grid structure consisting of pixels.
+     *
+     * @param size the length of each side of the square grid.
+     * @param pixelSize the size of each pixel.
+     */
+    public Grid(final int size, final int pixelSize) {
+        this.gridSize = size;
         this.pixels = new Pixel[gridSize][gridSize];
         this.gridStateHandler = new GridStateHandler(); //Tried to do this to make the test happy.
         initializeEmptyGrid(pixelSize);
@@ -61,6 +74,10 @@ public class Grid {
         pixels[row][col].updateColor(isBlack);
     }
 
+    /**
+     * Return the size of the grid.
+     * @return size of grid as integer.
+     */
     public int getGridSize() {
         return gridSize;
     }
