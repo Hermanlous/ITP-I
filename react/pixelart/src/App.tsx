@@ -6,6 +6,7 @@ import useCanvas from "./hook/useCanvas.ts";
 const App: React.FC = () => {
   const [selectedColor, setSelectedColor] = useState<string>('#000000'); // default color is black
   const  canvasData  = useCanvas();
+  console.log(canvasData)
 
 
   const [pixelData, setPixelData] = useState<string[][]>([]);
@@ -14,13 +15,8 @@ const App: React.FC = () => {
   useEffect(() => {
     if (canvasData) {
       try {
-        const canvasString = canvasData.canvas;
-        //console.log( canvasString);
-
-        const parsed = JSON.parse(canvasString);
-        console.log( parsed);
-        if (Array.isArray(parsed.canvas)) {
-          const translatedFromApiData = parsed.canvas.map((row: string[]) =>
+        if (Array.isArray(canvasData)) {
+          const translatedFromApiData = canvasData.map((row: string[]) =>
               row.map((col: string) => col === 'W' ? '#ffffff' : col === 'B' ? '#000000' : col) //Subject to change, may not need to convert, still need to iterate.
           );
           //console.log(translatedFromApiData)
@@ -40,29 +36,30 @@ const App: React.FC = () => {
     //setPixelData(newPixelData);
     if (canvasData) {
       //console.log(canvasData.canvas, "want to return")
-      const canvasString = canvasData.canvas; //first parse
+       //first parse
       //console.log(canvasString, "middle")
-      const parsed = JSON.parse(canvasString);
       //console.log(parsed);
-      parsed.canvas[y][x] = 'B'
+      canvasData[y][x] = 'B'
       //console.log(parsed.canvas)
       const newPixelData = [...pixelData];
       newPixelData[y][x] = color
       //console.log(newPixelData)
       setPixelData(newPixelData)
 
-      canvasData.canvas = JSON.stringify(parsed);
+
       //console.log(canvasData)
 
       fetch('http://localhost:8080/canvas',{
         method: "PUT",
-        body: canvasData.canvas,
+        body: JSON.stringify(canvasData),
         headers:{
           "Content-type":"application/json; charset=utf-8",
           'Accept': 'application/json'
         },
 
-      }).then(response => response.json())
+      }).then(response=>response.json)
+      .then((data)=>{console.log(data)})
+        .catch(error => console.error(error))
     }
     //console.log(pixelData)
 

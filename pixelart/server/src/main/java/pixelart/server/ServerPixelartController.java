@@ -1,53 +1,51 @@
 package pixelart.server;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pixelart.service.CanvasResponse;
-
 
 import java.io.*;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/")
+@RequestMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ServerPixelartController {
+    private final String filePath = "./pixelart/server/src/main/java/pixelart/persistence/jsonCanvas.json";
+    private final ObjectMapper mapper = new ObjectMapper();
+    private String[][] canvasData;
 
     @GetMapping("run")
-    public String getPixelart() {
-        return "Pixelart API is running";
+    public ResponseEntity<String> getPixelart() {
+        return ResponseEntity.ok("Pixelart is running");
     }
 
-    public String jsonToString() throws IOException {
-        String filepathJson = "C:/Users/Eier/Documents/Høst2024/ITPREBASE/gr2452/pixelart/server/src/main/java/pixelart/persistence/jsonCanvas.json";
-        StringBuilder content = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new FileReader(filepathJson))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                content.append(line);
-            }
+    @GetMapping(value = "/canvas", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String[][]> getCanvas() {
+        try {
+            String[][] canvasGrid = mapper.readValue(new File(filePath), String[][].class);
+            return ResponseEntity.ok(canvasGrid);
         } catch (IOException e) {
-            throw new IOException("File not found: " + filepathJson);
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return content.toString();
     }
-    @GetMapping("/canvas")
-    public CanvasResponse getUsers() throws IOException {
-        String jsonContent = jsonToString();
 
-        return new CanvasResponse( jsonContent );
+    @PutMapping(
+            value = "/canvas",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<String[][]> postCanvas(@RequestBody String[][] currentGrid) {
+        try {
+            mapper.writerWithDefaultPrettyPrinter()
+                    .writeValue(new File(filePath), currentGrid);
 
-    }
-    /*ChatGPT prompt from 41 to 53 */
-    @PutMapping("/canvas")
-    public ResponseEntity<String> putCanvas(@RequestBody String canvasUpdate) throws IOException {
-        String filepathJson = "./pixelart/server/src/main/java/pixelart/persistence/jsonCanvas.json";
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filepathJson))) {
-            writer.write(canvasUpdate);
-            return ResponseEntity.ok(HttpStatus.OK.toString());
-
-        }catch(IOException error){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("failed"+error.getMessage());
+            return ResponseEntity.ok(currentGrid);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }
