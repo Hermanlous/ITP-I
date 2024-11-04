@@ -7,7 +7,15 @@
         <option value="$PROJECT_DIR$/pixelart/core/pom.xml" />
         <option value="$PROJECT_DIR$/pixelart/ui/pom.xml" />
         <option value="$PROJECT_DIR$/pixelart/server/pom.xml" />
+        <option value="$PROJECT_DIR$/../util/pom.xml" />
+        <option value="$PROJECT_DIR$/pixelart/util/pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/pixelart/util/pom.xml" />
+        <option value="$PROJECT_DIR$/../util/pom.xml" />
+      </set>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_22" default="true" project-jdk-name="22" project-jdk-type="JavaSDK">

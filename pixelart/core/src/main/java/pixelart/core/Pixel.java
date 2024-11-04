@@ -29,7 +29,7 @@ public class Pixel {
         gc.fillRect(0, 0, pixelSize, pixelSize);
     }
     
-    public Canvas getCanvas() {  //Do we need this? TODO I don't know. 
+    public Canvas getCanvas() {  //Do we need this? TODO I don't know.
         return canvas;
     }
 
@@ -42,6 +42,6 @@ public class Pixel {
     }
 
     public String getColorAsString() {
-        return isBlack ? "B" : "W";  
+        return isBlack ? "B" : "W";
     }
 }

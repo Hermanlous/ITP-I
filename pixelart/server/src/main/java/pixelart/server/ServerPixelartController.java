@@ -1,41 +1,51 @@
 package pixelart.server;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import pixelart.service.CanvasResponse;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
 
-
+@CrossOrigin
 @RestController
-@RequestMapping("/")
+@RequestMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ServerPixelartController {
+    private final String filePath = "./pixelart/server/src/main/java/pixelart/persistence/jsonCanvas.json";
+    private final ObjectMapper mapper = new ObjectMapper();
+    private String[][] canvasData;
 
     @GetMapping("run")
-    public String getPixelart() {
-        return "Pixelart API is running";
+    public ResponseEntity<String> getPixelart() {
+        return ResponseEntity.ok("Pixelart is running");
     }
 
-    public String jsonToString() throws IOException {
-        String filepathJson = "C:/Users/Eier/Documents/Høst2024/ITPREBASE/gr2452/pixelart/server/src/main/java/pixelart/persistence/jsonCanvas.json";
-        StringBuilder content = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new FileReader(filepathJson))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                content.append(line);
-            }
+    @GetMapping(value = "/canvas", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String[][]> getCanvas() {
+        try {
+            String[][] canvasGrid = mapper.readValue(new File(filePath), String[][].class);
+            return ResponseEntity.ok(canvasGrid);
         } catch (IOException e) {
-            throw new IOException("File not found: " + filepathJson);
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return content.toString();
     }
-    @GetMapping("canvas")
-    public CanvasResponse getUsers() throws IOException {
-        String jsonContent = jsonToString();
 
-        return new CanvasResponse( jsonContent );
+    @PutMapping(
+            value = "/canvas",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<String[][]> postCanvas(@RequestBody String[][] currentGrid) {
+        try {
+            mapper.writerWithDefaultPrettyPrinter()
+                    .writeValue(new File(filePath), currentGrid);
 
+            return ResponseEntity.ok(currentGrid);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }
