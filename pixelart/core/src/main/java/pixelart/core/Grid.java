@@ -14,7 +14,6 @@ public class Grid {
      * The defaultet size of our pixel.
      * Each square the app has, use 10x10 pixels on screen to represent it.
      */
-    private static final int DEFAULT_PIXEL_SIZE = 10;
 
     /**
      * Constructs a new instance of the {@code Grid} class.
