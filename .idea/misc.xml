@@ -9,13 +9,10 @@
         <option value="$PROJECT_DIR$/pixelart/server/pom.xml" />
         <option value="$PROJECT_DIR$/../util/pom.xml" />
         <option value="$PROJECT_DIR$/pixelart/util/pom.xml" />
-        <option value="$PROJECT_DIR$/demo/pom.xml" />
-        <option value="$PROJECT_DIR$/pixelart/demo2/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
       <set>
-        <option value="$PROJECT_DIR$/pixelart/demo2/pom.xml" />
         <option value="$PROJECT_DIR$/pixelart/util/pom.xml" />
         <option value="$PROJECT_DIR$/../util/pom.xml" />
       </set>

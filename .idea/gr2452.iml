@@ -9,6 +9,8 @@
       <sourceFolder url="file://$MODULE_DIR$/pixelart/server/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/pixelart/server/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/pixelart/server/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/pixelart/util/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/pixelart/util/src/test/java" isTestSource="true" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -43,5 +45,8 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.json:json:20240303" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:mac-aarch64:17.0.8" level="project" />
     <orderEntry type="library" name="Maven: org.json:json:20240303" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-autoconfigure:3.3.4" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot:3.3.4" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-web:6.1.13" level="project" />
   </component>
 </module>

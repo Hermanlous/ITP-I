@@ -15,18 +15,24 @@ import java.io.IOException;
  * The application is for making pixel art.
  */
 public class App extends Application {
-    
+    /** Variable to give the width of the scene.*/
+    private final int  sceneWidth = 400;
+
+    /** Variable to give the height of the scene.*/
+    private final int  sceneHeight = 400;
+
     @Override
-    public void start(Stage primaryStage) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/pixelart/ui/App.fxml"));
+    public final void start(final Stage primaryStage) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass()
+                .getResource("/pixelart/ui/App.fxml"));
         GridPane root = loader.load();
-        Scene scene = new Scene(root, 400, 450);
+        Scene scene = new Scene(root, sceneWidth, sceneHeight);
 
         primaryStage.setTitle("PixelArt");
         primaryStage.setScene(scene);
         primaryStage.show();
-        Image taskbarLogo = new Image(getClass().getResourceAsStream("/pixelart/ui/taskbarLogo.png"));  // To change taskbar logo
+        Image taskbarLogo = new Image(getClass()
+                .getResourceAsStream("/pixelart/ui/taskbarLogo.png"));
         primaryStage.getIcons().add(taskbarLogo);
-        
     }
 }

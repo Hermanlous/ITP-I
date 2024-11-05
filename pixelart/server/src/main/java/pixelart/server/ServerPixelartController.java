@@ -38,19 +38,9 @@ public class ServerPixelartController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-    //@GetMapping(value = "/canvas", produces = MediaType.APPLICATION_JSON_VALUE)
-    //public ResponseEntity<String[][]> getCanvas() {
-    //    try {
-    //        String[][] canvasGrid = mapper.readValue(new File(filePath), String[][].class);
-    //        return ResponseEntity.ok(canvasGrid);
-    //    } catch (IOException e) {
-    //        e.printStackTrace();
-    //        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    //    }
-    //}
 
     @PutMapping(
-            value = "canvas",
+            value = "/canvas",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
