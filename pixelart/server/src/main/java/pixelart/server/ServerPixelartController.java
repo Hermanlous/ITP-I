@@ -22,13 +22,14 @@ public class ServerPixelartController {
         return ResponseEntity.ok("Pixelart is running");
 
     }
-
+    //ChatGPT was used to find relative filepath, with Inputstream
     @GetMapping(value = "canvas", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String[][]> getCanvas() {
+        //From here, to
         try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(filePath)) {
             if (inputStream == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(new String[][] {{"File not found in classpath: " + filePath}});
+                        .body(new String[][] {{"File not found in classpath: " + filePath}});//here
             }
             String[][] canvasGrid = mapper.readValue(inputStream, String[][].class);
             return ResponseEntity.ok(canvasGrid);
@@ -37,6 +38,16 @@ public class ServerPixelartController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+    //@GetMapping(value = "/canvas", produces = MediaType.APPLICATION_JSON_VALUE)
+    //public ResponseEntity<String[][]> getCanvas() {
+    //    try {
+    //        String[][] canvasGrid = mapper.readValue(new File(filePath), String[][].class);
+    //        return ResponseEntity.ok(canvasGrid);
+    //    } catch (IOException e) {
+    //        e.printStackTrace();
+    //        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    //    }
+    //}
 
     @PutMapping(
             value = "canvas",
