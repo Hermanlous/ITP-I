@@ -6,13 +6,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="pixelart" />
         <module name="pixelart-core" />
+        <module name="server" />
         <module name="pixelart-ui" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="tbdApp" target="17" />
+      <module name="util" target="22" />
     </bytecodeTargetLevel>
   </component>
 </project>
