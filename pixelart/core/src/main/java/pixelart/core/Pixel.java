@@ -18,8 +18,8 @@ public class Pixel {
     private final int pixelSize;
 
     /**
-     * The current active color
-     * The color to use when user clicks on a pixel
+     * The current active color.
+     * The color to use when user clicks on a pixel.
      */
     private String currentColor;
 
@@ -48,7 +48,7 @@ public class Pixel {
     /**
      * This method updates the colour of the pixel.
      *
-     * @param hexColor string of colror value on hex format 
+     * @param hexColor string of colror value on hex format.
      */
     public void updateColor(final String hexColor) {
         this.currentColor = hexColor;

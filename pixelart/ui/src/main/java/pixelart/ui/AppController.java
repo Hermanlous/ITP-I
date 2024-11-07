@@ -25,6 +25,9 @@ public class AppController {
     @FXML
     private GridPane gridPane;
 
+    /**
+     * The color palette displayed as a set of color buttons.
+     */
     @FXML
     private HBox colorPalette;
 
@@ -45,10 +48,15 @@ public class AppController {
 
     /** Stores the current state of each pixel in grid.*/
     private String[][] currentState;
-    
+
+    /**
+     * The currently selected color for drawing the grid.
+     */
     private String currentColor = "#000000"; // Default black
-    
-    // Colors to choose from
+
+    /**
+     * The colour the user can chose from.
+     */
     private final String[] colors = {
         "#000000", // Black
         "#FFFFFF", // White
@@ -59,28 +67,6 @@ public class AppController {
         "#ff00ff", // Magenta
         "#00ffff", // Cyan
     };
-
-    
-    // public void initialize() {
-    //     initializeColorPalette();
-
-    //     // Use the constructor with width, height, and pixelSize parameters
-    //     grid = new Grid(gridSizeWidth, gridSizeHeight, pixelSize);
-    //     gridStateHandler = new GridStateHandler(grid);
-    //     Pixel[][] pixelGrid = grid.getAllPixels();
-
-    //     for (int r = 0; r < gridSizeHeight; r++) {
-    //         for (int c = 0; c < gridSizeWidth; c++) {
-    //             Canvas canvas = pixelGrid[r][c].getCanvas();
-    //             gridPane.add(canvas, c, r);
-    //             int row = r;
-    //             int column = c;
-    //             canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
-    //                 pixelClick(row, column, event));
-    //         }
-    //     }
-    //     gridStateHandler.loadState();
-    // }
 
     /**
      * Initializes the controller as well as the canvas
@@ -121,71 +107,80 @@ public class AppController {
 
     private void initializeColorPalette() {
         for (String hexColor : colors) {
-            Button colorButton = createColorButton(hexColor);            
+            Button colorButton = createColorButton(hexColor);
             colorPalette.getChildren().add(colorButton);
         }
     }
 
-    private Button createColorButton(String colorHex) {
+    private Button createColorButton(final String colorHex) {
         Button button = new Button();
-        
+
         // Initial style for the button
         if (colorHex.equals(currentColor)) {
             button.setStyle(
-                "-fx-background-color: " + colorHex + ";" +
-                "-fx-min-width: 40px;" +
-                "-fx-min-height: 40px;" +
-                "-fx-pref-width: 40px;" +
-                "-fx-pref-height: 40px;"
+                "-fx-background-color: "
+                + colorHex
+                + ";"
+                + "-fx-min-width: 40px;"
+                + "-fx-min-height: 40px;"
+                + "-fx-pref-width: 40px;"
+                + "-fx-pref-height: 40px;"
             );
         } else {
             button.setStyle(
-                "-fx-background-color: " + colorHex + ";" +
-                "-fx-min-width: 30px;" +
-                "-fx-min-height: 30px;" +
-                "-fx-pref-width: 30px;" +
-                "-fx-pref-height: 30px;" +
-                "-fx-border-radius: 15px;" // Maintain round appearance
+                "-fx-background-color: "
+                + colorHex
+                + ";"
+                + "-fx-min-width: 30px;"
+                + "-fx-min-height: 30px;"
+                + "-fx-pref-width: 30px;"
+                + "-fx-pref-height: 30px;"
+                + "-fx-border-radius: 15px;" // Maintain round appearance
             );
         }
-    
+
         // Store the color hex for reference
         button.setUserData(colorHex);
-    
+
         // Set up action for button selection
         button.setOnAction(e -> {
             currentColor = colorHex;
-    
+
             // Update visual selection state for each button
             colorPalette.getChildren().forEach(node -> {
                 if (node instanceof Button) {
                     Button colorButton = (Button) node;
                     boolean isSelected = (colorButton == button);
-    
+
                     // Define styles based on selection state
                     if (isSelected) {
                         // Increase size for the selected button
                         colorButton.setStyle(
-                            "-fx-background-color: " + colorHex + ";" +
-                            "-fx-min-width: 40px;" +
-                            "-fx-min-height: 40px;" +
-                            "-fx-pref-width: 40px;" +
-                            "-fx-pref-height: 40px;"
+                            "-fx-background-color: "
+                            + colorHex
+                            + ";"
+                            + "-fx-min-width: 40px;"
+                            + "-fx-min-height: 40px;"
+                            + "-fx-pref-width: 40px;"
+                            + "-fx-pref-height: 40px;"
                         );
                     } else {
                         // Style for the unselected button
                         colorButton.setStyle(
-                            "-fx-background-color: " + colorButton.getUserData() + ";" + // Use the stored color
-                            "-fx-min-width: 30px;" +
-                            "-fx-min-height: 30px;" +
-                            "-fx-pref-width: 30px;" +
-                            "-fx-pref-height: 30px;"
+                            "-fx-background-color: "
+                            + colorButton.getUserData()
+                            + ";"
+                            + // Use the stored color
+                            "-fx-min-width: 30px;"
+                            + "-fx-min-height: 30px;"
+                            + "-fx-pref-width: 30px;"
+                            + "-fx-pref-height: 30px;"
                         );
                     }
                 }
             });
         });
-    
+
         return button;
     }
 
@@ -196,7 +191,11 @@ public class AppController {
      * @param column the column index of the pixel clicked.
      * @param event the mouse event triggered by the click.
      */
-    private void pixelClick(final int row, final int column, final MouseEvent event) {
+    private void pixelClick(
+        final int row,
+        final int column,
+        final MouseEvent event) {
+
         String colorToApply;
         if (event.getButton() == MouseButton.PRIMARY) {
             colorToApply = currentColor;

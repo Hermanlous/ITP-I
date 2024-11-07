@@ -75,12 +75,14 @@ public class Grid {
      * @throws IOException if an error occurs during loading.
      * @throws InterruptedException if the process is interrupted.
      */
-    public Grid(String[][] newState, int pixelSize) throws IOException, InterruptedException {
+    public Grid(final String[][] newState, final int pixelSize)
+        throws IOException, InterruptedException {
 
-        this.gridSizeHeight = newState.length > 0 ? newState[0].length : DEFAULT_GRID_HEIGHT;
-        this.gridSizeWidth = newState[0].length > 0 ? newState.length : DEFAULT_GRID_WIDTH;
+        this.gridSizeHeight =
+        newState.length > 0 ? newState[0].length : DEFAULT_GRID_HEIGHT;
+        this.gridSizeWidth =
+        newState[0].length > 0 ? newState.length : DEFAULT_GRID_WIDTH;
 
-    
         try {
             this.gridStateHandler = new GridStateHandler();
             this.currentState = gridStateHandler.loadCanvas();
@@ -101,7 +103,7 @@ public class Grid {
      *
      * @param pixelSize the size of each pixel in the grid.
      */
-    private void initializeEmptyGrid(int pixelSize) {
+    private void initializeEmptyGrid(final int pixelSize) {
         for (int row = 0; row < gridSizeHeight; row++) {
             for (int column = 0; column < gridSizeWidth; column++) {
                 pixels[row][column] = new Pixel(pixelSize);

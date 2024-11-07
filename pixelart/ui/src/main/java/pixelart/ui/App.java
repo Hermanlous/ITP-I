@@ -32,16 +32,17 @@ public class App extends Application {
     @Override
     public void start(final Stage primaryStage) throws IOException {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/pixelart/ui/App.fxml"));
+            FXMLLoader loader =
+            new FXMLLoader(getClass().getResource("/pixelart/ui/App.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
-    
             primaryStage.setTitle("PixelArt");
             primaryStage.setScene(scene);
             primaryStage.show();
-            
+
             // Only add the icon if the resource exists
-            var iconStream = getClass().getResourceAsStream("/pixelart/ui/taskbarLogo.png");
+            var iconStream =
+            getClass().getResourceAsStream("/pixelart/ui/taskbarLogo.png");
             if (iconStream != null) {
                 Image taskbarLogo = new Image(iconStream);
                 primaryStage.getIcons().add(taskbarLogo);
