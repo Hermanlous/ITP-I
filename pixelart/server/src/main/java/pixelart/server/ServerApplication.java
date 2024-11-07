@@ -10,6 +10,8 @@ public class ServerApplication {
 
 		SpringApplication.run(ServerApplication.class, args);
 		System.out.println("Hello pixelart!");
+		String userDirectory = System.getProperty("user.dir");
+		System.out.println(userDirectory);
 
 	}
 
