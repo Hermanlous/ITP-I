@@ -24,7 +24,8 @@ public class ServerPixelartController {
      * Path to the file storing the canvas data.
      */
     private final String filePath =
-    "./pixelart/server/src/main/java/pixelart/persistence/jsonCanvas.json";
+            System.getProperty("user.dir") +
+                    "/src/main/resources/persistence/jsonCanvas.json";
 
     /**
      * ObjectMapper for serializing and deserializing JSON data.
@@ -45,24 +46,29 @@ public class ServerPixelartController {
     @GetMapping("run")
     public ResponseEntity<String> getPixelart() {
 
-    /**
-     * Endpoint to get the current canvas data.
-     *
-     * @return A ResponseEntity containing the canvas data as a
-     * 2D array of strings.
-     * If an error occurs while retrieving the data, an
-     * INTERNAL_SERVER_ERROR status is returned.
-     */
+        /**
+         * Endpoint to get the current canvas data.
+         *
+         * @return A ResponseEntity containing the canvas data as a
+         * 2D array of strings.
+         * If an error occurs while retrieving the data, an
+         * INTERNAL_SERVER_ERROR status is returned.
+         */
+        return ResponseEntity.ok("Pixelart is running");
+    }
     @GetMapping(value = "/canvas", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String[][]> getCanvas() {
+        File file = new File(filePath);
         try {
-            String[][] canvasGrid =
-            mapper.readValue(new File(filePath), String[][].class);
+            if (!file.exists()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new String[][] {{"File not found: " + filePath}});
+            }
+            String[][] canvasGrid = mapper.readValue(file, String[][].class);
             return ResponseEntity.ok(canvasGrid);
         } catch (IOException e) {
             e.printStackTrace();
-            return
-            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -80,17 +86,18 @@ public class ServerPixelartController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<String[][]> postCanvas(
-        @RequestBody final String[][] currentGrid) {
+    public ResponseEntity<String[][]> postCanvas(@RequestBody String[][] currentGrid) {
+        File file = new File(filePath);
+
         try {
+
             mapper.writerWithDefaultPrettyPrinter()
-                    .writeValue(new File(filePath), currentGrid);
+                    .writeValue(file, currentGrid);
 
             return ResponseEntity.ok(currentGrid);
         } catch (Exception e) {
             e.printStackTrace();
-            return
-            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }
