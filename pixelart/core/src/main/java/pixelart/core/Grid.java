@@ -3,21 +3,31 @@ package pixelart.core;
 import java.io.IOException;
 
 public class Grid {
-     /**
+    /**
      * The defaultet size of our pixel.
      * Each square the app has, use 10x10 pixels on screen to represent it.
      */
     private static final int DEFAULT_PIXEL_SIZE = 10;
 
     /**
-     * The defaultet size of our grid.
+     * The defaultet width of our grid.
      */
-    private static final int DEFAULT_GRID_SIZE = 100;
+    private static final int DEFAULT_GRID_WIDTH = 60;
 
     /**
-     * The size of the grid accoring to users wants.
+     * The defaultet height of our grid.
      */
-    private int gridSize;
+    private static final int DEFAULT_GRID_HEIGHT = 40;
+
+    /**
+     * The width of the grid in pixels.
+     */
+    private final int gridSizeWidth;
+
+    /**
+     * The height of the grid in pixels.
+     */
+    private final int gridSizeHeight;
 
     /**
      * A 2D array representing the initial state of each pixel.
@@ -25,6 +35,7 @@ public class Grid {
      * the color of a pixel in the grid ("B" for black, "W" for white).
      */
     private String[][] currentState;
+
 
     /**
      * A 2D array that holds all the pixels.
@@ -41,12 +52,14 @@ public class Grid {
      * Constructs a new instance of the {@code Grid} class.
      * This makes a grid structure consisting of pixels.
      *
-     * @param size the length of each side of the square grid.
+     * @param width the width of the grid.
+     * @param height the height of the grid.
      * @param pixelSize the size of each pixel.
      */
-    public Grid(final int size, final int pixelSize) {
-        this.gridSize = size;
-        this.pixels = new Pixel[gridSize][gridSize];
+    public Grid(final int height, final int width, final int pixelSize) {
+        this.gridSizeWidth = width;
+        this.gridSizeHeight = height;
+        this.pixels = new Pixel[gridSizeHeight][gridSizeWidth];
         this.gridStateHandler = new GridStateHandler();
         initializeEmptyGrid(pixelSize);
     }
@@ -62,19 +75,23 @@ public class Grid {
      * @throws IOException if an error occurs during loading.
      * @throws InterruptedException if the process is interrupted.
      */
-    public Grid(final String[][] newState, final int pixelSize)
-        throws IOException, InterruptedException {
+    public Grid(String[][] newState, int pixelSize) throws IOException, InterruptedException {
+
+        this.gridSizeHeight = newState.length > 0 ? newState[0].length : DEFAULT_GRID_HEIGHT;
+        this.gridSizeWidth = newState[0].length > 0 ? newState.length : DEFAULT_GRID_WIDTH;
+
+    
         try {
             this.gridStateHandler = new GridStateHandler();
             this.currentState = gridStateHandler.loadCanvas();
-            this.gridSize = newState.length;
-            this.pixels = new Pixel[gridSize][gridSize];
-
-            initializeGridFromState(currentState, pixelSize);
-
+            // this.gridSizeWidth = newState.length;
+            // this.gridSizeHeight = newState[0].length;
+            this.pixels = new Pixel[gridSizeHeight][gridSizeWidth];
+            initializeGridFromState(newState, pixelSize);
         } catch (Exception e) {
             System.out.println("Error loading grid");
-            this.gridSize = DEFAULT_GRID_SIZE;
+            // this.gridSizeWidth = DEFAULT_GRID_WIDTH;
+            // this.gridSizeHeight = DEFAULT_GRID_HEIGHT;
             initializeEmptyGrid(pixelSize);
         }
     }
@@ -84,18 +101,16 @@ public class Grid {
      *
      * @param pixelSize the size of each pixel in the grid.
      */
-    private void initializeEmptyGrid(final int pixelSize) {
-        for (int row = 0; row < gridSize; row++) {
-            for (int col = 0; col < gridSize; col++) {
-                pixels[row][col] = new Pixel(pixelSize);
+    private void initializeEmptyGrid(int pixelSize) {
+        for (int row = 0; row < gridSizeHeight; row++) {
+            for (int column = 0; column < gridSizeWidth; column++) {
+                pixels[row][column] = new Pixel(pixelSize);
             }
         }
     }
 
     /**
      * Initializes the grid from a 2D array of pixel states
-     * ("B" for black, "W" for white).
-     * TODO update with colours
      * Each pixel is created and updated based on the
      * state in {@code currentState}.
      *
@@ -104,41 +119,43 @@ public class Grid {
      * @throws IOException if an error occurs while loading the grid state.
      * @throws InterruptedException if the thread is interrupted.
      */
-
     public void initializeGridFromState(
             final String[][] initialState,
             final int pixelSize) throws IOException, InterruptedException {
-        for (int row = 0; row < gridSize; row++) {
-            for (int column = 0; column < gridSize; column++) {
+        for (int row = 0; row < gridSizeHeight; row++) {
+            for (int column = 0; column < gridSizeWidth; column++) {
                 pixels[row][column] = new Pixel(pixelSize);
-                boolean isBlack = initialState[row][column].equals("B");
-                updatePixel(row, column, isBlack);
+                updatePixel(row, column, initialState[row][column]);
             }
         }
     }
 
     /**
-     * Updates the color of the specified pixel in the grid.
+     * Updates the colour of a specific pixel.
      *
-     * @param row the row index of the pixel.
-     * @param col the column index of the pixel.
-     * @param isBlack {@code true} if the pixel should be set to black,
-     *                {@code false} if it should be set to white.
-     * TODO update with colours
+     * @param row row index of pixel to change colour.
+     * @param col column index of pixel to change colour.
+     * @param hexColor string, color value.
      */
     public void updatePixel(
-            final int row,
-            final int col,
-            final boolean isBlack) {
-        pixels[row][col].updateColor(isBlack);
+            final int row, final int col, final String hexColor) {
+        pixels[row][col].updateColor(hexColor);
     }
 
     /**
-     * Return the size of the grid.
-     * @return size of grid as integer.
+     * Return the width of the grid.
+     * @return width of grid as integer.
      */
-    public int getGridSize() {
-        return gridSize;
+    public int getgridSizeWidth() {
+        return gridSizeWidth;
+    }
+
+    /**
+     * Return the height of the grid.
+     * @return height of grid as integer.
+     */
+    public int getgridSizeHeight() {
+        return gridSizeHeight;
     }
 
     /**
@@ -162,18 +179,18 @@ public class Grid {
 
     /**
      * Returns a 2D array representing the grid in a JSON-compatible format.
-     * Each pixel is represented as a string: "B" for black. "W" for white.
+     * Each pixel is represented as a string on the format #RRGGBB
      *
-     * @return a 2D array of strings. "B" or "W"
-     * TODO update with colours
+     * @return a 2D array of strings.
      */
     public String[][] getJsonGrid() {
-        String[][] jsonGrid = new String[gridSize][gridSize];
-        for (int row = 0; row < gridSize; row++) {
-            for (int col = 0; col < gridSize; col++) {
-                jsonGrid[row][col] = pixels[row][col].isBlack() ? "B" : "W";
+        String[][] jsonGrid = new String[gridSizeHeight][gridSizeWidth];
+        for (int row = 0; row < gridSizeHeight; row++) {
+            for (int col = 0; col < gridSizeWidth; col++) {
+                jsonGrid[row][col] = pixels[row][col].getCurrentColor();
             }
         }
         return jsonGrid;
     }
+
 }
