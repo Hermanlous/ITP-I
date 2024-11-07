@@ -96,6 +96,7 @@ const App: React.FC = () => {
               className={`w-10 h-10 border-2 cursor-pointer ${selectedColor === color.color ? 'border-black' : 'border-transparent'}`}
               style={{ backgroundColor: color.color }}
               onClick={() => setSelectedColor(color.color)}
+              data-testid={`${color.color.replace('#', '')}-color-div`}
             >
               {selectedColor === color.color && (
                 <div style={{ color: color.onColor }} className={`text-center text-2xl p-0.5`}>✓</div>

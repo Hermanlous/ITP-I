@@ -43,8 +43,10 @@ const Canvas: React.FC<CanvasProps> = ({ width, height, pixelSize, initialData, 
     if (!canvas) return;
 
     const rect = canvas.getBoundingClientRect();
+    console.log(rect)
     const x = Math.floor((e.clientX - rect.left) / pixelSize);
     const y = Math.floor((e.clientY - rect.top) / pixelSize);
+
 
     // check if the hovered pixel is within bounds
     if (x >= 0 && y >= 0 && y < initialData.length && x < initialData[0].length) {
@@ -92,6 +94,7 @@ const Canvas: React.FC<CanvasProps> = ({ width, height, pixelSize, initialData, 
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
+      data-testid="pixel-canvas"
       className='cursor-crosshair border-2 border-black mx-auto'
     />
   );
