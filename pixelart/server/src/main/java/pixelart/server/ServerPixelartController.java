@@ -44,8 +44,6 @@ public class ServerPixelartController {
      */
     @GetMapping("run")
     public ResponseEntity<String> getPixelart() {
-        return ResponseEntity.ok("Pixelart is running");
-    }
 
     /**
      * Endpoint to get the current canvas data.
