@@ -6,13 +6,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ServerApplication {
 
-	public static void main(String[] args) {
-
-		SpringApplication.run(ServerApplication.class, args);
-		System.out.println("Hello pixelart!");
-		String userDirectory = System.getProperty("user.dir");
-		System.out.println(userDirectory);
-
-	}
-
+    /**
+     * The main entry point for the Spring Boot application.
+     *
+     * @param args Command-line arguments passed to the application
+     */
+    public static void main(final String[] args) {
+        SpringApplication.run(ServerApplication.class, args);
+        System.out.println("Hello pixelart!");
+    }
 }

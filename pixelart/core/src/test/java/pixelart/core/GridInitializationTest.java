@@ -16,7 +16,6 @@ import javafx.scene.canvas.Canvas;
         grid = new Grid(gridSize, pixelSize);
     }
 
-
     @Test
     void testGridSize() {
         assertEquals(gridSize, grid.getAllPixels().length);
