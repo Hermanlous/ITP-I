@@ -16,8 +16,12 @@ public class GridStateHandler {
 
 
     public GridStateHandler (){
-        this.httpClient = HttpClient.newHttpClient();
+        this.httpClient = createHttpClient();
         this.objectMapper = new ObjectMapper();
+    }
+
+    protected HttpClient createHttpClient() {
+        return HttpClient.newHttpClient();
     }
 
     /**

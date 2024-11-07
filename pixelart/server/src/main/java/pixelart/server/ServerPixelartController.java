@@ -12,7 +12,7 @@ import java.io.*;
 @RestController
 @RequestMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ServerPixelartController {
-    private final String filePath = "persistence/jsonCanvas.json";
+    private final String filePath = "server/persistence/jsonCanvas.json";
     private final ObjectMapper mapper = new ObjectMapper();
     private String[][] canvasData;
 
@@ -22,16 +22,16 @@ public class ServerPixelartController {
         return ResponseEntity.ok("Pixelart is running");
 
     }
-    //ChatGPT was used to find relative filepath, with Inputstream
-    @GetMapping(value = "canvas", produces = MediaType.APPLICATION_JSON_VALUE)
+
+    @GetMapping(value = "/canvas", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String[][]> getCanvas() {
-        //From here, to
-        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(filePath)) {
-            if (inputStream == null) {
+        File file = new File(filePath);
+        try {
+            if (!file.exists()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(new String[][] {{"File not found in classpath: " + filePath}});//here
+                        .body(new String[][] {{"File not found: " + filePath}});
             }
-            String[][] canvasGrid = mapper.readValue(inputStream, String[][].class);
+            String[][] canvasGrid = mapper.readValue(file, String[][].class);
             return ResponseEntity.ok(canvasGrid);
         } catch (IOException e) {
             e.printStackTrace();
@@ -45,9 +45,11 @@ public class ServerPixelartController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<String[][]> postCanvas(@RequestBody String[][] currentGrid) {
+        File file = new File(filePath);
         try {
+
             mapper.writerWithDefaultPrettyPrinter()
-                    .writeValue(new File(filePath), currentGrid);
+                    .writeValue(file, currentGrid);
 
             return ResponseEntity.ok(currentGrid);
         } catch (Exception e) {
