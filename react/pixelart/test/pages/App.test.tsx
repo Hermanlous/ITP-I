@@ -2,6 +2,8 @@ import '@testing-library/jest-dom';
 import App from '../../src/App.tsx';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 
+//Chatgpt was used for this entire page for generation of template code and understanding.
+
 vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
   json: vi.fn().mockResolvedValue({ success: true }),
 }));

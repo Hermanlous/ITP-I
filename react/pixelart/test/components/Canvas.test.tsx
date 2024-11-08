@@ -2,6 +2,8 @@ import '@testing-library/jest-dom';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import Canvas from '../../src/components/Canvas';
 
+//Chatgpt was used on this entire page for template code and understanding.
+
 describe('Canvas Component', () => {
   const mockPixelData = [
     ['#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff'],
@@ -46,13 +48,7 @@ describe('Canvas Component', () => {
 
     expect(ctx).toBeTruthy();
     if (ctx) {
-      // Check the color of multiple pixels to make sure the canvas is correctly initialized
-      const pixelsToCheck = [
-        { x: 0, y: 0 },
-        { x: 1, y: 0 },
-        { x: 0, y: 1 },
-        { x: 4, y: 4 },
-      ];
+      const pixelsToCheck = [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 0, y: 1 }, { x: 4, y: 4 },];
 
       pixelsToCheck.forEach(({ x, y }) => {
         const imageData = ctx.getImageData(x * 12, y * 12, 1, 1);
