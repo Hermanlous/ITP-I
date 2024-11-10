@@ -56,7 +56,7 @@ public class Grid {
      * @param height the height of the grid.
      * @param pixelSize the size of each pixel.
      */
-    public Grid(final int height, final int width, final int pixelSize) {
+    public Grid(final int width, final int height, final int pixelSize) {
         this.gridSizeWidth = width;
         this.gridSizeHeight = height;
         this.pixels = new Pixel[gridSizeHeight][gridSizeWidth];

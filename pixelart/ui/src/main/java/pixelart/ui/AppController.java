@@ -3,15 +3,10 @@ package pixelart.ui;
 import java.io.IOException;
 
 import javafx.fxml.FXML;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Button;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.input.MouseEvent;
 import pixelart.core.Grid;
 import pixelart.core.GridStateHandler;
-import pixelart.core.Pixel;
 
 /**
  * AppController is the main controller class for our JavaFX application.
@@ -49,24 +44,10 @@ public class AppController {
     /** Stores the current state of each pixel in grid.*/
     private String[][] currentState;
 
-    /**
-     * The currently selected color for drawing the grid.
-     */
-    private String currentColor = "#000000"; // Default black
+    private ColorManager colorManager;
+    private GridManager gridManager;
 
-    /**
-     * The colour the user can chose from.
-     */
-    private final String[] colors = {
-        "#000000", // Black
-        "#FFFFFF", // White
-        "#ff0000", // Red
-        "#00ff00", // Green
-        "#0000ff", // Blue
-        "#ffff00", // Yellow
-        "#ff00ff", // Magenta
-        "#00ffff", // Cyan
-    };
+
 
     /**
      * Initializes the controller as well as the canvas
@@ -75,23 +56,30 @@ public class AppController {
      * @throws IOException if there´s an error initializing
      * @throws InterruptedException if the loading from server process fails
      * */
+
     @FXML
     public void initialize() throws IOException, InterruptedException {
-
-        initializeColorPalette();
+        this.colorManager = new ColorManager(colorPalette);
+        colorManager.initializeColorPalette();
 
         try {
             this.gridStateHandler = new GridStateHandler();
-            currentState = gridStateHandler.loadCanvas();
-            grid = new Grid(currentState, pixelSize);
-
+            String[][] currentState = gridStateHandler.loadCanvas();
+            grid = new Grid(currentState, GridManager.PIXEL_SIZE);
         } catch (Exception e) {
-            this.grid = new Grid(gridSizeHeight, gridSizeWidth, pixelSize);
+            this.grid = new Grid(GridManager.GRID_SIZE_WIDTH, GridManager.GRID_SIZE_HEIGHT, GridManager.PIXEL_SIZE);
         }
-        initializeGridPane();
-    }
 
-    private void initializeGridPane() {
+        this.gridManager = new GridManager(grid, gridPane, gridStateHandler);
+        gridManager.initializeGridPane();
+
+        // Connect color selection to grid manager
+        colorManager.setOnColorSelected(color -> gridManager.setCurrentColor(color));
+    }
+}
+
+
+    /*private void initializeGridPane() {
         Pixel[][] pixels = grid.getAllPixels();
         for (int r = 0; r < gridSizeHeight; r++) {
             for (int c = 0; c < gridSizeWidth; c++) {
@@ -191,7 +179,7 @@ public class AppController {
      * @param column the column index of the pixel clicked.
      * @param event the mouse event triggered by the click.
      */
-    private void pixelClick(
+    /*private void pixelClick(
         final int row,
         final int column,
         final MouseEvent event) {
@@ -216,4 +204,4 @@ public class AppController {
             e.printStackTrace();
         }
     }
-}
+}*/
