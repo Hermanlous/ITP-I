@@ -1,71 +1,139 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 interface CanvasProps {
-  width: number;
-  height: number;
-  pixelSize: number;
   initialData: string[][];
   selectedColor: string;
   onPixelChange: (x: number, y: number, color: string) => void;
+  maxWidth?: number;
+  maxHeight?: number;
+  showGrid?: boolean;
+  gridGap?: number;
 }
 
+const Canvas: React.FC<CanvasProps> = ({ 
+  initialData, 
+  selectedColor, 
+  onPixelChange,
+  maxWidth = 1000,
+  maxHeight = 800,
+  showGrid = false,
+  gridGap = 1
+}) => {
+  const calculateCanvasDimensions = (pixelData: string[][]) => {
+    if (!pixelData || pixelData.length === 0) {
+      return { width: 0, height: 0, pixelSize: 0, totalWidth: 0, totalHeight: 0 };
+    }
 
+    const numRows = pixelData.length;
+    const numCols = pixelData[0].length;
 
-const Canvas: React.FC<CanvasProps> = ({ width, height, pixelSize, initialData, selectedColor, onPixelChange }) => {
+    const availableWidth = maxWidth - (showGrid ? (numCols - 1) * gridGap : 0);
+    const availableHeight = maxHeight - (showGrid ? (numRows - 1) * gridGap : 0);
+
+    const pixelSizeFromWidth = Math.floor(availableWidth / numCols);
+    const pixelSizeFromHeight = Math.floor(availableHeight / numRows);
+
+    const pixelSize = Math.max(1, Math.min(pixelSizeFromWidth, pixelSizeFromHeight));
+
+    const width = pixelSize * numCols + (showGrid ? (numCols - 1) * gridGap : 0);
+    const height = pixelSize * numRows + (showGrid ? (numRows - 1) * gridGap : 0);
+
+    return { 
+      width,
+      height,
+      pixelSize,
+      totalWidth: width,
+      totalHeight: height
+    };
+  };
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [hoveredPixel, setHoveredPixel] = useState<{ x: number; y: number } | null>(null);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const lastPixelRef = useRef<{ x: number; y: number } | null>(null);
+  const { width, height, pixelSize } = calculateCanvasDimensions(initialData);
 
-  // draw the entire canvas based on pixel data
+  const getPixelPosition = (x: number, y: number) => {
+    const xPos = x * (pixelSize + (showGrid ? gridGap : 0));
+    const yPos = y * (pixelSize + (showGrid ? gridGap : 0));
+    return { x: xPos, y: yPos };
+  };
+
   const drawCanvas = (ctx: CanvasRenderingContext2D, pixelData: string[][]) => {
     for (let y = 0; y < pixelData.length; y++) {
       for (let x = 0; x < pixelData[y].length; x++) {
+        const { x: xPos, y: yPos } = getPixelPosition(x, y);
         ctx.fillStyle = pixelData[y][x];
-        ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+        ctx.fillRect(xPos, yPos, pixelSize, pixelSize);
       }
     }
   };
 
-  // draw a border around the hovered pixel
   const drawHoveredPixelBorder = (ctx: CanvasRenderingContext2D, pixelX: number, pixelY: number) => {
-    ctx.strokeStyle = '#333333';
+    const { x: xPos, y: yPos } = getPixelPosition(pixelX, pixelY);
+    ctx.strokeStyle = '#202020';
     ctx.lineWidth = 1;
     ctx.strokeRect(
-      pixelX * pixelSize + 1, // X-coordinate
-      pixelY * pixelSize + 1, // Y-coordinate
-      pixelSize - 2,          // Width of the inner rectangle
-      pixelSize - 2           // Height of the inner rectangle
+      xPos + 1,
+      yPos + 1,
+      pixelSize - 2,
+      pixelSize - 2
     );
   };
 
-  // track mouse position
-  const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
+  const getPixelFromMouseEvent = (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas) return null;
 
     const rect = canvas.getBoundingClientRect();
-    console.log(rect)
-    const x = Math.floor((e.clientX - rect.left) / pixelSize);
-    const y = Math.floor((e.clientY - rect.top) / pixelSize);
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
 
+    const x = Math.floor(mouseX / (pixelSize + (showGrid ? gridGap : 0)));
+    const y = Math.floor(mouseY / (pixelSize + (showGrid ? gridGap : 0)));
 
-    // check if the hovered pixel is within bounds
     if (x >= 0 && y >= 0 && y < initialData.length && x < initialData[0].length) {
-      setHoveredPixel({ x, y });
-    } else {
-      setHoveredPixel(null);
+      return { x, y };
+    }
+    return null;
+  };
+
+  const paintPixel = (pixel: { x: number; y: number }) => {
+    if (!lastPixelRef.current || 
+        lastPixelRef.current.x !== pixel.x || 
+        lastPixelRef.current.y !== pixel.y) {
+      onPixelChange(pixel.x, pixel.y, selectedColor);
+      lastPixelRef.current = pixel;
     }
   };
 
-  // handle pixel click to change color
-  const handleClick = () => {
-    if (hoveredPixel) {
-      onPixelChange(hoveredPixel.x, hoveredPixel.y, selectedColor);
+  const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
+    const pixel = getPixelFromMouseEvent(e);
+    setHoveredPixel(pixel);
+
+    if (isDrawing && pixel) {
+      paintPixel(pixel);
     }
   };
 
-  // reset hover when mouse leaves the canvas
+  const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
+    if (e.button !== 0) return; // Only react to left-click
+    setIsDrawing(true);
+    const pixel = getPixelFromMouseEvent(e);
+    if (pixel) {
+      paintPixel(pixel);
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsDrawing(false);
+    lastPixelRef.current = null;
+  };
+
   const handleMouseLeave = () => {
     setHoveredPixel(null);
+    setIsDrawing(false);
+    lastPixelRef.current = null;
   };
 
   useEffect(() => {
@@ -75,16 +143,13 @@ const Canvas: React.FC<CanvasProps> = ({ width, height, pixelSize, initialData, 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // initial drawing of the canvas
     drawCanvas(ctx, initialData);
 
     // if a pixel is hovered, draw a border around it
     if (hoveredPixel) {
       drawHoveredPixelBorder(ctx, hoveredPixel.x, hoveredPixel.y);
     }
-  }, [hoveredPixel, initialData]);
-
-
+  }, [hoveredPixel, initialData, showGrid, gridGap]);
 
   return (
     <canvas
@@ -92,10 +157,10 @@ const Canvas: React.FC<CanvasProps> = ({ width, height, pixelSize, initialData, 
       width={width}
       height={height}
       onMouseMove={handleMouseMove}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseLeave}
-      onClick={handleClick}
-      data-testid="pixel-canvas"
-      className='cursor-crosshair border-2 border-black mx-auto'
+      className='cursor-crosshair'
     />
   );
 };
