@@ -1,14 +1,12 @@
 package pixelart.ui;
 
+import java.io.IOException;
+
 import javafx.fxml.FXML;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import pixelart.core.Grid;
 import pixelart.core.GridStateHandler;
-import pixelart.core.Pixel;
-import java.io.IOException;
 
 /**
  * AppController is the main controller class for our JavaFX application.
@@ -22,21 +20,34 @@ public class AppController {
     @FXML
     private GridPane gridPane;
 
+    /**
+     * The color palette displayed as a set of color buttons.
+     */
+    @FXML
+    private HBox colorPalette;
+
     /** The grid model containing our pixeldata.*/
     private Grid grid;
 
     /** Managed saving and loading gridstate from server.*/
     private GridStateHandler gridStateHandler;
 
-    /** Defines the dimensions of the grid
-     *  Only if the retrieving from server fails.*/
-    private final int gridSize = 100;
+    /** The size of the width of the grid. */
+    private final int gridSizeWidth = 60;
+
+    /** The size of the height of the grid. */
+    private final int gridSizeHeight = 40;
 
     /** Size of each pixel square in the grid.*/
     private final int pixelSize = 10;
 
     /** Stores the current state of each pixel in grid.*/
     private String[][] currentState;
+
+    private ColorManager colorManager;
+    private GridManager gridManager;
+
+
 
     /**
      * Initializes the controller as well as the canvas
@@ -45,25 +56,35 @@ public class AppController {
      * @throws IOException if there´s an error initializing
      * @throws InterruptedException if the loading from server process fails
      * */
+
     @FXML
     public void initialize() throws IOException, InterruptedException {
+        this.colorManager = new ColorManager(colorPalette);
+        colorManager.initializeColorPalette();
+
         try {
             this.gridStateHandler = new GridStateHandler();
-            currentState = gridStateHandler.loadCanvas();
-            grid = new Grid(currentState, pixelSize);
-
+            String[][] currentState = gridStateHandler.loadCanvas();
+            grid = new Grid(currentState, GridManager.PIXEL_SIZE);
         } catch (Exception e) {
-            this.grid = new Grid(gridSize, pixelSize);
+            this.grid = new Grid(GridManager.GRID_SIZE_WIDTH, GridManager.GRID_SIZE_HEIGHT, GridManager.PIXEL_SIZE);
         }
-        initializeGridPane();
-    }
 
-    private void initializeGridPane() {
+        this.gridManager = new GridManager(grid, gridPane, gridStateHandler);
+        gridManager.initializeGridPane();
+
+        // Connect color selection to grid manager
+        colorManager.setOnColorSelected(color -> gridManager.setCurrentColor(color));
+    }
+}
+
+
+    /*private void initializeGridPane() {
         Pixel[][] pixels = grid.getAllPixels();
-        for (int r = 0; r < gridSize; r++) {
-            for (int c = 0; c < gridSize; c++) {
+        for (int r = 0; r < gridSizeHeight; r++) {
+            for (int c = 0; c < gridSizeWidth; c++) {
                 Canvas canvas = pixels[r][c].getCanvas();
-                gridPane.add(canvas, r, c);
+                gridPane.add(canvas, c, r);
                 int row = r;
                 int column = c;
                 canvas.addEventHandler(MouseEvent.MOUSE_CLICKED,
@@ -72,18 +93,110 @@ public class AppController {
         }
     }
 
-    private void pixelClick(
-            final int row,
-            final int column,
-            final MouseEvent event) {
-        boolean isBlack = event.getButton() != MouseButton.SECONDARY;
-        grid.getPixel(row, column).updateColor(isBlack);
-        saveCanvasToServer();
+    private void initializeColorPalette() {
+        for (String hexColor : colors) {
+            Button colorButton = createColorButton(hexColor);
+            colorPalette.getChildren().add(colorButton);
+        }
+    }
 
+    private Button createColorButton(final String colorHex) {
+        Button button = new Button();
+
+        // Initial style for the button
+        if (colorHex.equals(currentColor)) {
+            button.setStyle(
+                "-fx-background-color: "
+                + colorHex
+                + ";"
+                + "-fx-min-width: 40px;"
+                + "-fx-min-height: 40px;"
+                + "-fx-pref-width: 40px;"
+                + "-fx-pref-height: 40px;"
+            );
+        } else {
+            button.setStyle(
+                "-fx-background-color: "
+                + colorHex
+                + ";"
+                + "-fx-min-width: 30px;"
+                + "-fx-min-height: 30px;"
+                + "-fx-pref-width: 30px;"
+                + "-fx-pref-height: 30px;"
+                + "-fx-border-radius: 15px;" // Maintain round appearance
+            );
+        }
+
+        // Store the color hex for reference
+        button.setUserData(colorHex);
+
+        // Set up action for button selection
+        button.setOnAction(e -> {
+            currentColor = colorHex;
+
+            // Update visual selection state for each button
+            colorPalette.getChildren().forEach(node -> {
+                if (node instanceof Button) {
+                    Button colorButton = (Button) node;
+                    boolean isSelected = (colorButton == button);
+
+                    // Define styles based on selection state
+                    if (isSelected) {
+                        // Increase size for the selected button
+                        colorButton.setStyle(
+                            "-fx-background-color: "
+                            + colorHex
+                            + ";"
+                            + "-fx-min-width: 40px;"
+                            + "-fx-min-height: 40px;"
+                            + "-fx-pref-width: 40px;"
+                            + "-fx-pref-height: 40px;"
+                        );
+                    } else {
+                        // Style for the unselected button
+                        colorButton.setStyle(
+                            "-fx-background-color: "
+                            + colorButton.getUserData()
+                            + ";"
+                            + // Use the stored color
+                            "-fx-min-width: 30px;"
+                            + "-fx-min-height: 30px;"
+                            + "-fx-pref-width: 30px;"
+                            + "-fx-pref-height: 30px;"
+                        );
+                    }
+                }
+            });
+        });
+
+        return button;
+    }
+
+    /**
+     * Handles mouse click events on a pixel to update the colour.
+     *
+     * @param row the row index of the pixel clicked.
+     * @param column the column index of the pixel clicked.
+     * @param event the mouse event triggered by the click.
+     */
+    /*private void pixelClick(
+        final int row,
+        final int column,
+        final MouseEvent event) {
+
+        String colorToApply;
+        if (event.getButton() == MouseButton.PRIMARY) {
+            colorToApply = currentColor;
+        } else {
+            colorToApply = "#FFFFFF"; // Right click for eraser (white)
+        }
+        grid.getPixel(row, column).updateColor(colorToApply);
+        saveCanvasToServer();
     }
 
     private void saveCanvasToServer() {
         try {
+            // Use the existing gridStateHandler instead of creating a new one
             GridStateHandler service = new GridStateHandler();
             String[][] currentGrid = grid.getJsonGrid();
             service.postCanvas(currentGrid);
@@ -91,4 +204,4 @@ public class AppController {
             e.printStackTrace();
         }
     }
-}
+}*/

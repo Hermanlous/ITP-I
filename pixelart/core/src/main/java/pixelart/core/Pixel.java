@@ -18,9 +18,10 @@ public class Pixel {
     private final int pixelSize;
 
     /**
-     * A boolean value indicating if the pixel is white (false) og black (true).
+     * The current active color.
+     * The color to use when user clicks on a pixel.
      */
-    private boolean isBlack;
+    private String currentColor;
 
     /**
      * Constructs a Pixel with the given size.
@@ -30,7 +31,7 @@ public class Pixel {
     public Pixel(final int size) {
         this.pixelSize = size;
         this.canvas = new Canvas(pixelSize, pixelSize);
-        this.isBlack = false;
+        this.currentColor = "#FFFFFF"; // Default white color
         initializePixel();
     }
 
@@ -40,20 +41,19 @@ public class Pixel {
      */
     private void initializePixel() {
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.setFill(Color.WHITE);
+        gc.setFill(Color.web(currentColor)); // Allows hex color strings
         gc.fillRect(0, 0, pixelSize, pixelSize);
     }
 
     /**
      * This method updates the colour of the pixel.
      *
-     * @param isItBlack if true, it sets the
-     *                  colour of that pixel to black
+     * @param hexColor string of colror value on hex format.
      */
-    public void updateColor(final boolean isItBlack) {
-        this.isBlack = isItBlack;
+    public void updateColor(final String hexColor) {
+        this.currentColor = hexColor;
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.setFill(isBlack ? Color.BLACK : Color.WHITE);
+        gc.setFill(Color.web(hexColor));
         gc.fillRect(0, 0, pixelSize, pixelSize);
     }
 
@@ -76,20 +76,11 @@ public class Pixel {
     }
 
     /**
-     * Checks if the pixel is black.
-     *
-     * @return {@code true} if the pixel is black; {@code false} otherwise.
-     */
-    public boolean isBlack() {
-        return isBlack;
-    }
-
-    /**
      * Gets the color of the pixel as a string.
      *
-     * @return "B" if the pixel is black; "W" if the pixel is white.
+     * @return current active color
      */
-    public String getColorAsString() {
-        return isBlack ? "B" : "W";
+    public String getCurrentColor() {
+        return currentColor;
     }
 }
