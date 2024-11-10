@@ -6,43 +6,44 @@ import static org.junit.jupiter.api.Assertions.*;
 import javafx.scene.canvas.Canvas;
 
 
-/*class GridInitializationTest {
-   /private Grid grid;
-    private static int gridSize = 5;
+class GridInitializationTest {
+   private Grid grid;
+    private static int DEFAULT_GRID_WIDTH = 5;
+    private static int DEFAULT_GRID_HEIGHT = 5;
     private static int pixelSize = 10;
 
     @BeforeEach
     void setUp() {
-        grid = new Grid(gridSize, pixelSize);
+        grid = new Grid(DEFAULT_GRID_WIDTH, DEFAULT_GRID_HEIGHT, pixelSize);
     }
 
     @Test
     void testGridSize() {
-        assertEquals(gridSize, grid.getAllPixels().length);
-        assertEquals(gridSize, grid.getAllPixels()[0].length);
+        assertEquals(DEFAULT_GRID_HEIGHT, grid.getgridSizeHeight());
+        assertEquals(DEFAULT_GRID_WIDTH, grid.getgridSizeWidth());
     }
 
     @Test
     void testJSONGridSize() {
-        assertEquals(gridSize, grid.getJsonGrid().length);
-        for (int i = 0; i < gridSize; i++) {
-            assertEquals(gridSize, grid.getJsonGrid().length);
+        assertEquals(DEFAULT_GRID_WIDTH, grid.getJsonGrid().length);
+        for (int i = 0; i < DEFAULT_GRID_WIDTH; i++) {
+            assertEquals(DEFAULT_GRID_HEIGHT, grid.getJsonGrid().length);
         }
     }
 
     @Test
     void testJSONGridContent() {
-        for (int i = 0; i < gridSize; i++) {
-            for (int j = 0; j < gridSize; j++) {
-                assertEquals("W", grid.getJsonGrid()[i][j].toString());  // Compare individual elements, not the whole row
+        for (int i = 0; i < DEFAULT_GRID_WIDTH; i++) {
+            for (int j = 0; j < DEFAULT_GRID_HEIGHT; j++) {
+                assertEquals("#FFFFFF", grid.getJsonGrid()[i][j].toString());  // Compare individual elements, not the whole row
             }
         }
     }
 
     @Test
     void testCanvasProperties() {
-        for (int i = 0; i < gridSize; i++) {  // Loop through the full grid size
-            for (int j = 0; j < gridSize; j++) {
+        for (int i = 0; i < DEFAULT_GRID_WIDTH; i++) {  // Loop through the full grid size
+            for (int j = 0; j < DEFAULT_GRID_HEIGHT; j++) {
                 Canvas canvas = grid.getPixel(i,j).getCanvas();
                 assertNotNull(canvas);
                 assertEquals(pixelSize, canvas.getWidth());
@@ -50,7 +51,6 @@ import javafx.scene.canvas.Canvas;
             }
         }
     }
-}*/
-
+}
 
 
