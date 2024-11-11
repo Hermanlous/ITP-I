@@ -79,7 +79,7 @@ public class Grid {
         throws IOException, InterruptedException {
 
         this.gridSizeHeight =
-        newState.length > 0 ? newState[0].length : DEFAULT_GRID_HEIGHT;
+        newState.length > 0 ? newState.length : DEFAULT_GRID_HEIGHT;
         this.gridSizeWidth =
         newState[0].length > 0 ? newState.length : DEFAULT_GRID_WIDTH;
 

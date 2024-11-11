@@ -27,8 +27,8 @@ class ServerPixelartControllerTest {
 	private final String testFilePath = System.getProperty("user.dir") +
 			"/src/main/java/resources/persistence/jsonCanvas.json";
 	private final int pixelSize = 10;
-	private final int gridWidth = 100;
-	private final int gridHeight = 100;
+	private final int gridWidth = 34;
+	private final int gridHeight = 60;
 	private final Grid grid = new Grid(gridWidth, gridHeight, pixelSize);
 	private final String[][] testGrid = grid.getJsonGrid();
 
