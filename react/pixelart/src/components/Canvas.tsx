@@ -1,14 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-
-interface CanvasProps {
-  initialData: string[][];
-  selectedColor: string;
-  onPixelChange: (x: number, y: number, color: string) => void;
-  maxWidth?: number;
-  maxHeight?: number;
-  showGrid?: boolean;
-  gridGap?: number;
-}
+import { useEffect, useRef, useState } from 'react';
+import { CanvasProps } from '../types/canvas.types';
 
 const Canvas: React.FC<CanvasProps> = ({ 
   initialData, 
@@ -21,31 +12,26 @@ const Canvas: React.FC<CanvasProps> = ({
 }) => {
   const calculateCanvasDimensions = (pixelData: string[][]) => {
     if (!pixelData || pixelData.length === 0) {
-      return { width: 0, height: 0, pixelSize: 0, totalWidth: 0, totalHeight: 0 };
+      return { width: 0, height: 0, pixelSize: 0 };
     }
-
+  
     const numRows = pixelData.length;
     const numCols = pixelData[0].length;
-
+  
     const availableWidth = maxWidth - (showGrid ? (numCols - 1) * gridGap : 0);
     const availableHeight = maxHeight - (showGrid ? (numRows - 1) * gridGap : 0);
-
+  
     const pixelSizeFromWidth = Math.floor(availableWidth / numCols);
     const pixelSizeFromHeight = Math.floor(availableHeight / numRows);
-
+  
     const pixelSize = Math.max(1, Math.min(pixelSizeFromWidth, pixelSizeFromHeight));
-
+  
     const width = pixelSize * numCols + (showGrid ? (numCols - 1) * gridGap : 0);
     const height = pixelSize * numRows + (showGrid ? (numRows - 1) * gridGap : 0);
-
-    return { 
-      width,
-      height,
-      pixelSize,
-      totalWidth: width,
-      totalHeight: height
-    };
+  
+    return { width, height, pixelSize };
   };
+  
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [hoveredPixel, setHoveredPixel] = useState<{ x: number; y: number } | null>(null);
@@ -117,7 +103,7 @@ const Canvas: React.FC<CanvasProps> = ({
   };
 
   const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
-    if (e.button !== 0) return; // Only react to left-click
+    if (e.button !== 0) return; // Only draw if left click
     setIsDrawing(true);
     const pixel = getPixelFromMouseEvent(e);
     if (pixel) {
@@ -145,7 +131,7 @@ const Canvas: React.FC<CanvasProps> = ({
 
     drawCanvas(ctx, initialData);
 
-    // if a pixel is hovered, draw a border around it
+    // if a pixel is hovered, draw a border around it to highlight the pixel
     if (hoveredPixel) {
       drawHoveredPixelBorder(ctx, hoveredPixel.x, hoveredPixel.y);
     }
