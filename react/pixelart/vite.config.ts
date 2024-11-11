@@ -12,6 +12,7 @@ export default defineConfig({
       include: [
         'src/components/Canvas.tsx',
         'src/components/ColorPanel.tsx',
+        'src/components/ConfirmationDialog.tsx',
         'src/hook/useCanvas.ts',
         'src/App.tsx',
       ],
