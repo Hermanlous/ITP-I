@@ -9,14 +9,22 @@ import pixelart.core.GridStateHandler;
 import pixelart.core.Pixel;
 
 public class GridManager {
-    public static final int GRID_SIZE_WIDTH = 60;
-    public static final int GRID_SIZE_HEIGHT = 40;
     public static final int PIXEL_SIZE = 10;
+
+    /** 
+     * Default size of the width of the grid if loading fails.
+     */
+    public static final int DEFAULT_GRID_WIDTH = 60;
+
+    /**
+     * Default size of the height of the grid if loading fails. 
+     */
+    public static final int DEFAULT_GRID_HEIGHT = 40;
 
     private final Grid grid;
     private final GridPane gridPane;
     private final GridStateHandler gridStateHandler;
-    private String currentColor = "#000000";
+    private String currentColor = "#000000"; // set black as default color
 
     public GridManager(Grid grid, GridPane gridPane, GridStateHandler gridStateHandler) {
         this.grid = grid;
@@ -25,9 +33,12 @@ public class GridManager {
     }
 
     public void initializeGridPane() {
+        // Clear existing grid pane
+        gridPane.getChildren().clear();
+
         Pixel[][] pixels = grid.getAllPixels();
-        for (int r = 0; r < GRID_SIZE_HEIGHT; r++) {
-            for (int c = 0; c < GRID_SIZE_WIDTH; c++) {
+        for (int r = 0; r < grid.getgridSizeHeight(); r++) {
+            for (int c = 0; c < grid.getgridSizeWidth(); c++) {
                 Canvas canvas = pixels[r][c].getCanvas();
                 gridPane.add(canvas, c, r);
                 int row = r;
