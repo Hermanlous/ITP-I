@@ -16,9 +16,7 @@ import pixelart.core.GridStateHandler;
  */
 public class AppController {
 
-    /** 
-     * The main grid containing the canvas element.
-     */
+    /** The main grid containing the canvas element.*/
     @FXML
     private GridPane gridPane;
 
@@ -28,52 +26,57 @@ public class AppController {
     @FXML
     private HBox colorPalette;
 
-    /** 
-     * The grid model containing our pixel data.
-     */
+    /** The grid model containing our pixeldata.*/
     private Grid grid;
 
-    /** 
-     * Manages saving and loading the grid state from the server.
-     */
+    /** Managed saving and loading gridstate from server.*/
     private GridStateHandler gridStateHandler;
 
-    /** 
-     * Manages the grid and interactions with the canvas. 
-     */
-    private GridManager gridManager;
+    /** The size of the width of the grid. */
+    private final int gridSizeWidth = 60;
 
-    /** 
-     * Manages the color palette and color selection. 
-     */
-    private ColorManager colorManager;
+    /** The size of the height of the grid. */
+    private final int gridSizeHeight = 40;
+
+    /** Size of each pixel square in the grid.*/
+    private final int pixelSize = 10;
+
+    /** Stores the current state of each pixel in grid.*/
+    private String[][] currentState;
+
+    private ColorController colorController;
+    private GridController gridController;
+
+
 
     /**
-     * Initializes the controller, sets up the grid and color management.
+     * Initializes the controller as well as the canvas
+     * Tries to retrieve canvas from server. Else a new one.
      *
-     * @throws IOException if there's an error initializing
+     * @throws IOException if there´s an error initializing
      * @throws InterruptedException if the loading from server process fails
-     */
+     * */
+
     @FXML
     public void initialize() throws IOException, InterruptedException {
-        this.gridStateHandler = new GridStateHandler();
+        this.colorController = new ColorController(colorPalette);
+        colorController.initializeColorPalette();
 
-        // Initialize the grid
         try {
-            this.grid = new Grid(GridManager.PIXEL_SIZE);
+            this.gridStateHandler = new GridStateHandler();
+            String[][] currentState = gridStateHandler.loadCanvas();
+            grid = new Grid(currentState, GridController.PIXEL_SIZE);
         } catch (Exception e) {
-            this.grid = new Grid(GridManager.DEFAULT_GRID_HEIGHT, GridManager.DEFAULT_GRID_WIDTH, GridManager.PIXEL_SIZE);
+            this.grid = new Grid(GridController.GRID_SIZE_WIDTH, GridController.GRID_SIZE_HEIGHT, GridController.PIXEL_SIZE);
         }
 
-        // Initialize the grid manager
-        this.gridManager = new GridManager(grid, gridPane, gridStateHandler);
-        gridManager.initializeGridPane();
+        this.gridController = new GridController(grid, gridPane, gridStateHandler);
+        gridController.initializeGridPane();
 
-        // Initialize the color manager
-        this.colorManager = new ColorManager(colorPalette);
-        colorManager.initializeColorPalette();
+        colorController.setOnColorSelected(color -> gridController.setCurrentColor(color));
+    }
 
-        // Connect the color selection to the grid manager
-        colorManager.setOnColorSelected(gridManager::setCurrentColor);
+    public GridController getGridController() {
+        return gridController;
     }
 }

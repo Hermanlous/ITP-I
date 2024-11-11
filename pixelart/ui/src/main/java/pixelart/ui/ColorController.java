@@ -5,7 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import java.util.function.Consumer;
 
-public class ColorManager {
+public class ColorController {
     private final HBox colorPalette;
     private String currentColor = "#000000"; // Default black
     private Consumer<String> onColorSelected;
@@ -21,7 +21,7 @@ public class ColorManager {
             "#00ffff", // Cyan
     };
 
-    public ColorManager(HBox colorPalette) {
+    public ColorController(HBox colorPalette) {
         this.colorPalette = colorPalette;
     }
 
@@ -32,10 +32,9 @@ public class ColorManager {
         }
     }
 
-    private Button createColorButton(final String colorHex) {
+    Button createColorButton(final String colorHex) {
         Button button = new Button();
 
-        // Initial style for the button
         if (colorHex.equals(currentColor)) {
             button.setStyle(
                     "-fx-background-color: "
@@ -66,7 +65,6 @@ public class ColorManager {
                 onColorSelected.accept(currentColor);
             }
 
-            // Update visual selection state for each button
             colorPalette.getChildren().forEach(node -> {
                 if (node instanceof Button) {
                     Button colorButton = (Button) node;
