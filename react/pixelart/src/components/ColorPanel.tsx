@@ -12,8 +12,9 @@ const ColorPanel: React.FC<ColorPanelProps> = ({ colors, selectedColor, onColorS
   return (
     <div className="flex flex-col gap-2 pr-4">
       {colors.map((color) => (
-        <div
+        <button
           key={color.color}
+          data-testid={"color-panel-" + color.color}
           className="w-10 h-10 border-2 cursor-pointer"
           style={{
             backgroundColor: color.color,
@@ -22,7 +23,7 @@ const ColorPanel: React.FC<ColorPanelProps> = ({ colors, selectedColor, onColorS
           onClick={() => onColorSelect(color)}
         >
           {selectedColor.color === color.color && <CheckIcon color={color.onColor} />}
-        </div>
+        </button>
       ))}
     </div>
   );
