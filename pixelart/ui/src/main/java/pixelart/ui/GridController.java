@@ -49,6 +49,10 @@ public class GridController {
         saveCanvasToServer();
     }
 
+    public GridStateHandler getGridStateHandler() {
+        return gridStateHandler;
+    }
+
     private void saveCanvasToServer() {
         try {
             String[][] currentGrid = grid.getJsonGrid();

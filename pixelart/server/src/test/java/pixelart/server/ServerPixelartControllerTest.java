@@ -7,11 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -34,10 +31,8 @@ class ServerPixelartControllerTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
-		// Ensure the directory exists
 		new File(testFilePath).getParentFile().mkdirs();
 
-		// Create a test canvas file before each test
 		objectMapper.writeValue(new File(testFilePath), testGrid);
 	}
 
@@ -58,7 +53,6 @@ class ServerPixelartControllerTest {
 
 	@Test
 	void getCanvas_WhenFileDoesNotExist_ShouldReturnNotFound() throws Exception {
-		// Delete the test file
 		new File(testFilePath).delete();
 
 		mockMvc.perform(get("/canvas"))
@@ -81,7 +75,6 @@ class ServerPixelartControllerTest {
 				.andExpect(status().isOk())
 				.andExpect(content().json(objectMapper.writeValueAsString(newGrid)));
 
-		// Verify the file was actually updated
 		String[][] savedGrid = objectMapper.readValue(new File(testFilePath), String[][].class);
 		assertArrayEquals(newGrid, savedGrid);
 	}

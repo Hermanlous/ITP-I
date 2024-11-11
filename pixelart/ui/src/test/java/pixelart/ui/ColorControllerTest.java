@@ -13,13 +13,17 @@ class ColorControllerTest {
     private HBox colorPalette;
     private String[] colors;
 
+
+
     @BeforeEach
     void setUp() {
+        /*Claude: How can I ensure correct set up before each test
+         * from here:*/
         try {
             Platform.startup(() -> {
             });
         } catch (IllegalStateException e) {
-        }
+        }  /*To here*/
         colorPalette = new HBox();
         colorController = new ColorController(colorPalette);
         colors = new String[]{"#000000",

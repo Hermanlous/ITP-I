@@ -62,7 +62,7 @@ public class ServerPixelartController {
         try {
             if (!file.exists()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(new String[][] {{"File not found: " + filePath}});
+                        .body(new String[][]    {{"File not found: " + filePath}});
             }
             String[][] canvasGrid = mapper.readValue(file, String[][].class);
             return ResponseEntity.ok(canvasGrid);
