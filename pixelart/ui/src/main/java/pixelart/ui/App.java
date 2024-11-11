@@ -17,10 +17,10 @@ import java.io.IOException;
 public class App extends Application {
 
     /** The width of the application scene in pixels. */
-    private static final int SCENE_WIDTH = 800;
+    static final int SCENE_WIDTH = 800;
 
     /** The height of the application scene in pixels. */
-    private static final int SCENE_HEIGHT = 500;
+    static final int SCENE_HEIGHT = 500;
 
     /**
      * Initializes and displays the main application window for PixelArt.

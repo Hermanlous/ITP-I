@@ -7,6 +7,7 @@ module pixelart.ui {
     requires spring.web;
     requires org.json;
     requires javafx.controls;
+    requires javafx.graphics;
 
     exports pixelart.ui; // Exports the pixelart.ui package to allow other modules access.
     opens pixelart.ui to javafx.fxml; //Opens
