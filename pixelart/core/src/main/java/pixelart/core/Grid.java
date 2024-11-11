@@ -108,8 +108,8 @@ public class Grid {
         this.currentState = new String[gridSizeHeight][gridSizeWidth];
 
         for (int row = 0; row < gridSizeHeight; row++) {
-            for (int column = 0; column < gridSizeWidth; column++) {
-                pixels[row][column] = new Pixel(pixelSize);
+            for (int col = 0; col < gridSizeWidth; col++) {
+                pixels[row][col] = new Pixel(pixelSize);
             }
         }
     }
