@@ -22,12 +22,12 @@ public class Grid {
     /**
      * The width of the grid in pixels.
      */
-    private int gridSizeWidth;
+    private final int gridSizeWidth;
 
     /**
      * The height of the grid in pixels.
      */
-    private int gridSizeHeight;
+    private final int gridSizeHeight;
 
     /**
      * A 2D array representing the initial state of each pixel.
@@ -35,6 +35,7 @@ public class Grid {
      * the color of a pixel in the grid ("B" for black, "W" for white).
      */
     private String[][] currentState;
+
 
     /**
      * A 2D array that holds all the pixels.
@@ -55,9 +56,9 @@ public class Grid {
      * @param height the height of the grid.
      * @param pixelSize the size of each pixel.
      */
-    public Grid(final int height, final int width, final int pixelSize) {
-        this.gridSizeHeight = height;
+    public Grid(final int width, final int height, final int pixelSize) {
         this.gridSizeWidth = width;
+        this.gridSizeHeight = height;
         this.pixels = new Pixel[gridSizeHeight][gridSizeWidth];
         this.gridStateHandler = new GridStateHandler();
         initializeEmptyGrid(pixelSize);
@@ -68,48 +69,31 @@ public class Grid {
      * Initializes the grid based on the 2D array state and pixel size.
      * If it can't find the gris it defaults to an empty grid.
      *
+     * @param newState 2D array representing the initial state of each pixel
+     * ("B" for black, "W" for white).
      * @param pixelSize the size of each pixel in the grid.
      * @throws IOException if an error occurs during loading.
      * @throws InterruptedException if the process is interrupted.
      */
-    public Grid(final int pixelSize) throws IOException, InterruptedException {
-        // Initialize dimensions first, before any try-catch blocks
-        int initialHeight;
-        int initialWidth;
-        
+    public Grid(final String[][] newState, final int pixelSize)
+        throws IOException, InterruptedException {
+
+        this.gridSizeHeight =
+        newState.length > 0 ? newState.length : DEFAULT_GRID_HEIGHT;
+        this.gridSizeWidth =
+        newState[0].length > 0 ? newState.length : DEFAULT_GRID_WIDTH;
+
         try {
             this.gridStateHandler = new GridStateHandler();
             this.currentState = gridStateHandler.loadCanvas();
-            
-            // Set dimensions based on loaded state
-            if (currentState != null && currentState.length > 0) {
-                initialHeight = currentState.length;
-                initialWidth = currentState[0].length;
-            } else {
-                initialHeight = DEFAULT_GRID_HEIGHT;
-                initialWidth = DEFAULT_GRID_WIDTH;
-            }
+            // this.gridSizeWidth = newState.length;
+            // this.gridSizeHeight = newState[0].length;
+            this.pixels = new Pixel[gridSizeHeight][gridSizeWidth];
+            initializeGridFromState(newState, pixelSize);
         } catch (Exception e) {
-            System.out.println("Error loading grid: " + e.getMessage());
-            initialHeight = DEFAULT_GRID_HEIGHT;
-            initialWidth = DEFAULT_GRID_WIDTH;
-        }
-        
-        // Initialize final fields
-        this.gridSizeHeight = initialHeight;
-        this.gridSizeWidth = initialWidth;
-        
-        // Initialize pixels array
-        this.pixels = new Pixel[gridSizeHeight][gridSizeWidth];
-        
-        // Initialize the grid
-        try {
-            if (currentState != null && currentState.length > 0) {
-                initializeGridFromState(currentState, pixelSize);
-            } else {
-                initializeEmptyGrid(pixelSize);
-            }
-        } catch (Exception e) {
+            System.out.println("Error loading grid");
+            // this.gridSizeWidth = DEFAULT_GRID_WIDTH;
+            // this.gridSizeHeight = DEFAULT_GRID_HEIGHT;
             initializeEmptyGrid(pixelSize);
         }
     }
@@ -120,6 +104,9 @@ public class Grid {
      * @param pixelSize the size of each pixel in the grid.
      */
     private void initializeEmptyGrid(final int pixelSize) {
+        this.pixels = new Pixel[gridSizeHeight][gridSizeWidth];
+        this.currentState = new String[gridSizeHeight][gridSizeWidth];
+
         for (int row = 0; row < gridSizeHeight; row++) {
             for (int col = 0; col < gridSizeWidth; col++) {
                 pixels[row][col] = new Pixel(pixelSize);
@@ -132,23 +119,18 @@ public class Grid {
      * Each pixel is created and updated based on the
      * state in {@code currentState}.
      *
-     * @param state a 2D array of strings representing pixel colors.
+     * @param initialState a 2D array of strings representing pixel colors.
      * @param pixelSize the size of each pixel.
      * @throws IOException if an error occurs while loading the grid state.
      * @throws InterruptedException if the thread is interrupted.
      */
     public void initializeGridFromState(
-            final String[][] state,
+            final String[][] initialState,
             final int pixelSize) throws IOException, InterruptedException {
-        // Verify dimensions match
-        if (state.length != gridSizeHeight || state[0].length != gridSizeWidth) {
-            throw new IllegalArgumentException("State dimensions do not match grid dimensions");
-        }
-        
         for (int row = 0; row < gridSizeHeight; row++) {
-            for (int col = 0; col < gridSizeWidth; col++) {
-                pixels[row][col] = new Pixel(pixelSize);
-                updatePixel(row, col, state[row][col]);
+            for (int column = 0; column < gridSizeWidth; column++) {
+                pixels[row][column] = new Pixel(pixelSize);
+                updatePixel(row, column, initialState[row][column]);
             }
         }
     }
@@ -197,7 +179,7 @@ public class Grid {
      * @return a 2D array of {@link Pixel} objects. All pixels in the grid.
      */
     public Pixel[][] getAllPixels() { //This sends all of them
-        return pixels;
+        return pixels.clone();
     }
 
     /**
@@ -214,6 +196,10 @@ public class Grid {
             }
         }
         return jsonGrid;
+    }
+
+    protected void setGridStateHandler(GridStateHandler gridStateHandler) {
+        this.gridStateHandler = gridStateHandler;
     }
 
 }
