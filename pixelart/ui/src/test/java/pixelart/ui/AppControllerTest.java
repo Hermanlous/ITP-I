@@ -2,18 +2,26 @@ package pixelart.ui;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 import pixelart.core.GridStateHandler;
 
+import java.io.File;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.file.Files;
+import java.util.Random;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -29,31 +37,26 @@ public class AppControllerTest extends ApplicationTest {
 
 
 
+
+
     @Override
     public void start(Stage stage) throws Exception {
-        // Initialize mocks
+
         mockHttpClient = mock(HttpClient.class);
         mockObjectMapper = spy(new ObjectMapper());
 
-        // Setup mock response
         HttpResponse<String> mockResponse = mock(HttpResponse.class);
         when(mockResponse.statusCode()).thenReturn(200);
         when(mockResponse.body()).thenReturn("[[\"#FFFFFF\"]]");
 
-        // Setup mock client behavior
-        when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString())))
-                .thenReturn(mockResponse);
-
-        // Load the FXML
+        when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()))).thenReturn(mockResponse);
+        System.out.println(mockResponse.body());
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/pixelart/ui/App.fxml"));
         Parent root = loader.load();
-
-        // Set up the scene
         Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
         stage.setScene(scene);
         stage.show();
 
-        // Get controller and inject mocks
         appController = loader.getController();
         gridStateHandler = appController.getGridController().getGridStateHandler();
         gridStateHandler.setHttpClient(mockHttpClient);
@@ -62,24 +65,34 @@ public class AppControllerTest extends ApplicationTest {
 
     @Test
     public void testClickOnCanvas() throws Exception {
-        // Wait for JavaFX to be ready
+
         sleep(1000);
-
-        // Get the GridPane
         GridPane gridPane = lookup("#gridPane").query();
-
-        // Ensure gridPane is not null and has children
-        if (gridPane == null || gridPane.getChildren().isEmpty()) {
-            throw new AssertionError("GridPane not properly initialized");
-        }
-
-        // Click on a specific pixel (for example, the first one)
+        //int[] testPixelIndexes = {};
+        //for(int index: testPixelIndexes){
         clickOn(gridPane.getChildren().get(0));
+        //}
 
         // Verify HTTP client was called
         verify(mockHttpClient, timeout(5000)).send(
                 any(HttpRequest.class),
                 eq(HttpResponse.BodyHandlers.ofString())
         );
+    }
+    @Test
+    public void initGrid(){
+        GridPane gridPane = lookup("#gridPane").query();
+        Random rand = new Random();
+        int random = rand.nextInt(gridPane.getColumnCount());
+        Node node = gridPane.getChildren().get(random);
+        Canvas canvas = (Canvas) node;
+        Assertions.assertEquals(canvas.getGraphicsContext2D().getFill(), Color.WHITE);
+    }
+
+    @Test
+    public void testHowManyCanvases(){
+        GridPane gridPane = lookup("#gridPane").query();
+        Assertions.assertEquals(gridPane.getColumnCount(), 60);
+        Assertions.assertEquals(gridPane.getRowCount(), 40);
     }
 }

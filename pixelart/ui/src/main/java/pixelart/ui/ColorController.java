@@ -32,7 +32,7 @@ public class ColorController {
         }
     }
 
-    private Button createColorButton(final String colorHex) {
+    Button createColorButton(final String colorHex) {
         Button button = new Button();
 
         if (colorHex.equals(currentColor)) {

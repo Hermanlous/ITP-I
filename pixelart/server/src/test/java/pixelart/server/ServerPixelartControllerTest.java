@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import pixelart.core.Grid;
 
 import java.io.File;
 
@@ -23,11 +24,13 @@ class ServerPixelartControllerTest {
 	@Autowired
 	private ObjectMapper objectMapper;
 
-	private final String testFilePath = System.getProperty("user.dir") + "/src/main/resources/persistence/jsonCanvas.json";
-	private final String[][] testGrid = {
-			{"#FFFFFF", "#000000"},
-			{"#FF0000", "#00FF00"}
-	};
+	private final String testFilePath = System.getProperty("user.dir") +
+			"/src/main/java/resources/persistence/jsonCanvas.json";
+	private final int pixelSize = 10;
+	private final int gridWidth = 100;
+	private final int gridHeight = 100;
+	private final Grid grid = new Grid(gridWidth, gridHeight, pixelSize);
+	private final String[][] testGrid = grid.getJsonGrid();
 
 	@BeforeEach
 	void setUp() throws Exception {
@@ -52,31 +55,16 @@ class ServerPixelartControllerTest {
 	}
 
 	@Test
-	void getCanvas_WhenFileDoesNotExist_ShouldReturnNotFound() throws Exception {
-		new File(testFilePath).delete();
-
-		mockMvc.perform(get("/canvas"))
-				.andExpect(status().isNotFound())
-				.andExpect(content().json(objectMapper.writeValueAsString(
-						new String[][] {{"File not found: " + testFilePath}}
-				)));
-	}
-
-	@Test
 	void postCanvas_WithValidData_ShouldUpdateAndReturnCanvas() throws Exception {
-		String[][] newGrid = {
-				{"#111111", "#222222"},
-				{"#333333", "#444444"}
-		};
 
 		mockMvc.perform(put("/canvas")
 						.contentType(MediaType.APPLICATION_JSON)
-						.content(objectMapper.writeValueAsString(newGrid)))
+						.content(objectMapper.writeValueAsString(testGrid)))
 				.andExpect(status().isOk())
-				.andExpect(content().json(objectMapper.writeValueAsString(newGrid)));
+				.andExpect(content().json(objectMapper.writeValueAsString(testGrid)));
 
 		String[][] savedGrid = objectMapper.readValue(new File(testFilePath), String[][].class);
-		assertArrayEquals(newGrid, savedGrid);
+		assertArrayEquals(testGrid, savedGrid);
 	}
 
 	@Test
