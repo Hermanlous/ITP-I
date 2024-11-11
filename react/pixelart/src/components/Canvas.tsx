@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { CanvasProps } from '../types/canvas.types';
 
-const Canvas: React.FC<CanvasProps> = ({ 
-  initialData, 
-  selectedColor, 
+const Canvas: React.FC<CanvasProps> = ({
+  initialData,
+  selectedColor,
   onPixelChange,
   maxWidth = 1000,
   maxHeight = 800,
@@ -15,24 +15,24 @@ const Canvas: React.FC<CanvasProps> = ({
     if (!pixelData || pixelData.length === 0) {
       return { width: 0, height: 0, pixelSize: 0 };
     }
-  
+
     const numRows = pixelData.length;
     const numCols = pixelData[0].length;
-  
+
     const availableWidth = maxWidth - (showGrid ? (numCols - 1) * gridGap : 0);
     const availableHeight = maxHeight - (showGrid ? (numRows - 1) * gridGap : 0);
-  
+
     const pixelSizeFromWidth = Math.floor(availableWidth / numCols);
     const pixelSizeFromHeight = Math.floor(availableHeight / numRows);
-  
+
     const pixelSize = Math.max(1, Math.min(pixelSizeFromWidth, pixelSizeFromHeight));
-  
+
     const width = pixelSize * numCols + (showGrid ? (numCols - 1) * gridGap : 0);
     const height = pixelSize * numRows + (showGrid ? (numRows - 1) * gridGap : 0);
-  
+
     return { width, height, pixelSize };
   };
-  
+
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [hoveredPixel, setHoveredPixel] = useState<{ x: number; y: number } | null>(null);
@@ -86,8 +86,8 @@ const Canvas: React.FC<CanvasProps> = ({
   };
 
   const paintPixel = (pixel: { x: number; y: number }) => {
-    if (!lastPixelRef.current || 
-        lastPixelRef.current.x !== pixel.x || 
+    if (!lastPixelRef.current ||
+        lastPixelRef.current.x !== pixel.x ||
         lastPixelRef.current.y !== pixel.y) {
       onPixelChange(pixel.x, pixel.y, selectedColor);
       lastPixelRef.current = pixel;
@@ -148,6 +148,7 @@ const Canvas: React.FC<CanvasProps> = ({
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseLeave}
       className='cursor-crosshair'
+      data-testid="pixel-canvas"
     />
   );
 };
