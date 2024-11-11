@@ -11,12 +11,12 @@ public class GridStateHandler {
     /**
      * The HTTP client used to send and receive HTTP requests.
      */
-    private final HttpClient httpClient;
+    private HttpClient httpClient;
 
     /**
      * The object mapper used to convert between Java objects and JSON strings.
      */
-    private final ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     /**
      * The URI endpoint for accessing the canvas on server.
@@ -39,6 +39,14 @@ public class GridStateHandler {
     public GridStateHandler() {
         this.httpClient = HttpClient.newHttpClient();
         this.objectMapper = new ObjectMapper();
+    }
+
+    void setHttpClient(HttpClient httpClient) {
+        this.httpClient = httpClient;
+    }
+
+    void setObjectMapper(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
     }
 
     /**

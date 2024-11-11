@@ -14,6 +14,7 @@ import java.net.http.HttpResponse.BodyHandlers;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 class GridStateHandlerTest {
@@ -21,47 +22,42 @@ class GridStateHandlerTest {
     @Mock
     private HttpClient mockHttpClient;
 
-    private GridStateHandler gridStateHandler;
-    private ObjectMapper objectMapper;
+    @Mock
+    private ObjectMapper mockObjectMapper;
 
-    /*Claude AI:
-    How do I set up the test with Mock and a mockHttpClient
-     from here: */
+    private GridStateHandler gridStateHandler;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        objectMapper = new ObjectMapper();
-
-        gridStateHandler = new GridStateHandler() {
-            @Override
-            protected HttpClient createHttpClient() {
-                return mockHttpClient;
-            }
-        };
+        gridStateHandler = new GridStateHandler();
+        gridStateHandler.setHttpClient(mockHttpClient);
+        gridStateHandler.setObjectMapper(mockObjectMapper);
     }
-    /*to here*/
 
     @Test
-    void postCanvas_Success() throws IOException, InterruptedException {
-        // Arrange
+    void SuccessfullyPostingCanvasTest() throws IOException, InterruptedException {
         String[][] canvasData = {
                 {"#FF0000", "#00FF00"},
                 {"#0000FF", "#FFFFFF", "#000000"}
         };
 
         @SuppressWarnings("unchecked")
-        HttpResponse<String> mockResponse = (HttpResponse<String>) mock(HttpResponse.class);
+        HttpResponse<String> mockResponse = mock(HttpResponse.class);
 
         when(mockResponse.statusCode()).thenReturn(200);
         when(mockResponse.body()).thenReturn("Success");
         when(mockHttpClient.send(any(HttpRequest.class), eq(BodyHandlers.ofString())))
                 .thenReturn(mockResponse);
+        when(mockObjectMapper.writeValueAsString(any())).thenReturn("mockJsonString");
 
         assertDoesNotThrow(() -> gridStateHandler.postCanvas(canvasData));
+        verify(mockHttpClient).send(any(HttpRequest.class), eq(BodyHandlers.ofString()));
+        verify(mockObjectMapper).writeValueAsString(canvasData);
     }
 
     @Test
-    void postCanvas_Failed() throws IOException, InterruptedException {
+    void unsuccessfullyPostingCanvasTest() throws IOException, InterruptedException {
         // Arrange
         String[][] canvasData = {
                 {"#FF0000", "#00FF00"},
@@ -69,15 +65,65 @@ class GridStateHandlerTest {
         };
 
         @SuppressWarnings("unchecked")
-        HttpResponse<String> mockResponse = (HttpResponse<String>) mock(HttpResponse.class);
+        HttpResponse<String> mockResponse = mock(HttpResponse.class);
 
         when(mockResponse.statusCode()).thenReturn(500);
         when(mockHttpClient.send(any(HttpRequest.class), eq(BodyHandlers.ofString())))
                 .thenReturn(mockResponse);
+        when(mockObjectMapper.writeValueAsString(any())).thenReturn("mockJsonString");
 
         Exception exception = assertThrows(IOException.class, () ->
                 gridStateHandler.postCanvas(canvasData)
         );
         assertTrue(exception.getMessage().contains("Failed to post canvas"));
+        verify(mockHttpClient).send(any(HttpRequest.class), eq(BodyHandlers.ofString()));
+        verify(mockObjectMapper).writeValueAsString(canvasData);
+    }
+
+    @Test
+    void successfullyRetrievingCanvasTest() throws IOException, InterruptedException {
+        String[][] expectedData = {
+                {"#FF0000", "#00FF00"},
+                {"#0000FF", "#FFFFFF"}
+        };
+
+        @SuppressWarnings("unchecked")
+        HttpResponse<String> mockResponse = mock(HttpResponse.class);
+
+        String mockJsonResponse = "[['#FF0000','#00FF00'],['#0000FF','#FFFFFF']]";
+
+        when(mockResponse.statusCode()).thenReturn(200);
+        when(mockResponse.body()).thenReturn(mockJsonResponse);
+        when(mockHttpClient.send(any(HttpRequest.class), eq(BodyHandlers.ofString())))
+                .thenReturn(mockResponse);
+        when(mockObjectMapper.readValue(mockJsonResponse, String[][].class))
+                .thenReturn(expectedData);
+
+        String[][] result = gridStateHandler.loadCanvas();
+
+        assertNotNull(result);
+        assertArrayEquals(expectedData, result);
+
+        verify(mockHttpClient).send(any(HttpRequest.class), eq(BodyHandlers.ofString()));
+        verify(mockObjectMapper).readValue(mockJsonResponse, String[][].class);
+    }
+
+    @Test
+    void unsuccessfullyRetrievingCanvasTest() throws IOException, InterruptedException {
+        @SuppressWarnings("unchecked")
+        HttpResponse<String> mockResponse = mock(HttpResponse.class);
+
+        when(mockResponse.statusCode()).thenReturn(500);
+        when(mockResponse.body()).thenReturn("Internal Server Error");
+        when(mockHttpClient.send(any(HttpRequest.class), eq(BodyHandlers.ofString())))
+                .thenReturn(mockResponse);
+
+        Exception exception = assertThrows(IOException.class, () -> {
+            gridStateHandler.loadCanvas();
+        });
+
+        assertTrue(exception.getMessage().contains("Failed to fetch canvas data: HTTP 500"));
+        verify(mockHttpClient).send(any(HttpRequest.class), eq(BodyHandlers.ofString()));
+        verifyNoInteractions(mockObjectMapper); // ObjectMapper shouldn't be called on error
     }
 }

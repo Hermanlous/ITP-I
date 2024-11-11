@@ -104,6 +104,9 @@ public class Grid {
      * @param pixelSize the size of each pixel in the grid.
      */
     private void initializeEmptyGrid(final int pixelSize) {
+        this.pixels = new Pixel[gridSizeHeight][gridSizeWidth];
+        this.currentState = new String[gridSizeHeight][gridSizeWidth];
+
         for (int row = 0; row < gridSizeHeight; row++) {
             for (int column = 0; column < gridSizeWidth; column++) {
                 pixels[row][column] = new Pixel(pixelSize);
@@ -176,7 +179,7 @@ public class Grid {
      * @return a 2D array of {@link Pixel} objects. All pixels in the grid.
      */
     public Pixel[][] getAllPixels() { //This sends all of them
-        return pixels;
+        return pixels.clone();
     }
 
     /**
@@ -193,6 +196,10 @@ public class Grid {
             }
         }
         return jsonGrid;
+    }
+
+    protected void setGridStateHandler(GridStateHandler gridStateHandler) {
+        this.gridStateHandler = gridStateHandler;
     }
 
 }
