@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { getCanvas, updateCanvas } from '../utils/api';
+import { useState, useEffect, useCallback } from 'react';
+import { getCanvas } from '../utils/api';
 
 const useCanvasData = () => {
   const [pixelData, setPixelData] = useState<string[][]>([]);
@@ -7,10 +7,10 @@ const useCanvasData = () => {
   const [error, setError] = useState<string | null>(null);
 
   // Fetch the canvas data from the backend
-  const fetchCanvasData = async () => {
+  const fetchCanvasData = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await getCanvas();
+      const data = await getCanvas(); console.log("gettin canvas")
       if (data) {
         setPixelData(data);
       }
@@ -20,24 +20,13 @@ const useCanvasData = () => {
     } finally {
       setLoading(false);
     }
-  };
-
-  // Update the canvas data on the backend
-  const saveCanvasData = async (updatedData: string[][]) => {
-    try {
-      await updateCanvas(updatedData);
-      setPixelData(updatedData); // Optionally update state after saving
-    } catch (err) {
-      console.error('Failed to save canvas data:', err);
-      setError('Failed to save canvas data.');
-    }
-  };
+  }, []);
 
   useEffect(() => {
     fetchCanvasData();
-  }, []);
+  }, [fetchCanvasData]);
 
-  return { pixelData, setPixelData, fetchCanvasData, saveCanvasData, loading, error };
+  return { pixelData, setPixelData, fetchCanvasData, loading, error };
 };
 
 export default useCanvasData;

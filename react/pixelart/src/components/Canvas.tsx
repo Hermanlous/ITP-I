@@ -10,6 +10,7 @@ const Canvas: React.FC<CanvasProps> = ({
   showGrid = false,
   gridGap = 1
 }) => {
+
   const calculateCanvasDimensions = (pixelData: string[][]) => {
     if (!pixelData || pixelData.length === 0) {
       return { width: 0, height: 0, pixelSize: 0 };

@@ -10,7 +10,7 @@ interface ColorPanelProps {
 
 const ColorPanel: React.FC<ColorPanelProps> = ({ colors, selectedColor, onColorSelect }) => {
   return (
-    <div className="flex flex-col gap-2 mx-4">
+    <div className="flex flex-col gap-2 pr-4">
       {colors.map((color) => (
         <div
           key={color.color}
