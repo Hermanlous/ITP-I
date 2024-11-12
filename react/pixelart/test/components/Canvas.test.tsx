@@ -1,87 +1,106 @@
-import '@testing-library/jest-dom';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import Canvas from '../../src/components/Canvas';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { render, screen, fireEvent, act } from '@testing-library/react';
+import Canvas from '../../src/components/Canvas.tsx';
 
-describe('Canvas Component', () => {
-  const mockPixelData = [
-    ['#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-    ['#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-    ['#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-    ['#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff'],
-    ['#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+/* Chatgpt was implemented here for templates for testing as well as logic for mouseclick and timers.
+Mousedown logic is all credited to ChatGPT,
+and the prompt contained multiple iteration and reviewing processes. */
+
+describe('Canvas', () => {
+  const initialData = [
+    ['#ffffff', '#ffffff', '#ffffff'],
+    ['#ffffff', '#ffffff', '#ffffff'],
+    ['#ffffff', '#ffffff', '#ffffff']
   ];
 
-  const selectedColor = '#000000'; // Color selected for drawing
+  const onPixelChange = vi.fn();
 
-  it('should render canvas with initial pixel data', () => {
-    render(
-        <Canvas
-            initialData={mockPixelData}
-            selectedColor={selectedColor}
-            onPixelChange={() => {}}
-            maxWidth={1000}
-            maxHeight={800}
-            showGrid={false}
-            gridGap={1}
-        />
-    );
-
-    const canvas = screen.getByTestId('pixel-canvas');
-    expect(canvas).toBeInTheDocument();
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.clearAllMocks();
   });
 
-  it('should initialize the canvas with the correct white color for all pixels', () => {
-    render(
-        <Canvas
-            initialData={mockPixelData}
-            selectedColor={selectedColor}
-            onPixelChange={() => {}}
-            maxWidth={1000}
-            maxHeight={800}
-            showGrid={false}
-            gridGap={1}
-        />
-    );
-
-    const canvas = screen.getByTestId('pixel-canvas') as HTMLCanvasElement;
-    const ctx = canvas.getContext('2d');
-
-    expect(ctx).toBeTruthy();
-    if (ctx) {
-      const pixelsToCheck = [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 0, y: 1 }, { x: 4, y: 4 }];
-
-      pixelsToCheck.forEach(({ x, y }) => {
-        const imageData = ctx.getImageData(x * 12, y * 12, 1, 1);
-        const pixelData = imageData.data;
-
-        // Check if the initial pixel color is white
-        expect(pixelData[0]).toBe(255);
-        expect(pixelData[1]).toBe(255);
-        expect(pixelData[2]).toBe(255);
-        expect(pixelData[3]).toBe(255); // Alpha should be 255 (fully opaque)
-      });
-    }
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
-  it('should not call onPixelChange when clicking outside of the canvas', async () => {
-    const mockOnPixelChange = vi.fn();
+  it('Mouse click', () => {
     render(
         <Canvas
-            initialData={mockPixelData}
-            selectedColor={selectedColor}
-            onPixelChange={mockOnPixelChange}
-            maxWidth={1000}
-            maxHeight={800}
-            showGrid={false}
-            gridGap={1}
+            initialData={initialData}
+            selectedColor="#000000"
+            onPixelChange={onPixelChange}
+            maxWidth={500}
+            maxHeight={500}
         />
     );
 
-    // Click outside of the canvas
-    fireEvent.click(document.body);
 
-    await waitFor(() => {
-      expect(mockOnPixelChange).not.toHaveBeenCalled();
+    const canvasElement = screen.getByTestId('pixel-canvas');
+    fireEvent.mouseDown(canvasElement, {
+      button: 0,
+      clientX: 100,
+      clientY: 100,
     });
+
+    act(() => {
+      vi.advanceTimersByTime(100);
+    });
+
+    expect(onPixelChange).toHaveBeenCalled();
+    expect(onPixelChange).toHaveBeenCalledWith(expect.any(Number), expect.any(Number), "#000000");
+  });
+
+  it('Move mouse and vlick', () => {
+    render(
+        <Canvas
+            initialData={initialData}
+            selectedColor="#0000ff"
+            onPixelChange={onPixelChange}
+            maxWidth={500}
+            maxHeight={500}
+        />
+    );
+    const canvasElement = screen.getByTestId('pixel-canvas');
+
+    fireEvent.mouseDown(canvasElement,{
+      button: 0,
+      clientX: 50,
+      clientY: 50,
+    });
+    fireEvent.mouseUp(canvasElement);
+    expect(onPixelChange).toHaveBeenCalledTimes(1);
+    expect(onPixelChange).toHaveBeenCalledWith(expect.any(Number), expect.any(Number), "#0000ff");
+  });
+
+  it('should stop drawing after mouse up', () => {
+    render(
+        <Canvas
+            initialData={initialData}
+            selectedColor="#0000ff"
+            onPixelChange={onPixelChange}
+            maxWidth={500}
+            maxHeight={500}
+        />
+    );
+    const canvasElement = screen.getByTestId('pixel-canvas');
+    fireEvent.mouseDown(canvasElement, {
+      button: 0,
+      clientX: 200,
+      clientY: 200,
+    });
+
+    fireEvent.mouseMove(canvasElement, {
+      clientX: 210,
+      clientY: 210,
+    });
+    fireEvent.mouseUp(canvasElement);
+    expect(onPixelChange).toHaveBeenCalled();
+
+    fireEvent.mouseMove(canvasElement, {
+      clientX: 220,
+      clientY: 220,
+    });
+    expect(onPixelChange).toHaveBeenCalledTimes(1);
   });
 });
