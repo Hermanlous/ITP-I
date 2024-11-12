@@ -198,8 +198,16 @@ public class Grid {
         return jsonGrid;
     }
 
-    protected void setGridStateHandler(GridStateHandler gridStateHandler) {
-        this.gridStateHandler = gridStateHandler;
+    /**
+     * Sets the {@link GridStateHandler} for this grid.
+     * This handler manages saving and loading the state of the grid.
+     *
+     * @param theGridStateHandler the {@code GridStateHandler} instance to use
+     *                            for managing grid state persistence.
+     */
+    protected void setGridStateHandler(
+        final GridStateHandler theGridStateHandler) {
+        this.gridStateHandler = theGridStateHandler;
     }
 
 }

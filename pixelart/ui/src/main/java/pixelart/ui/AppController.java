@@ -44,10 +44,11 @@ public class AppController {
     /** Stores the current state of each pixel in grid.*/
     private String[][] currentState;
 
+    /** Manages color selection and palette operations. */
     private ColorController colorController;
+
+    /** Controls the grid’s visual and interactive behavior. */
     private GridController gridController;
-
-
 
     /**
      * Initializes the controller as well as the canvas
@@ -67,15 +68,23 @@ public class AppController {
             String[][] currentState = gridStateHandler.loadCanvas();
             grid = new Grid(currentState, GridController.PIXEL_SIZE);
         } catch (Exception e) {
-            this.grid = new Grid(GridController.GRID_SIZE_WIDTH, GridController.GRID_SIZE_HEIGHT, GridController.PIXEL_SIZE);
+            this.grid = new Grid(GridController.GRID_SIZE_WIDTH,
+            GridController.GRID_SIZE_HEIGHT, GridController.PIXEL_SIZE);
         }
 
-        this.gridController = new GridController(grid, gridPane, gridStateHandler);
+        this.gridController =
+        new GridController(grid, gridPane, gridStateHandler);
         gridController.initializeGridPane();
 
-        colorController.setOnColorSelected(color -> gridController.setCurrentColor(color));
+        colorController.setOnColorSelected(
+        color -> gridController.setCurrentColor(color));
     }
 
+    /**
+     * Retrieves the controller responsible for managing grid operations.
+     *
+     * @return the GridController instance managing the grid's behavior.
+     */
     public GridController getGridController() {
         return gridController;
     }
