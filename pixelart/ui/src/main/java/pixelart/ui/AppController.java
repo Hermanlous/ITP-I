@@ -1,49 +1,82 @@
 package pixelart.ui;
 
-import javafx.fxml.FXML;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.input.MouseButton;
-import javafx.scene.layout.GridPane;
-import javafx.scene.input.MouseEvent;
-import pixelart.core.GridManager; // Allows it to use the logic in GridManager
+import java.io.IOException;
 
-public class AppController {
-    
+import javafx.fxml.FXML;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import pixelart.core.Grid;
+import pixelart.core.GridStateHandler;
+
 /**
- * AppController is the main controller class for the JavaFX application pixelart.
- * It controls the interaction between the user and the 100x100 (may change) grid of canvases.
- * The users can draw or erase on the different pixels  using left and right mouse clicks. More to come.
- * Which pixels that are coloured in are saved in a text file.
-*/
+ * AppController is the main controller class for our JavaFX application.
+ * It controls the interaction between the user and our canvas.
+ * The user is able to draw and erase on the different pixels.
+ * This is done by using left and right mouse click.
+ */
+public class AppController {
+
+    /** The main grid containing the canvas element.*/
     @FXML
     private GridPane gridPane;
 
-    private GridManager gridManager;
-    private final int gridSize = 100;
+    /**
+     * The color palette displayed as a set of color buttons.
+     */
+    @FXML
+    private HBox colorPalette;
+
+    /** The grid model containing our pixeldata.*/
+    private Grid grid;
+
+    /** Managed saving and loading gridstate from server.*/
+    private GridStateHandler gridStateHandler;
+
+    /** The size of the width of the grid. */
+    private final int gridSizeWidth = 60;
+
+    /** The size of the height of the grid. */
+    private final int gridSizeHeight = 34;
+
+    /** Size of each pixel square in the grid.*/
     private final int pixelSize = 10;
 
+    /** Stores the current state of each pixel in grid.*/
+    private String[][] currentState;
+
+    private ColorController colorController;
+    private GridController gridController;
+
+
+
+    /**
+     * Initializes the controller as well as the canvas
+     * Tries to retrieve canvas from server. Else a new one.
+     *
+     * @throws IOException if there´s an error initializing
+     * @throws InterruptedException if the loading from server process fails
+     * */
+
     @FXML
-    public void initialize() {
+    public void initialize() throws IOException, InterruptedException {
+        this.colorController = new ColorController(colorPalette);
+        colorController.initializeColorPalette();
 
-        gridManager = new GridManager(gridSize, pixelSize);
-        Canvas[][] grid = gridManager.getGrid();
-
-        for (int r = 0; r < 100; r++) {
-            for (int c = 0; c < 100; c++) {
-                Canvas canvas = grid[r][c];
-                gridPane.add(canvas, r, c);
-                int row = r;
-                int column = c;
-                canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> pixelClick(row, column, event));
-            }
+        try {
+            this.gridStateHandler = new GridStateHandler();
+            String[][] currentState = gridStateHandler.loadCanvas();
+            grid = new Grid(currentState, GridController.PIXEL_SIZE);
+        } catch (Exception e) {
+            this.grid = new Grid(GridController.GRID_SIZE_HEIGHT, GridController.GRID_SIZE_WIDTH, GridController.PIXEL_SIZE);
         }
 
-        gridManager.loadState();
+        this.gridController = new GridController(grid, gridPane, gridStateHandler);
+        gridController.initializeGridPane();
+
+        colorController.setOnColorSelected(color -> gridController.setCurrentColor(color));
     }
 
-    private void pixelClick(int row, int column, MouseEvent event) {
-        boolean isBlack = event.getButton() != MouseButton.SECONDARY;
-        gridManager.updatePixel(row, column, isBlack); 
+    public GridController getGridController() {
+        return gridController;
     }
-
 }
