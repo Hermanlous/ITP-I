@@ -35,10 +35,6 @@ public class AppControllerTest extends ApplicationTest {
     private HttpClient mockHttpClient;
     private ObjectMapper mockObjectMapper;
 
-
-
-
-
     @Override
     public void start(Stage stage) throws Exception {
 
@@ -66,14 +62,18 @@ public class AppControllerTest extends ApplicationTest {
     @Test
     public void testClickOnCanvas() throws Exception {
 
+        int[] moustache = {919, 979, 980, 1040, 981, 1041, 922, 982, 1042, 1102, 863, 923, 983, 1043, 1103, 804, 864, 924, 984, 1044, 1104, 805, 865, 925, 985, 1045, 1105, 746, 806, 866, 926, 986, 1046, 1106, 747, 807, 867, 927, 987, 1047, 808, 868, 928, 988, 1048, 809, 869, 929, 989, 870, 930, 811, 871, 931, 991, 812, 872, 932, 992, 1052, 753, 813, 873, 933, 993, 1053, 754, 814, 874, 934, 994, 1054, 1114, 815, 875, 935, 995, 1055, 1115, 816, 876, 936, 996, 1056, 1116, 877, 937, 997, 1057, 1117, 938, 998, 1058, 1118, 999, 1059, 1000, 1060, 941, 1001};
+
         sleep(1000);
         GridPane gridPane = lookup("#gridPane").query();
 
-        clickOn(gridPane.getChildren().get(20));
+        for (int index : moustache) {
+            clickOn(gridPane.getChildren().get(index));
+        }
 
-        verify(mockHttpClient, timeout(5000)).send(
-                any(HttpRequest.class),
-                eq(HttpResponse.BodyHandlers.ofString())
+        verify(mockHttpClient, times(moustache.length)).send(
+            any(HttpRequest.class),
+            eq(HttpResponse.BodyHandlers.ofString())
         );
     }
 
