@@ -42,6 +42,3 @@ Her kan lese om brukerhistorier som støtter utviklingsarbeidet:
 ## Bruksanvisning
 Her kan du lese dokumentasjon om hvordan du bruker appen.
 [Bruksanvisning](pixelart/docs/Bruksanvisning.md)
-
-## Husk å reflektere over hvorfor vi bruker PUT og ikke POST: Ulempe med PUT; mange API-kall, Fordel: Kontinuerlig oppdatering av canvaset, ikke unaturlig mange api-kall med få brukere.
-## Ved mange brukere legg inn knapp som kan kalle en POST-funksjon for å poste hele
