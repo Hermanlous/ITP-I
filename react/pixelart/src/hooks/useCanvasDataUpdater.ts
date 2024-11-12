@@ -24,7 +24,8 @@ const useCanvasDataUpdater = () => {
       timeoutRef.current = setTimeout(async () => {
         setIsSaving(true);
         try {
-          await updateCanvas(updatedData); console.log("updating canvas");
+          await updateCanvas(updatedData);
+          console.log('updating canvas');
         } catch (err) {
           console.error('Failed to save canvas data:', err);
           setError('Failed to save canvas data.');

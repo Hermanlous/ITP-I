@@ -29,7 +29,8 @@ const useCanvasData = () => {
   const fetchCanvasData = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await getCanvas(); console.log("gettin canvas")
+      const data = await getCanvas();
+      console.log('gettin canvas');
       if (data) {
         setPixelData(data);
       }

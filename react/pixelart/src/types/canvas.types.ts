@@ -1,4 +1,3 @@
-
 /**
  * Canvas props, used in Canvas.tsx.
  * @param {CanvasProps}, props for the Canvas component.
@@ -12,17 +11,17 @@
  **/
 
 export interface CanvasProps {
-    initialData: string[][];
-    selectedColor: string;
-    onPixelChange: (x: number, y: number, color: string) => void;
-    maxWidth?: number;
-    maxHeight?: number;
-    showGrid?: boolean;
-    gridGap?: number;
+  initialData: string[][];
+  selectedColor: string;
+  onPixelChange: (x: number, y: number, color: string) => void;
+  maxWidth?: number;
+  maxHeight?: number;
+  showGrid?: boolean;
+  gridGap?: number;
 }
 
 export interface Pixel {
-    x: number;
-    y: number;
-    color: string;
+  x: number;
+  y: number;
+  color: string;
 }

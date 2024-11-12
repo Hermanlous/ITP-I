@@ -10,7 +10,13 @@ const mockColors = [
  * It checks that buttons representing the colors are rendered and the correct number of buttons are present.
  */
 test('renders the color panel', () => {
-  render(<ColorPanel colors={mockColors} selectedColor={mockColors[0]} onColorSelect={vi.fn()} />);
+  render(
+    <ColorPanel
+      colors={mockColors}
+      selectedColor={mockColors[0]}
+      onColorSelect={vi.fn()}
+    />
+  );
   const colorDivs = screen.getAllByRole('button');
   expect(colorDivs).toHaveLength(2);
 });
@@ -20,7 +26,13 @@ test('renders the color panel', () => {
  */
 test('selects a color', () => {
   const onColorSelectMock = vi.fn();
-  render(<ColorPanel colors={mockColors} selectedColor={mockColors[0]} onColorSelect={onColorSelectMock} />);
+  render(
+    <ColorPanel
+      colors={mockColors}
+      selectedColor={mockColors[0]}
+      onColorSelect={onColorSelectMock}
+    />
+  );
   const redColorDiv = screen.getByTestId('color-panel-#ff0000');
   fireEvent.click(redColorDiv);
   expect(onColorSelectMock).toHaveBeenCalledWith(mockColors[1]);
