@@ -1,46 +1,82 @@
 package pixelart.ui;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.image.Image;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
+import pixelart.core.GridStateHandler;
 
+import java.io.File;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.file.Files;
 import java.util.Random;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
+import static pixelart.ui.App.SCENE_HEIGHT;
+import static pixelart.ui.App.SCENE_WIDTH;
+
 public class AppControllerTest extends ApplicationTest {
-    //This codeblock is sourced from https://www.youtube.com/watch?v=NG03nNpSmgU downloaded 07.10.2024, from here
-    @BeforeEach
-    public void setup() throws Exception{
-        ApplicationTest.launch(App.class);
-    }//To here
-    
+    private AppController appController;
+    private GridStateHandler gridStateHandler;
+    private HttpClient mockHttpClient;
+    private ObjectMapper mockObjectMapper;
+
+
+
+
+
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage stage) throws Exception {
+
+        mockHttpClient = mock(HttpClient.class);
+        mockObjectMapper = spy(new ObjectMapper());
+
+        HttpResponse<String> mockResponse = mock(HttpResponse.class);
+        when(mockResponse.statusCode()).thenReturn(200);
+        when(mockResponse.body()).thenReturn("Success!");
+
+        when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()))).thenReturn(mockResponse);
+        System.out.println(mockResponse.body());
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/pixelart/ui/App.fxml"));
-        GridPane root = loader.load();
-        Scene scene = new Scene(root, 400, 450);
-        primaryStage.setTitle("PixelArt");
-        primaryStage.setScene(scene);
-        primaryStage.show();
-        Image taskbarLogo = new Image(getClass().getResourceAsStream("/pixelart/ui/taskbarLogo.png"));  // To change taskbar logo
-        primaryStage.getIcons().add(taskbarLogo);
+        Parent root = loader.load();
+        Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
+        stage.setScene(scene);
+        stage.show();
+
+        appController = loader.getController();
+        gridStateHandler = appController.getGridController().getGridStateHandler();
+        gridStateHandler.setHttpClient(mockHttpClient);
+        gridStateHandler.setObjectMapper(mockObjectMapper);
     }
+
     @Test
-    public void testHowManyCanvases(){
+    public void testClickOnCanvas() throws Exception {
+
+        sleep(1000);
         GridPane gridPane = lookup("#gridPane").query();
-        Assertions.assertEquals(gridPane.getColumnCount(), 100);
-        Assertions.assertEquals(gridPane.getRowCount(), 100);
+
+        clickOn(gridPane.getChildren().get(20));
+
+        verify(mockHttpClient, timeout(5000)).send(
+                any(HttpRequest.class),
+                eq(HttpResponse.BodyHandlers.ofString())
+        );
     }
+
     @Test
     public void initGrid(){
         GridPane gridPane = lookup("#gridPane").query();
@@ -50,44 +86,12 @@ public class AppControllerTest extends ApplicationTest {
         Canvas canvas = (Canvas) node;
         Assertions.assertEquals(canvas.getGraphicsContext2D().getFill(), Color.WHITE);
     }
-    @Test
-    public void testClickOnCanvas() {
-        
-        GridPane gridPane = lookup("#gridPane").query();
-        
-        sleep(3000);
-
-        // smily
-        int[] testPixelIndexes = {4945, 5445, 4747, 4848, 4949, 5049, 5149, 5249, 5349, 5449, 5449, 5548, 5647};
-
-        for (int index : testPixelIndexes) {
-            Node node = gridPane.getChildren().get(index); // get pixel
-
-            Canvas canvas = (Canvas) node;
-
-            // draw smily
-            clickOn(canvas);
-            Assertions.assertEquals(canvas.getGraphicsContext2D().getFill(), Color.BLACK);
-        }
-    }
 
     @Test
-    public void testClickOnCanvasSecondary() {
-        
+    public void testHowManyCanvases(){
         GridPane gridPane = lookup("#gridPane").query();
-        sleep(3000);
 
-        // smily
-        int[] testPixelIndexes = {4945, 5445, 4747, 4848, 4949, 5049, 5149, 5249, 5349, 5449, 5449, 5548, 5647};
-
-        for (int index : testPixelIndexes) {
-            Node node = gridPane.getChildren().get(index); // get pixel
-
-            Canvas canvas = (Canvas) node;
-
-            // erease smily
-            clickOn(canvas, MouseButton.SECONDARY);
-            Assertions.assertEquals(canvas.getGraphicsContext2D().getFill(), Color.WHITE);
-        }
+        Assertions.assertEquals(60, gridPane.getColumnCount());
+        Assertions.assertEquals(34, gridPane.getRowCount());
     }
 }
