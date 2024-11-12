@@ -15,7 +15,7 @@ export const getCanvas = async (): Promise<string[][] | null> => {
     const response = await fetch(API_BASE_URL, {
       method: 'GET',
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
       },
     });
     if (!response.ok) {
