@@ -17,7 +17,7 @@ public class Grid {
     /**
      * The defaultet height of our grid.
      */
-    private static final int DEFAULT_GRID_HEIGHT = 40;
+    private static final int DEFAULT_GRID_HEIGHT = 34;
 
     /**
      * The width of the grid in pixels.
@@ -56,7 +56,7 @@ public class Grid {
      * @param height the height of the grid.
      * @param pixelSize the size of each pixel.
      */
-    public Grid(final int width, final int height, final int pixelSize) {
+    public Grid(final int height, final int width, final int pixelSize) {
         this.gridSizeWidth = width;
         this.gridSizeHeight = height;
         this.pixels = new Pixel[gridSizeHeight][gridSizeWidth];
@@ -81,7 +81,7 @@ public class Grid {
         this.gridSizeHeight =
         newState.length > 0 ? newState.length : DEFAULT_GRID_HEIGHT;
         this.gridSizeWidth =
-        newState[0].length > 0 ? newState.length : DEFAULT_GRID_WIDTH;
+        newState[0].length > 0 ? newState[0].length : DEFAULT_GRID_WIDTH;
 
         try {
             this.gridStateHandler = new GridStateHandler();

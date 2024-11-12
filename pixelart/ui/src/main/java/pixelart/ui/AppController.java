@@ -36,7 +36,7 @@ public class AppController {
     private final int gridSizeWidth = 60;
 
     /** The size of the height of the grid. */
-    private final int gridSizeHeight = 40;
+    private final int gridSizeHeight = 34;
 
     /** Size of each pixel square in the grid.*/
     private final int pixelSize = 10;
@@ -68,8 +68,7 @@ public class AppController {
             String[][] currentState = gridStateHandler.loadCanvas();
             grid = new Grid(currentState, GridController.PIXEL_SIZE);
         } catch (Exception e) {
-            this.grid = new Grid(GridController.GRID_SIZE_WIDTH,
-            GridController.GRID_SIZE_HEIGHT, GridController.PIXEL_SIZE);
+            this.grid = new Grid(GridController.GRID_SIZE_HEIGHT, GridController.GRID_SIZE_WIDTH, GridController.PIXEL_SIZE);
         }
 
         this.gridController =
