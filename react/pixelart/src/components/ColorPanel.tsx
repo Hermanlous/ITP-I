@@ -2,6 +2,13 @@ import React from 'react';
 import { Color } from '../types/color.types';
 import CheckIcon from './CheckIcon';
 
+/**
+ * ColorPanelProps is props for the color panel, here the user can select color.
+ * @param {Color[]}, an array of colors, each mapped to a button.
+ * @param {Color}, selected color.
+ * @param {(color: Color) => void}, function for selecting color.
+ **/
+
 interface ColorPanelProps {
   colors: Color[];
   selectedColor: Color;
