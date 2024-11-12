@@ -6,6 +6,10 @@ import Canvas from '../../src/components/Canvas.tsx';
 Mousedown logic is all credited to ChatGPT,
 and the prompt contained multiple iteration and reviewing processes. */
 
+/**
+ * Initialises canvas and establishes beforeEach
+ * and afterEach restoring og clearing mocks.
+ **/
 describe('Canvas', () => {
   const initialData = [
     ['#ffffff', '#ffffff', '#ffffff'],
@@ -23,7 +27,10 @@ describe('Canvas', () => {
   afterEach(() => {
     vi.restoreAllMocks();
   });
-
+  /**
+   * Simulates mouse click, changing the color from white to black.
+   * Checks to see if onPixelChange is called.
+   **/
   it('Mouse click', () => {
     render(
         <Canvas
@@ -51,6 +58,11 @@ describe('Canvas', () => {
     expect(onPixelChange).toHaveBeenCalledWith(expect.any(Number), expect.any(Number), "#000000");
   });
 
+  /**
+   * Mouse click and mouse movement test. Changes color from white to blue.
+   * Mouse draws and stops drawing.
+   **/
+
   it('Move mouse and vlick', () => {
     render(
         <Canvas
@@ -72,7 +84,10 @@ describe('Canvas', () => {
     expect(onPixelChange).toHaveBeenCalledTimes(1);
     expect(onPixelChange).toHaveBeenCalledWith(expect.any(Number), expect.any(Number), "#0000ff");
   });
-
+/**
+ * Test case to ensure that drawing stops after mouse up.
+ * Checks if it only clicks after mouse is down and not after it is up.
+ **/
   it('should stop drawing after mouse up', () => {
     render(
         <Canvas
