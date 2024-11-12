@@ -1,12 +1,31 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getCanvas } from '../utils/api';
 
+/**
+ * Hook for fetching pixel data for the canvas.
+ * Manages and provides loading, error and current pixeldata.
+ * Fetches data from restAPI
+ *
+ * @return {
+ * {pixelData},
+ * {setPixelData},
+ * {loading},
+ * {setLoading},
+ * {error},
+ * {setError}
+ * }
+ * These are states to hold handling from the hook.
+ * **/
+
 const useCanvasData = () => {
   const [pixelData, setPixelData] = useState<string[][]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch the canvas data from the backend
+  /**
+   * Async function for fetching data from the rest API. Using getCanvas()
+   * It updates loading, error and sets the pixel data for further use.
+   **/
   const fetchCanvasData = useCallback(async () => {
     setLoading(true);
     try {

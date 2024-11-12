@@ -1,4 +1,14 @@
+/**
+ * Localhost hosting our restAPI
+ **/
 const API_BASE_URL = 'http://localhost:8080/canvas';
+
+/**
+ * Fetches the data from the rest API.
+ * The data is expected to be a 2-dimensional array of strings: string[][], displaying the canvasgrid.
+ * Each string is a hexcode depicting it's color.
+ * This is done by a GET request.
+ **/
 
 export const getCanvas = async (): Promise<string[][] | null> => {
   try {
@@ -18,6 +28,12 @@ export const getCanvas = async (): Promise<string[][] | null> => {
     return null;
   }
 };
+
+/**
+ * Updates the rest API with updated data as a 2d-array of strings: string[][],
+ * displaying the new pixel grid data.
+ * This is done by using a PUT request.
+ **/
 
 export const updateCanvas = async (canvasData: string[][]): Promise<void> => {
   try {
