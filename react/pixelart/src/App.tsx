@@ -92,6 +92,7 @@ const App: React.FC = () => {
           <button
             className="bg-gray-400 hover:bg-gray-500 text-black font-bold p-2"
             onClick={handleClearCanvas}
+            data-testid='clear-canvas-button'
           >
             Clear Canvas
           </button>
