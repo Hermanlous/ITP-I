@@ -15,21 +15,30 @@ interface ColorPanelProps {
   onColorSelect: (color: Color) => void;
 }
 
-const ColorPanel: React.FC<ColorPanelProps> = ({ colors, selectedColor, onColorSelect }) => {
+const ColorPanel: React.FC<ColorPanelProps> = ({
+  colors,
+  selectedColor,
+  onColorSelect,
+}) => {
   return (
     <div className="flex flex-col gap-2 pr-4">
       {colors.map((color) => (
         <button
           key={color.color}
-          data-testid={"color-panel-" + color.color}
+          data-testid={'color-panel-' + color.color}
           className="w-10 h-10 border-2 cursor-pointer"
           style={{
             backgroundColor: color.color,
-            borderColor: selectedColor.color === color.color ? selectedColor.onColor : 'transparent',
+            borderColor:
+              selectedColor.color === color.color
+                ? selectedColor.onColor
+                : 'transparent',
           }}
           onClick={() => onColorSelect(color)}
         >
-          {selectedColor.color === color.color && <CheckIcon color={color.onColor} />}
+          {selectedColor.color === color.color && (
+            <CheckIcon color={color.onColor} />
+          )}
         </button>
       ))}
     </div>

@@ -10,9 +10,7 @@ import useCanvasDataUpdater from './hooks/useCanvasDataUpdater';
 
 import { Color } from './types/color.types';
 
-
 const App: React.FC = () => {
-
   /**
    * useCanvasData is fetching from restAPI.
    * useCanvasUpdater sends a PUT request for each updated pixel.
@@ -80,13 +78,12 @@ const App: React.FC = () => {
     setShowClearConfirmation(false);
   };
 
-  
   if (loading) {
-    return <div className='flex justify-center pt-10'>Loading...</div>;
+    return <div className="flex justify-center pt-10">Loading...</div>;
   }
 
   if (error) {
-    return <div className='flex justify-center pt-10'>Error: {error}</div>;
+    return <div className="flex justify-center pt-10">Error: {error}</div>;
   }
 
   return (
@@ -104,53 +101,53 @@ const App: React.FC = () => {
           >
             {selectedColor.color}
           </span>
-          </p>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={showGrid}
-              onChange={(e) => setShowGrid(e.target.checked)}
-              className="hidden peer"
-            />
-            <div className="h-10 w-10 bg-gray-400 hover:bg-gray-500 border-2 border-black peer-checked:bg-blue-600 peer-checked:border-white flex items-center justify-center">
-              {showGrid && <CheckIcon color="#FFFFFF" />}
-            </div>
-            Show Grid
-          </label>
-          <button
-            className="bg-gray-400 hover:bg-gray-500 text-black font-bold p-2"
-            onClick={handleClearCanvas}
-            data-testid='clear-canvas-button'
-          >
-            Clear Canvas
-          </button>
-        </div> 
-        <div className="flex justify-center">
-          <ColorPanel
-            colors={colors}
-            selectedColor={selectedColor}
-            onColorSelect={setSelectedColor}
+        </p>
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={showGrid}
+            onChange={(e) => setShowGrid(e.target.checked)}
+            className="hidden peer"
           />
-          <Canvas
-            initialData={pixelData}
-            selectedColor={selectedColor.color}
-            onPixelChange={handlePixelChange}
-            maxWidth={1000}
-            maxHeight={800}
-            showGrid={showGrid}
-            gridGap={1}
-          />
-        </div>
-
-        <ConfirmationDialog
-          open={showClearConfirmation}
-          onConfirm={handleClearConfirmation}
-          onCancel={handleClearCancel}
-          title="Clear Canvas"
-          message="Are you sure you want to clear the entire canvas?"
-          confirmBtn="Yes, delete it"
-          cancelBtn="Cancel"
+          <div className="h-10 w-10 bg-gray-400 hover:bg-gray-500 border-2 border-black peer-checked:bg-blue-600 peer-checked:border-white flex items-center justify-center">
+            {showGrid && <CheckIcon color="#FFFFFF" />}
+          </div>
+          Show Grid
+        </label>
+        <button
+          className="bg-gray-400 hover:bg-gray-500 text-black font-bold p-2"
+          onClick={handleClearCanvas}
+          data-testid="clear-canvas-button"
+        >
+          Clear Canvas
+        </button>
+      </div>
+      <div className="flex justify-center">
+        <ColorPanel
+          colors={colors}
+          selectedColor={selectedColor}
+          onColorSelect={setSelectedColor}
         />
+        <Canvas
+          initialData={pixelData}
+          selectedColor={selectedColor.color}
+          onPixelChange={handlePixelChange}
+          maxWidth={1000}
+          maxHeight={800}
+          showGrid={showGrid}
+          gridGap={1}
+        />
+      </div>
+
+      <ConfirmationDialog
+        open={showClearConfirmation}
+        onConfirm={handleClearConfirmation}
+        onCancel={handleClearCancel}
+        title="Clear Canvas"
+        message="Are you sure you want to clear the entire canvas?"
+        confirmBtn="Yes, delete it"
+        cancelBtn="Cancel"
+      />
     </main>
   );
 };

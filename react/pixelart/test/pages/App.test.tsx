@@ -19,16 +19,15 @@ vi.mock('../../src/hooks/useCanvasDataUpdater', () => ({
   default: vi.fn(),
 }));
 
-
 /**
  * Mocks Canvas component, and stores props for testing
  **/
 vi.mock('../../src/components/Canvas', () => ({
   default: vi.fn((props) => {
-
-    vi.mocked(Canvas).mock.calls[vi.mocked(Canvas).mock.calls.length - 1][0] = props;
+    vi.mocked(Canvas).mock.calls[vi.mocked(Canvas).mock.calls.length - 1][0] =
+      props;
     return <div data-testid="pixel-canvas" />;
-  })
+  }),
 }));
 
 /**
@@ -38,15 +37,15 @@ vi.mock('../../src/components/Canvas', () => ({
 describe('App Component', () => {
   const mockSetPixelData = vi.fn();
   const mockDebouncedSaveCanvasData = vi.fn();
-  
+
   beforeEach(() => {
     vi.clearAllMocks();
-    
+
     // Default mock implementations
     vi.mocked(useCanvasData).mockReturnValue({
       pixelData: [
         ['#ffffff', '#ffffff'],
-        ['#ffffff', '#ffffff']
+        ['#ffffff', '#ffffff'],
       ],
       setPixelData: mockSetPixelData,
       fetchCanvasData: vi.fn(),
@@ -91,7 +90,9 @@ describe('App Component', () => {
     });
 
     render(<App />);
-    expect(screen.getByText(/Error: you have got an error buddy/i)).toBeTruthy();
+    expect(
+      screen.getByText(/Error: you have got an error buddy/i)
+    ).toBeTruthy();
   });
   /**
    * Renders the canvas when the mocked pixel data is available.
@@ -118,13 +119,13 @@ describe('App Component', () => {
     const canvas = screen.getByTestId('pixel-canvas');
     expect(canvas).toBeTruthy();
   });
-/**
- * initialises a multicolored canvas.
- **/
+  /**
+   * initialises a multicolored canvas.
+   **/
   describe('Clear Canvas Functionality', () => {
     const initialColoredPixels = [
       ['#ff0000', '#000000'],
-      ['#0000ff', '#00ff00']
+      ['#0000ff', '#00ff00'],
     ];
 
     /**
@@ -141,33 +142,33 @@ describe('App Component', () => {
         loading: false,
         error: null,
       });
-      
+
       render(<App />);
-      
+
       // Click the "clear canvas" button
       const clearButton = screen.getByTestId('clear-canvas-button');
       await userEvent.click(clearButton);
-      
+
       // Click the confirm "Yes, delete it" button
       const confirmButton = screen.getByText('Yes, delete it');
       await userEvent.click(confirmButton);
-      
+
       // All white canvas matrix
       const expectedWhiteMatrix = [
         ['#ffffff', '#ffffff'],
-        ['#ffffff', '#ffffff']
+        ['#ffffff', '#ffffff'],
       ];
-      
+
       // Get the first argument of the first call to setPixelData
       const newPixelData = mockSetPixelData.mock.calls[0][0];
-      
+
       // Check if every pixel is white
       expect(newPixelData).toEqual(expectedWhiteMatrix);
     });
-  /**
-   * Does not clear the mulitcolored canvas when clear is canceled.
-   * Two click functions.
-   **/
+    /**
+     * Does not clear the mulitcolored canvas when clear is canceled.
+     * Two click functions.
+     **/
     it('should not change canvas when clear operation is cancelled', async () => {
       // Setup initial canvas with some colored pixels
       vi.mocked(useCanvasData).mockReturnValue({
@@ -177,20 +178,20 @@ describe('App Component', () => {
         loading: false,
         error: null,
       });
-      
+
       render(<App />);
-      
+
       // Click the clear button
       const clearButton = screen.getByTestId('clear-canvas-button');
       await userEvent.click(clearButton);
-      
+
       // Click the "Cancel" button
       const cancelButton = screen.getByText('Cancel');
       await userEvent.click(cancelButton);
-      
+
       // Verify setPixelData was never called
       expect(mockSetPixelData).not.toHaveBeenCalled();
-      
+
       // Verify debouncedSaveCanvasData was never called
       expect(mockDebouncedSaveCanvasData).not.toHaveBeenCalled();
     });
@@ -210,11 +211,13 @@ describe('App Component', () => {
 
       const expectedPixelData = [
         ['#ffffff', '#ffffff'],
-        ['#ff0000', '#ffffff']
+        ['#ff0000', '#ffffff'],
       ];
-      
+
       expect(mockSetPixelData).toHaveBeenCalledWith(expectedPixelData);
-      expect(mockDebouncedSaveCanvasData).toHaveBeenCalledWith(expectedPixelData);
+      expect(mockDebouncedSaveCanvasData).toHaveBeenCalledWith(
+        expectedPixelData
+      );
     });
     /**
      * Shpuld update a single pixel.
@@ -223,9 +226,9 @@ describe('App Component', () => {
     it('should not affect other pixels when updating a single pixel', () => {
       const initialPixelData = [
         ['#ff0000', '#00ff00'],
-        ['#0000ff', '#ffffff']
+        ['#0000ff', '#ffffff'],
       ];
-  
+
       vi.mocked(useCanvasData).mockReturnValue({
         pixelData: initialPixelData,
         setPixelData: mockSetPixelData,
@@ -233,7 +236,7 @@ describe('App Component', () => {
         loading: false,
         error: null,
       });
-  
+
       render(<App />);
 
       const { onPixelChange } = vi.mocked(Canvas).mock.calls[0][0];
@@ -242,11 +245,13 @@ describe('App Component', () => {
 
       const expectedPixelData = [
         ['#ff0000', '#00ff00'],
-        ['#0000ff', '#000000']
+        ['#0000ff', '#000000'],
       ];
-      
+
       expect(mockSetPixelData).toHaveBeenCalledWith(expectedPixelData);
-      expect(mockDebouncedSaveCanvasData).toHaveBeenCalledWith(expectedPixelData);
+      expect(mockDebouncedSaveCanvasData).toHaveBeenCalledWith(
+        expectedPixelData
+      );
     });
   });
 });

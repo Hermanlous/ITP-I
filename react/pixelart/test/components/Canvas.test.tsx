@@ -14,7 +14,7 @@ describe('Canvas', () => {
   const initialData = [
     ['#ffffff', '#ffffff', '#ffffff'],
     ['#ffffff', '#ffffff', '#ffffff'],
-    ['#ffffff', '#ffffff', '#ffffff']
+    ['#ffffff', '#ffffff', '#ffffff'],
   ];
 
   const onPixelChange = vi.fn();
@@ -33,15 +33,14 @@ describe('Canvas', () => {
    **/
   it('Mouse click', () => {
     render(
-        <Canvas
-            initialData={initialData}
-            selectedColor="#000000"
-            onPixelChange={onPixelChange}
-            maxWidth={500}
-            maxHeight={500}
-        />
+      <Canvas
+        initialData={initialData}
+        selectedColor="#000000"
+        onPixelChange={onPixelChange}
+        maxWidth={500}
+        maxHeight={500}
+      />
     );
-
 
     const canvasElement = screen.getByTestId('pixel-canvas');
     fireEvent.mouseDown(canvasElement, {
@@ -55,7 +54,11 @@ describe('Canvas', () => {
     });
 
     expect(onPixelChange).toHaveBeenCalled();
-    expect(onPixelChange).toHaveBeenCalledWith(expect.any(Number), expect.any(Number), "#000000");
+    expect(onPixelChange).toHaveBeenCalledWith(
+      expect.any(Number),
+      expect.any(Number),
+      '#000000'
+    );
   });
 
   /**
@@ -65,38 +68,42 @@ describe('Canvas', () => {
 
   it('Move mouse and vlick', () => {
     render(
-        <Canvas
-            initialData={initialData}
-            selectedColor="#0000ff"
-            onPixelChange={onPixelChange}
-            maxWidth={500}
-            maxHeight={500}
-        />
+      <Canvas
+        initialData={initialData}
+        selectedColor="#0000ff"
+        onPixelChange={onPixelChange}
+        maxWidth={500}
+        maxHeight={500}
+      />
     );
     const canvasElement = screen.getByTestId('pixel-canvas');
 
-    fireEvent.mouseDown(canvasElement,{
+    fireEvent.mouseDown(canvasElement, {
       button: 0,
       clientX: 50,
       clientY: 50,
     });
     fireEvent.mouseUp(canvasElement);
     expect(onPixelChange).toHaveBeenCalledTimes(1);
-    expect(onPixelChange).toHaveBeenCalledWith(expect.any(Number), expect.any(Number), "#0000ff");
+    expect(onPixelChange).toHaveBeenCalledWith(
+      expect.any(Number),
+      expect.any(Number),
+      '#0000ff'
+    );
   });
-/**
- * Test case to ensure that drawing stops after mouse up.
- * Checks if it only clicks after mouse is down and not after it is up.
- **/
+  /**
+   * Test case to ensure that drawing stops after mouse up.
+   * Checks if it only clicks after mouse is down and not after it is up.
+   **/
   it('should stop drawing after mouse up', () => {
     render(
-        <Canvas
-            initialData={initialData}
-            selectedColor="#0000ff"
-            onPixelChange={onPixelChange}
-            maxWidth={500}
-            maxHeight={500}
-        />
+      <Canvas
+        initialData={initialData}
+        selectedColor="#0000ff"
+        onPixelChange={onPixelChange}
+        maxWidth={500}
+        maxHeight={500}
+      />
     );
     const canvasElement = screen.getByTestId('pixel-canvas');
     fireEvent.mouseDown(canvasElement, {
