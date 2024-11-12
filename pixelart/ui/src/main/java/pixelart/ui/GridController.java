@@ -10,7 +10,7 @@ import pixelart.core.Pixel;
 
 public class GridController {
     public static final int GRID_SIZE_WIDTH = 60;
-    public static final int GRID_SIZE_HEIGHT = 40;
+    public static final int GRID_SIZE_HEIGHT = 34;
     public static final int PIXEL_SIZE = 10;
 
     final Grid grid;
