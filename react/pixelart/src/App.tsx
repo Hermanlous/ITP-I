@@ -12,10 +12,19 @@ import { Color } from './types/color.types';
 
 
 const App: React.FC = () => {
+
+  /**
+   * useCanvasData is fetching from restAPI.
+   * useCanvasUpdater sends a PUT request for each updated pixel.
+   * useState for showing either confirm of cancel to clear canvas.
+   **/
   const { pixelData, setPixelData, loading, error } = useCanvasData();
   const { debouncedSaveCanvasData } = useCanvasDataUpdater();
   const [showClearConfirmation, setShowClearConfirmation] = useState(false);
 
+  /**
+   * Colors to pick and choose from
+   **/
   const colors: Color[] = [
     { color: '#000000', onColor: '#ffffff' },
     { color: '#ff0000', onColor: '#ffffff' },
@@ -27,9 +36,19 @@ const App: React.FC = () => {
     { color: '#ffffff', onColor: '#000000' },
   ];
 
+  /**
+   * useState for selected color. Standard is black.
+   * useState to show or not to show grid.
+   **/
   const [selectedColor, setSelectedColor] = useState<Color>(colors[0]);
   const [showGrid, setShowGrid] = useState(false);
 
+  /**
+   * Sets new pixeldata, which then updates the rest API which use useCanvasUpdater
+   * @param x position of x coordinate of pixel
+   * @param y position of y coordinate of pixel
+   * @param color the color string to be updated
+   **/
   const handlePixelChange = (x: number, y: number, color: string) => {
     const newPixelData = [...pixelData];
     newPixelData[y][x] = color;
@@ -37,10 +56,16 @@ const App: React.FC = () => {
     debouncedSaveCanvasData(newPixelData);
   };
 
+  /**
+   * Sets clearing information true, can then cancel or confirm
+   **/
   const handleClearCanvas = () => {
     setShowClearConfirmation(true);
   };
 
+  /**
+   * Confirms handleClearCanvas function
+   **/
   const handleClearConfirmation = () => {
     const newPixelData = pixelData.map((row) => row.map(() => '#ffffff'));
     setPixelData(newPixelData);
@@ -48,6 +73,9 @@ const App: React.FC = () => {
     setShowClearConfirmation(false);
   };
 
+  /**
+   * Cancels handleClearCanvas function
+   **/
   const handleClearCancel = () => {
     setShowClearConfirmation(false);
   };

@@ -6,7 +6,9 @@ import useCanvasData from '../../src/hooks/useCanvasData';
 import useCanvasDataUpdater from '../../src/hooks/useCanvasDataUpdater';
 import Canvas from '../../src/components/Canvas';
 
-// Mock both hooks
+/**
+ * Mocks both hooks for use.
+ **/
 vi.mock('../../src/hooks/useCanvasData', () => ({
   __esModule: true,
   default: vi.fn(),
@@ -17,21 +19,27 @@ vi.mock('../../src/hooks/useCanvasDataUpdater', () => ({
   default: vi.fn(),
 }));
 
-// Mock Canvas component to capture props
+
+/**
+ * Mocks Canvas component, and stores props for testing
+ **/
 vi.mock('../../src/components/Canvas', () => ({
   default: vi.fn((props) => {
-    // Store props for testing
+
     vi.mocked(Canvas).mock.calls[vi.mocked(Canvas).mock.calls.length - 1][0] = props;
     return <div data-testid="pixel-canvas" />;
   })
 }));
 
+/**
+ * Establishes beforeEach to clear all mocks.
+ * Mocks both hooks and initializes a white 2 by 2 gird
+ **/
 describe('App Component', () => {
   const mockSetPixelData = vi.fn();
   const mockDebouncedSaveCanvasData = vi.fn();
   
   beforeEach(() => {
-    // Reset all mocks
     vi.clearAllMocks();
     
     // Default mock implementations
@@ -52,9 +60,11 @@ describe('App Component', () => {
       error: null,
     });
   });
+  /**
+   * Renders loading state using getByText, while useCanvasData is mocked.
+   **/
 
   it('renders the loading state when loading', () => {
-    // Mock the hook to simulate loading state
     vi.mocked(useCanvasData).mockReturnValue({
       pixelData: [],
       setPixelData: vi.fn(),
@@ -66,6 +76,9 @@ describe('App Component', () => {
     render(<App />);
     expect(screen.getByText(/Loading.../i)).toBeTruthy();
   });
+  /**
+   * Renders error message, while hook is mocked as an error.
+   **/
 
   it('renders an error message on error', () => {
     // Mock the hook to simulate an error state
@@ -80,7 +93,10 @@ describe('App Component', () => {
     render(<App />);
     expect(screen.getByText(/Error: you have got an error buddy/i)).toBeTruthy();
   });
-
+  /**
+   * Renders the canvas when the mocked pixel data is available.
+   * This is verifyed by the Canvas test id.
+   **/
   it('renders the canvas when pixel data is available', () => {
     // Mock the hook to simulate available pixel data
     const mockPixelData = [
@@ -102,12 +118,19 @@ describe('App Component', () => {
     const canvas = screen.getByTestId('pixel-canvas');
     expect(canvas).toBeTruthy();
   });
-
+/**
+ * initialises a multicolored canvas.
+ **/
   describe('Clear Canvas Functionality', () => {
     const initialColoredPixels = [
       ['#ff0000', '#000000'],
       ['#0000ff', '#00ff00']
     ];
+
+    /**
+     * Turns all the pixels white.
+     * Using two click mouse events.
+     **/
 
     it('should clear all pixels to white when clearing canvas', async () => {
       // Setup initial canvas with some colored pixels
@@ -141,7 +164,10 @@ describe('App Component', () => {
       // Check if every pixel is white
       expect(newPixelData).toEqual(expectedWhiteMatrix);
     });
-
+  /**
+   * Does not clear the mulitcolored canvas when clear is canceled.
+   * Two click functions.
+   **/
     it('should not change canvas when clear operation is cancelled', async () => {
       // Setup initial canvas with some colored pixels
       vi.mocked(useCanvasData).mockReturnValue({
@@ -171,16 +197,17 @@ describe('App Component', () => {
   });
 
   describe('Pixel Change Functionality', () => {
+    /**
+     * Updated pixel data when handlePixelChange is called.
+     * Changes a single pixel in the specific coordinate.
+     **/
     it('should update pixel data when handlePixelChange is called', () => {
       render(<App />);
-      
-      // Get the onPixelChange function from the Canvas props
+
       const { onPixelChange } = vi.mocked(Canvas).mock.calls[0][0];
-      
-      // Call handlePixelChange through the Canvas prop
+
       onPixelChange(0, 1, '#ff0000');
-  
-      // Check if setPixelData was called with the correct updated matrix
+
       const expectedPixelData = [
         ['#ffffff', '#ffffff'],
         ['#ff0000', '#ffffff']
@@ -189,9 +216,11 @@ describe('App Component', () => {
       expect(mockSetPixelData).toHaveBeenCalledWith(expectedPixelData);
       expect(mockDebouncedSaveCanvasData).toHaveBeenCalledWith(expectedPixelData);
     });
-  
+    /**
+     * Shpuld update a single pixel.
+     * And should not affect other pixels.
+     **/
     it('should not affect other pixels when updating a single pixel', () => {
-      // Setup initial pixel data with some colors
       const initialPixelData = [
         ['#ff0000', '#00ff00'],
         ['#0000ff', '#ffffff']
@@ -206,15 +235,11 @@ describe('App Component', () => {
       });
   
       render(<App />);
-      
-      // Get the onPixelChange function from the Canvas props
+
       const { onPixelChange } = vi.mocked(Canvas).mock.calls[0][0];
-      
-      // Change a single pixel
+
       onPixelChange(1, 1, '#000000');
-  
-      // Check if setPixelData was called with the correct matrix
-      // where only the target pixel was changed
+
       const expectedPixelData = [
         ['#ff0000', '#00ff00'],
         ['#0000ff', '#000000']

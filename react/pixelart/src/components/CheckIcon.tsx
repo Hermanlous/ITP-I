@@ -1,3 +1,8 @@
+/**
+ * CheckIconProps, props for Check icon. It is displayed as a checkmark.
+ * @param {string}, check icon fill color.
+ **/
+
 interface CheckIconProps {
   color: string;
 }

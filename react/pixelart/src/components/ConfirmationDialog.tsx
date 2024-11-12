@@ -1,5 +1,16 @@
 import React from 'react';
 
+/**
+ * ConfirmationDialogProps props to build confirmation dialog.
+ * @param {boolean}, based confirmation dialog on true or false value.
+ * @param {() => void}, response for fucntion onConfirm, confirms.
+ * @param {() => void}, response for function onCancel, cancels.
+ * @param {string}, header title for confirmation dialog.
+ * @param {string}, message for confirmation dialog.
+ * @param {string}, confirm button text.
+ * @param {string}, cancel button text.
+ **/
+
 interface ConfirmationDialogProps {
   open: boolean;
   onConfirm: () => void;
