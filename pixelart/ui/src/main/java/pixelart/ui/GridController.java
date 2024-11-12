@@ -12,11 +12,17 @@ public class GridController {
 
     /** The width of the grid, it is 60 pixels wide. */
     public static final int GRID_SIZE_WIDTH = 60;
+
+    /** The height of the gird, it is 34 pixels tall. */
     public static final int GRID_SIZE_HEIGHT = 34;
+
+    /** The size of each pixel. One of our pixels uses 10 pixels on
+     * your screen to represent it.
+     */
     public static final int PIXEL_SIZE = 10;
 
     /** The grid that contains the pixel data. */
-    final Grid grid;
+    private final Grid grid;
 
     /** The GridPane used to display the grid in UI. */
     private final GridPane gridPane;

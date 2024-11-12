@@ -65,10 +65,13 @@ public class AppController {
 
         try {
             this.gridStateHandler = new GridStateHandler();
-            String[][] currentState = gridStateHandler.loadCanvas();
-            grid = new Grid(currentState, GridController.PIXEL_SIZE);
+            String[][] theCurrentState = gridStateHandler.loadCanvas();
+            grid = new Grid(theCurrentState, GridController.PIXEL_SIZE);
         } catch (Exception e) {
-            this.grid = new Grid(GridController.GRID_SIZE_HEIGHT, GridController.GRID_SIZE_WIDTH, GridController.PIXEL_SIZE);
+            this.grid = new Grid(
+                GridController.GRID_SIZE_HEIGHT,
+                GridController.GRID_SIZE_WIDTH,
+                GridController.PIXEL_SIZE);
         }
 
         this.gridController =
