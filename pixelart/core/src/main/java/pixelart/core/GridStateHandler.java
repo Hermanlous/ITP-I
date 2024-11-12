@@ -41,12 +41,27 @@ public class GridStateHandler {
         this.objectMapper = new ObjectMapper();
     }
 
-    public void setHttpClient(HttpClient httpClient) {
-        this.httpClient = httpClient;
+    /**
+     * Sets the {@link HttpClient} used for server communication.
+     * This client handles all HTTP requests for saving and loading
+     * the canvas state.
+     *
+     * @param theHttpClient the {@code HttpClient} to use for HTTP operations.
+     */
+    public void setHttpClient(final HttpClient theHttpClient) {
+        this.httpClient = theHttpClient;
     }
 
-    public void setObjectMapper(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
+     /**
+     * Sets the {@link ObjectMapper} for JSON serialization and deserialization.
+     * The object mapper converts the canvas data to JSON format and parses
+     * JSON responses from the server.
+     *
+     * @param theObjectMapper the {@code ObjectMapper} instance for
+     * JSON processing.
+     */
+    public void setObjectMapper(final ObjectMapper theObjectMapper) {
+        this.objectMapper = theObjectMapper;
     }
 
     /**

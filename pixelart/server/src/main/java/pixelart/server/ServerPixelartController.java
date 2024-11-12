@@ -24,8 +24,8 @@ public class ServerPixelartController {
      * Path to the file storing the canvas data.
      */
     private final String filePath =
-            System.getProperty("user.dir") +
-                    "/src/main/resources/persistence/jsonCanvas.json";
+            System.getProperty("user.dir")
+                    + "/src/main/resources/persistence/jsonCanvas.json";
 
     /**
      * ObjectMapper for serializing and deserializing JSON data.
@@ -46,7 +46,7 @@ public class ServerPixelartController {
     @GetMapping("run")
     public ResponseEntity<String> getPixelart() {
 
-        /**
+        /*
          * Endpoint to get the current canvas data.
          *
          * @return A ResponseEntity containing the canvas data as a
@@ -56,19 +56,28 @@ public class ServerPixelartController {
          */
         return ResponseEntity.ok("Pixelart is running");
     }
+
+    /**
+     * Retrieves the current canvas data from the stored file.
+     *
+     * @return A ResponseEntity containing the canvas data as a 2D
+     * array of strings, or an error status if the file is not found
+     * or an IOException occurs.
+     */
     @GetMapping(value = "/canvas", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String[][]> getCanvas() {
         File file = new File(filePath);
         try {
             if (!file.exists()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(new String[][]    {{"File not found: " + filePath}});
+                        .body(new String[][] {{"File not found: " + filePath}});
             }
             String[][] canvasGrid = mapper.readValue(file, String[][].class);
             return ResponseEntity.ok(canvasGrid);
         } catch (IOException e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return
+            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -86,7 +95,9 @@ public class ServerPixelartController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<String[][]> postCanvas(@RequestBody String[][] currentGrid) {
+    public ResponseEntity<String[][]> postCanvas(
+        @RequestBody final String[][] currentGrid) {
+
         File file = new File(filePath);
 
         try {
@@ -97,7 +108,8 @@ public class ServerPixelartController {
             return ResponseEntity.ok(currentGrid);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return
+            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }
