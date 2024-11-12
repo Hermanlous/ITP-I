@@ -17,7 +17,7 @@ public class Grid {
     /**
      * The defaultet height of our grid.
      */
-    private static final int DEFAULT_GRID_HEIGHT = 40;
+    private static final int DEFAULT_GRID_HEIGHT = 34;
 
     /**
      * The width of the grid in pixels.
@@ -79,7 +79,7 @@ public class Grid {
         throws IOException, InterruptedException {
 
         this.gridSizeHeight =
-        newState.length > 0 ? newState[0].length : DEFAULT_GRID_HEIGHT;
+        newState.length > 0 ? newState.length : DEFAULT_GRID_HEIGHT;
         this.gridSizeWidth =
         newState[0].length > 0 ? newState.length : DEFAULT_GRID_WIDTH;
 
@@ -104,9 +104,12 @@ public class Grid {
      * @param pixelSize the size of each pixel in the grid.
      */
     private void initializeEmptyGrid(final int pixelSize) {
+        this.pixels = new Pixel[gridSizeHeight][gridSizeWidth];
+        this.currentState = new String[gridSizeHeight][gridSizeWidth];
+
         for (int row = 0; row < gridSizeHeight; row++) {
-            for (int column = 0; column < gridSizeWidth; column++) {
-                pixels[row][column] = new Pixel(pixelSize);
+            for (int col = 0; col < gridSizeWidth; col++) {
+                pixels[row][col] = new Pixel(pixelSize);
             }
         }
     }
@@ -176,7 +179,7 @@ public class Grid {
      * @return a 2D array of {@link Pixel} objects. All pixels in the grid.
      */
     public Pixel[][] getAllPixels() { //This sends all of them
-        return pixels;
+        return pixels.clone();
     }
 
     /**
@@ -193,6 +196,10 @@ public class Grid {
             }
         }
         return jsonGrid;
+    }
+
+    protected void setGridStateHandler(GridStateHandler gridStateHandler) {
+        this.gridStateHandler = gridStateHandler;
     }
 
 }
