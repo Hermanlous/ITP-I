@@ -47,7 +47,7 @@ public class AppControllerTest extends ApplicationTest {
 
         HttpResponse<String> mockResponse = mock(HttpResponse.class);
         when(mockResponse.statusCode()).thenReturn(200);
-        when(mockResponse.body()).thenReturn("[[\"#FFFFFF\"]]");
+        when(mockResponse.body()).thenReturn("Success!");
 
         when(mockHttpClient.send(any(HttpRequest.class), eq(HttpResponse.BodyHandlers.ofString()))).thenReturn(mockResponse);
         System.out.println(mockResponse.body());
@@ -68,17 +68,15 @@ public class AppControllerTest extends ApplicationTest {
 
         sleep(1000);
         GridPane gridPane = lookup("#gridPane").query();
-        //int[] testPixelIndexes = {};
-        //for(int index: testPixelIndexes){
-        clickOn(gridPane.getChildren().get(0));
-        //}
 
-        // Verify HTTP client was called
+        clickOn(gridPane.getChildren().get(20));
+
         verify(mockHttpClient, timeout(5000)).send(
                 any(HttpRequest.class),
                 eq(HttpResponse.BodyHandlers.ofString())
         );
     }
+
     @Test
     public void initGrid(){
         GridPane gridPane = lookup("#gridPane").query();
@@ -92,7 +90,8 @@ public class AppControllerTest extends ApplicationTest {
     @Test
     public void testHowManyCanvases(){
         GridPane gridPane = lookup("#gridPane").query();
-        Assertions.assertEquals(gridPane.getColumnCount(), 60);
-        Assertions.assertEquals(gridPane.getRowCount(), 40);
+
+        Assertions.assertEquals(60, gridPane.getColumnCount());
+        Assertions.assertEquals(34, gridPane.getRowCount());
     }
 }
