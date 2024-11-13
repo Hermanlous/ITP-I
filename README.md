@@ -14,6 +14,7 @@ PixelArt er en enkel tegne-app for pixelkunst som lar deg velge mellom ulike far
 
 - [PixelArt](#pixelart)
   - [Innhold](#innhold)
+  - [Utgaver](#utgaver)
   - [Funksjoner](#funksjoner)
   - [Teknologier](#teknologier)
     - [Java Stack](#java-stack)
@@ -49,6 +50,12 @@ PixelArt er en enkel tegne-app for pixelkunst som lar deg velge mellom ulike far
     - [Frontend](#frontend)
     - [Backend](#backend)
   - [Utviklere](#utviklere)
+
+## Utgaver
+
+[Release 1](pixelart/docs/release1/README.md)
+[Release 2](pixelart/docs/release2/README.md)
+[Release 3](pixelart/docs/release3/README.md)
 
 ## Funksjoner
 
@@ -221,6 +228,7 @@ cd pixelart/react/pixelart
 npm i
 npx eslint .
 ```
+
 Vi benytter oss av Typescript strict med eslint, som gir oss en svært streng kodesjekk. Dette gir oss god oversikt og høy kodekvalitet.
 
 ## Kode Evaluering
