@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="no"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AppController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pixelart-ui</a> &gt; <a href="index.source.html" class="el_package">pixelart.ui</a> &gt; <span class="el_source">AppController.java</span></div><h1>AppController.java</h1><pre class="source lang-java linenums">package pixelart.ui;
+
+import java.io.IOException;
+
+import javafx.fxml.FXML;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import pixelart.core.Grid;
+import pixelart.core.GridStateHandler;
+
+/**
+ * AppController is the main controller class for our JavaFX application.
+ * It controls the interaction between the user and our canvas.
+ * The user is able to draw and erase on the different pixels.
+ * This is done by using left and right mouse click.
+ */
+<span class="fc" id="L17">public class AppController {</span>
+
+    /** The main grid containing the canvas element.*/
+    @FXML
+    private GridPane gridPane;
+
+    /**
+     * The color palette displayed as a set of color buttons.
+     */
+    @FXML
+    private HBox colorPalette;
+
+    /** The grid model containing our pixeldata.*/
+    private Grid grid;
+
+    /** Managed saving and loading gridstate from server.*/
+    private GridStateHandler gridStateHandler;
+
+    /** The size of the width of the grid. */
+<span class="fc" id="L36">    private final int gridSizeWidth = 60;</span>
+
+    /** The size of the height of the grid. */
+<span class="fc" id="L39">    private final int gridSizeHeight = 34;</span>
+
+    /** Size of each pixel square in the grid.*/
+<span class="fc" id="L42">    private final int pixelSize = 10;</span>
+
+    /** Stores the current state of each pixel in grid.*/
+    private String[][] currentState;
+
+    /** Manages color selection and palette operations. */
+    private ColorController colorController;
+
+    /** Controls the grid’s visual and interactive behavior. */
+    private GridController gridController;
+
+    /**
+     * Initializes the controller as well as the canvas
+     * Tries to retrieve canvas from server. Else a new one.
+     *
+     * @throws IOException if there´s an error initializing
+     * @throws InterruptedException if the loading from server process fails
+     * */
+
+    @FXML
+    public void initialize() throws IOException, InterruptedException {
+<span class="fc" id="L63">        this.colorController = new ColorController(colorPalette);</span>
+<span class="fc" id="L64">        colorController.initializeColorPalette();</span>
+
+        try {
+<span class="fc" id="L67">            this.gridStateHandler = new GridStateHandler();</span>
+<span class="nc" id="L68">            String[][] theCurrentState = gridStateHandler.loadCanvas();</span>
+<span class="nc" id="L69">            grid = new Grid(theCurrentState, GridController.PIXEL_SIZE);</span>
+<span class="fc" id="L70">        } catch (Exception e) {</span>
+<span class="fc" id="L71">            this.grid = new Grid(</span>
+                GridController.GRID_SIZE_HEIGHT,
+                GridController.GRID_SIZE_WIDTH,
+                GridController.PIXEL_SIZE);
+<span class="nc" id="L75">        }</span>
+
+<span class="fc" id="L77">        this.gridController =</span>
+        new GridController(grid, gridPane, gridStateHandler);
+<span class="fc" id="L79">        gridController.initializeGridPane();</span>
+
+<span class="fc" id="L81">        colorController.setOnColorSelected(</span>
+<span class="nc" id="L82">        color -&gt; gridController.setCurrentColor(color));</span>
+<span class="fc" id="L83">    }</span>
+
+    /**
+     * Retrieves the controller responsible for managing grid operations.
+     *
+     * @return the GridController instance managing the grid's behavior.
+     */
+    public GridController getGridController() {
+<span class="fc" id="L91">        return gridController;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
