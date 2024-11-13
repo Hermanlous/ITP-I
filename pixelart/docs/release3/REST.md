@@ -39,7 +39,7 @@ Eksempel på PUT body med farger:
 ```
 
 ## Java klient
-I Java har vi laget en GridStateHandler som håndterer lasting fra- og putting til REST-apiet. Når applikasjonen startes opp blir det gjort et forsøk på å hente informasjon fra Rest-apiet, gjennom GridStateHandler som setter opp riktig HTTP klient. Dataen kommer som et array av strenger som gjør det enkelt for oss å konvertere til et kanvas. Med funksjonen pixelClick i GridController kalles funksjonen `postCanvas` som kaller postCanvas i GridStateHandler. Dette kaller en PUT-funksjon som sender hele kanvaset til REST-apiet.
+I Java har vi laget en GridStateHandler som håndterer lasting fra- og putting til REST-apiet. Når applikasjonen startes opp blir det gjort et forsøk på å hente informasjon fra Rest-apiet, gjennom GridStateHandler som setter opp riktig HTTP klient. Dataen kommer som et array av strenger som gjør det enkelt for oss å konvertere til et kanvas. Med funksjonen pixelClick i GridController kalles funksjonen `saveCanvasToServer` som kaller `sendCanvasToServer` i GridStateHandler. Dette kaller en PUT-funksjon som sender hele kanvaset til REST-apiet.
 
 ### GET-forespørsel i Java
 I java har vi en GridStateHandler som håndterer alle GET-forespørsler. Dersom man sender en GET forespørsel, vil GridStateHandler iterere over dataen og initialisere et nytt Grid-objekt basert på denne dataen. Dette forsøkes hver gang applikasjonen initialiseres. Dersom det ikke evnes å laste et kanvas, initialiseres et nytt, hvitt kanvas.

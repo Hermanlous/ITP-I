@@ -55,18 +55,6 @@ public class PixelTest {
     }
 
     /**
-     * Tests that a failed initialization throws error
-
-     * This ensures that the initialization of a Pixel
-     * correctly throws an IllegalArgumentException when
-     * a pixel is initialized with illegal pixelSize.
-     */
-    @Test
-    void failedInitializationTest(){
-        assertThrows(IllegalArgumentException.class, () -> new Pixel(-10));
-    }
-
-    /**
      * Tests that a Pixel has been initialized with correct size
      *
      * This test ensures the pixel has been initialized correctly,

@@ -55,7 +55,7 @@ class GridStateHandlerTest {
 
 
     /**
-     * Tests {@link GridStateHandler#postCanvas} for a successful PUT request.
+     * Tests {@link GridStateHandler#sendCanvasToServer} for a successful PUT request.
      * Verifies that a 2D canvas array is serialized and sent via HTTP,
      * ensuring a successful response with status 200.
      *
@@ -79,7 +79,7 @@ class GridStateHandlerTest {
                 .thenReturn(mockResponse);
         when(mockObjectMapper.writeValueAsString(any())).thenReturn("mockJsonString");
 
-        assertDoesNotThrow(() -> gridStateHandler.postCanvas(canvasData));
+        assertDoesNotThrow(() -> gridStateHandler.sendCanvasToServer(canvasData));
         verify(mockHttpClient).send(any(HttpRequest.class), eq(BodyHandlers.ofString()));
         verify(mockObjectMapper).writeValueAsString(canvasData);
     }
@@ -87,7 +87,7 @@ class GridStateHandlerTest {
 
     /**
      * Testing error handling when posting canvas data fails with status 500.
-     * Simulates that {@link GridStateHandler#postCanvas} throws an IOException
+     * Simulates that {@link GridStateHandler#sendCanvasToServer} throws an IOException
      * with an appropriate error message when failing.
      *
      * @throws IOException when an IOException occurs
@@ -109,7 +109,7 @@ class GridStateHandlerTest {
         when(mockObjectMapper.writeValueAsString(any())).thenReturn("mockJsonString");
 
         Exception exception = assertThrows(IOException.class, () ->
-                gridStateHandler.postCanvas(canvasData)
+                gridStateHandler.sendCanvasToServer(canvasData)
         );
         assertTrue(exception.getMessage().contains("Failed to post canvas"));
         verify(mockHttpClient).send(any(HttpRequest.class), eq(BodyHandlers.ofString()));

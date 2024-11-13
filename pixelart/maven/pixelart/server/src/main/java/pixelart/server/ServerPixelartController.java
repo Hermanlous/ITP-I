@@ -33,11 +33,6 @@ public class ServerPixelartController {
     private final ObjectMapper mapper = new ObjectMapper();
 
     /**
-     * Canvas data stored as a 2D array of strings.
-     */
-    private String[][] canvasData;
-
-    /**
      * Endpoint to check if the Pixelart server is running.
      *
      * @return A ResponseEntity with a message confirming
@@ -45,15 +40,6 @@ public class ServerPixelartController {
      */
     @GetMapping("run")
     public ResponseEntity<String> getPixelart() {
-
-        /*
-         * Endpoint to get the current canvas data.
-         *
-         * @return A ResponseEntity containing the canvas data as a
-         * 2D array of strings.
-         * If an error occurs while retrieving the data, an
-         * INTERNAL_SERVER_ERROR status is returned.
-         */
         return ResponseEntity.ok("Pixelart is running");
     }
 
@@ -95,13 +81,12 @@ public class ServerPixelartController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<String[][]> postCanvas(
+    public ResponseEntity<String[][]> putCanvas(
         @RequestBody final String[][] currentGrid) {
 
         File file = new File(filePath);
 
         try {
-
             mapper.writerWithDefaultPrettyPrinter()
                     .writeValue(file, currentGrid);
 

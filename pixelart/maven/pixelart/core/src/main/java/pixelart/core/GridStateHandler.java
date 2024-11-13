@@ -66,13 +66,13 @@ public class GridStateHandler {
     }
 
     /**
-     * Posts the current canvas to the server via a PUT request.
+     * Updates the current canvas to the server via a PUT request.
      *
      * @param canvasData A String array representing the canvas grid.
      * @throws IOException          In case of an IO exception
      * @throws InterruptedException If the operation is interrupted.
      */
-    public void postCanvas(final String[][] canvasData)
+    public void sendCanvasToServer(final String[][] canvasData)
         throws IOException, InterruptedException {
         String jsonBody = objectMapper.writeValueAsString(canvasData);
 

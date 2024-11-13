@@ -106,7 +106,7 @@ public class GridController {
     private void saveCanvasToServer() {
         try {
             String[][] currentGrid = grid.getJsonGrid();
-            gridStateHandler.postCanvas(currentGrid);
+            gridStateHandler.sendCanvasToServer(currentGrid);
         } catch (Exception e) {
             e.printStackTrace();
         }

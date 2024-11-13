@@ -30,23 +30,10 @@ public class Grid {
     private final int gridSizeHeight;
 
     /**
-     * A 2D array representing the initial state of each pixel.
-     * Stores the state as a 2D array of strings, where each entry represents
-     * the color of a pixel in the grid ("B" for black, "W" for white).
-     */
-    private String[][] currentState;
-
-
-    /**
      * A 2D array that holds all the pixels.
      * Each pixel is a {@link Pixel} object
      */
     private Pixel[][] pixels; //[][] = all pixels, not just one
-
-    /**
-     * Handles the state, saving and loading of the grid.
-     */
-    private GridStateHandler gridStateHandler;
 
     /**
      * Constructs a new instance of the {@code Grid} class.
@@ -190,17 +177,4 @@ public class Grid {
         }
         return jsonGrid;
     }
-
-   /* /**
-     * Sets the {@link GridStateHandler} for this grid.
-     * This handler manages saving and loading the state of the grid.
-     *
-     * @param theGridStateHandler the {@code GridStateHandler} instance to use
-     *                            for managing grid state persistence.
-     */
-    /*protected void setGridStateHandler(
-        final GridStateHandler theGridStateHandler) {
-        this.gridStateHandler = theGridStateHandler;
-    }*/
-
 }
