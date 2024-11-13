@@ -229,8 +229,7 @@ Vi benytter oss av Typescript strict med eslint, som gir oss en svært streng ko
 
 Kode evalueringen til gruppen bestod av flere punkter. Vi hadde alle et ansvar ovenfor hverandre og gå over kode som hadde blitt produsert fra sprint til sprint, og gjennomgang av kode for hver "pull-request".
 
-*Verifisering:*
-Dette går ut på at en forstår funksjonen til koden og at den utfyller ønsket utfall. På denne måten kan alle på gruppen knytte videre utvikling til gammel kode uten at det blir redundans og misforståelser.
+*Verifisering:* Dette går ut på at en forstår funksjonen til koden og at den utfyller ønsket utfall. På denne måten kan alle på gruppen knytte videre utvikling til gammel kode uten at det blir redundans og misforståelser.
 
 *Leselighet:* Koden skal være leselig, og skal ikke fremstå som ukjent for noen. Her er det viktig at man benytter seg av anvendelige konvensjoner, og er tydelig dersom deler av koden er vanskelig å forstå seg på.
 
@@ -278,6 +277,8 @@ Canvas elementet som returneres er en todimensjonal array som ser slik ut.
 JSON eksempel initialisert med kun fargen hvit:
 
 ``` bash
+
+``` bash
 [
     [ "#FFFFFF", "#FFFFFF", "#FFFFFF", ... ],
     [ "#FFFFFF", "#FFFFFF", "#FFFFFF", ... ],
@@ -291,8 +292,8 @@ See further [documentation](/pixelart/docs/release3/REST.md) on the API
 
 For hosting på web har vi brukt [Render](https://render.com/).
 
-**NB: Begge tjenestene kjører på Render sin gratis plan og 
-ved inaktivitet stoppens instansene, noe som kan føre til tap av kanvas data og forsinke forespørsler med 50 sekunder eller mer.**
+**NB: Begge tjenestene kjører på Render sin gratis plan og
+ved inaktivitet stoppens instansene, noe som kan føre til tap av kanvas data og forsinke forespørsler med 150 sekunder eller mer.**
 
 Deployment er inspirert av [denne guiden](https://hostingtutorials.dev/blog/free-spring-boot-host-with-render).
 

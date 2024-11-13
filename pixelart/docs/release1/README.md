@@ -1,6 +1,6 @@
 # PixelArt
 
-Åpne i Eclipse Che [her](https://che.stud.ntnu.no/#https://gitlab.stud.idi.ntnu.no/it1901/groups-2024/gr2452/gr2452?new). 
+Åpne i Eclipse Che [her](https://che.stud.ntnu.no/#https://gitlab.stud.idi.ntnu.no/it1901/groups-2024/gr2452/gr2452?new).
 
 ## Om appen
 
@@ -41,15 +41,16 @@ Vi har konstruert en enkel tegneapp
 
 ## Utgivelser
 
-[Release 1](pixelart/docs/release1/)
-[Release 2](pixelart/docs/release2/)
+[Release 1](../release1/README.md)
+[Release 2](../release2/README.md)
+[Release 3](../release3/README.md)
 
 ## Brukerhistorier
 
 Her kan lese om brukerhistorier som støtter utviklingsarbeidet:
-[Brukerhistorier](Brukerhistorier.md)
+[Brukerhistorier](../release2/Brukerhistorier.md)
 
 ## Bruksanvisning
 
 Her kan du lese dokumentasjon om hvordan du bruker appen.
-[Bruksanvisning](pixelart/docs/Bruksanvisning.md)
+[Bruksanvisning](../release2//Bruksanvisning.md)
