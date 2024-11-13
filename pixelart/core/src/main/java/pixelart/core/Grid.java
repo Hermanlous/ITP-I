@@ -59,8 +59,6 @@ public class Grid {
     public Grid(final int height, final int width, final int pixelSize) {
         this.gridSizeWidth = width;
         this.gridSizeHeight = height;
-        this.pixels = new Pixel[gridSizeHeight][gridSizeWidth];
-        this.gridStateHandler = new GridStateHandler();
         initializeEmptyGrid(pixelSize);
     }
 
@@ -84,16 +82,13 @@ public class Grid {
         newState[0].length > 0 ? newState[0].length : DEFAULT_GRID_WIDTH;
 
         try {
-            this.gridStateHandler = new GridStateHandler();
-            this.currentState = gridStateHandler.loadCanvas();
-            // this.gridSizeWidth = newState.length;
-            // this.gridSizeHeight = newState[0].length;
             this.pixels = new Pixel[gridSizeHeight][gridSizeWidth];
             initializeGridFromState(newState, pixelSize);
+        } catch (RuntimeException e) {
+            System.out.println("Runtime Exception!");
+            initializeEmptyGrid(pixelSize);
         } catch (Exception e) {
-            System.out.println("Error loading grid");
-            // this.gridSizeWidth = DEFAULT_GRID_WIDTH;
-            // this.gridSizeHeight = DEFAULT_GRID_HEIGHT;
+            System.out.println("Error retrieving grid!");
             initializeEmptyGrid(pixelSize);
         }
     }
@@ -105,8 +100,6 @@ public class Grid {
      */
     private void initializeEmptyGrid(final int pixelSize) {
         this.pixels = new Pixel[gridSizeHeight][gridSizeWidth];
-        this.currentState = new String[gridSizeHeight][gridSizeWidth];
-
         for (int row = 0; row < gridSizeHeight; row++) {
             for (int col = 0; col < gridSizeWidth; col++) {
                 pixels[row][col] = new Pixel(pixelSize);
@@ -151,7 +144,7 @@ public class Grid {
      * Return the width of the grid.
      * @return width of grid as integer.
      */
-    public int getgridSizeWidth() {
+    public int getGridSizeWidth() {
         return gridSizeWidth;
     }
 
@@ -159,7 +152,7 @@ public class Grid {
      * Return the height of the grid.
      * @return height of grid as integer.
      */
-    public int getgridSizeHeight() {
+    public int getGridSizeHeight() {
         return gridSizeHeight;
     }
 
@@ -198,16 +191,16 @@ public class Grid {
         return jsonGrid;
     }
 
-    /**
+   /* /**
      * Sets the {@link GridStateHandler} for this grid.
      * This handler manages saving and loading the state of the grid.
      *
      * @param theGridStateHandler the {@code GridStateHandler} instance to use
      *                            for managing grid state persistence.
      */
-    protected void setGridStateHandler(
+    /*protected void setGridStateHandler(
         final GridStateHandler theGridStateHandler) {
         this.gridStateHandler = theGridStateHandler;
-    }
+    }*/
 
 }

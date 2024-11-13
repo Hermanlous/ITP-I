@@ -34,6 +34,7 @@ public class ColorController {
      * @param theColorPalette the HBox container where
      * color buttons are displayed.
      */
+    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings("EI_EXPOSE_REP")
     public ColorController(final HBox theColorPalette) {
         this.colorPalette = theColorPalette;
     }

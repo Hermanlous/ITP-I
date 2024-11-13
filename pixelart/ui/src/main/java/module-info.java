@@ -7,6 +7,7 @@ module pixelart.ui {
     requires org.json;
     requires javafx.controls;
     requires javafx.graphics;
+    requires com.github.spotbugs.annotations;
 
     exports pixelart.ui;
     opens pixelart.ui to javafx.fxml;
