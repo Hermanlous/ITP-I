@@ -1,5 +1,6 @@
 # Filtreet vårt
 
+``` bash
 ├───img
 ├───pixelart
 │   ├───docs
@@ -66,7 +67,6 @@
 │               └───pages
 └───shippableProduct
 └───PixelArtApp
-
-
+```
 
 [Tilbake til innholdsfortegnelsen](README.md)
