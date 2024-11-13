@@ -74,7 +74,7 @@ cd gr2452
 ### Java Maven Build
 
 ```bash
-cd pixelart
+cd pixelart/maven/pixelart
 mvn clean install
 ```
 
@@ -83,7 +83,7 @@ mvn clean install
 #### Spring Boot Server
 
 ```bash
-cd pixelart/server
+cd pixelart/maven/pixelart/server
 mvn spring-boot:run
 ```
 For å lukke, trykk `ctrl` + `c`, deretter trykk `y` + `enter`.
@@ -92,7 +92,7 @@ For å lukke, trykk `ctrl` + `c`, deretter trykk `y` + `enter`.
 #### JavaFX Client
 
 ```bash
-cd pixelart/ui
+cd pixelart/maven/pixelart/ui
 mvn javafx:run
 ```
 
@@ -100,7 +100,7 @@ mvn javafx:run
 
 
 ```bash
-cd pixelart
+cd pixelart/maven/pixelart
 mvn test
 ```
 
@@ -125,7 +125,7 @@ I Server har vi lagt vekt på å teste de uike situasjonene som kan oppstå som 
 #### Checkstyle
 
 ```bash
-cd pixelart
+cd pixelart/maven/pixelart
 mvn checkstyle:check
 ```
 
@@ -134,7 +134,7 @@ Vi har 1 stående checkstyle violation. Den lar vi stå, for at appen skal funge
 #### Spotbugs
 
 ```bash
-cd pixelart
+cd pixelart/maven/pixelart
 mvn spotbugs:spotbugs
 mvn spotbugs:gui
 ```
@@ -145,7 +145,7 @@ mvn spotbugs:gui
 
 
 ```bash
-cd react/pixelart
+cd pixelart/react/pixelart
 npm i
 ```
 
@@ -153,7 +153,7 @@ npm i
 
 
 ```bash
-cd react/pixelart
+cd pixelart/react/pixelart
 npm run dev
 ```
 For å lukke, trykk `ctrl` + `c`, deretter trykk `y` + `enter`.
@@ -162,7 +162,7 @@ For å lukke, trykk `ctrl` + `c`, deretter trykk `y` + `enter`.
 
 
 ```bash
-cd react/pixelart
+cd pixelart/react/pixelart
 npm run test
 npm run coverage
 ```
@@ -188,7 +188,7 @@ Hooks blir mocket gjennom andre komponenter. Hovedsakelig App.tsx
 
 
 ```bash
-cd react/pixelart
+cd pixelart/react/pixelart
 npm i
 npx eslint .
 ```
