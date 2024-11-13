@@ -1,4 +1,0 @@
---patch-module
-pixelart.ui=_
---add-reads
-pixelart.ui=ALL-UNNAMED
