@@ -71,7 +71,7 @@ class ServerPixelartControllerTest {
 	 * sent to the "/canvas" endpoint.
      */
 	@Test
-	void postCanvasWithValidData() throws Exception {
+	void putCanvasWithValidData() throws Exception {
 
 		mockMvc.perform(put("/canvas")
 						.contentType(MediaType.APPLICATION_JSON)
@@ -88,7 +88,7 @@ class ServerPixelartControllerTest {
 	 * when invalid JSON is sent to the "/canvas" endpoint.
      */
 	@Test
-	void postCanvasWithInvalidJSON() throws Exception {
+	void putCanvasWithInvalidJSON() throws Exception {
 		String invalidJson = "{ invalid: json }";
 
 		mockMvc.perform(put("/canvas")

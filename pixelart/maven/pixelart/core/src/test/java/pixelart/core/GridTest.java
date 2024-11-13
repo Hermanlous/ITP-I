@@ -18,7 +18,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-
 class GridTest {
 
     /**
@@ -45,7 +44,7 @@ class GridTest {
 
     /**
      * A mocked instance of a GridStateHandler used for testing
-     * */
+     */
     @Mock
     private GridStateHandler mockGridStateHandler;
 
@@ -76,7 +75,6 @@ class GridTest {
         }
     }
 
-
     /**
      * Verifies that each cell in the JSON grid is initialized to the expected color.
 
@@ -91,7 +89,6 @@ class GridTest {
             }
         }
     }
-
 
     /**
      * Verifies the initialization properties on each pixel in the grid
@@ -109,7 +106,6 @@ class GridTest {
             }
         }
     }
-
 
     /**
      * Verifies the successful retrieval of all pixels in the canvas
@@ -131,7 +127,6 @@ class GridTest {
             }
         }
     }
-
 
     /**
      * Tests a successful update of the color of each pixel in the grid
@@ -166,7 +161,6 @@ class GridTest {
     void successfullyRetrievingHeight(){
         assertEquals(DEFAULT_GRID_HEIGHT, grid.getGridSizeHeight());
     }
-
 
     /**
      * Tests initialization of Grid from a simulated API state
@@ -217,7 +211,6 @@ class GridTest {
         }
     }
 
-
     /**
      * Verifies that a RuntimeException is thrown with malformed data in the response
      *
@@ -238,7 +231,4 @@ class GridTest {
                 testGrid.initializeGridFromState(malformedState, pixelSize)
         );
     }
-
 }
-
-

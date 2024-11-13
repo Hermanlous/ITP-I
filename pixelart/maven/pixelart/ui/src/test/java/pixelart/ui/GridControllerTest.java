@@ -107,7 +107,7 @@ public class GridControllerTest {
         gridController.setCurrentColor("#000000");
         gridController.pixelClick(0, 0, mockMouseEvent);
 
-        verify(gridStateHandler).postCanvas(mockGrid);
+        verify(gridStateHandler).sendCanvasToServer(mockGrid);
         verify(pixel).updateColor("#000000");
     }
 
