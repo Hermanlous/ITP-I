@@ -19,6 +19,12 @@ public class CheckHTTPResponse {
     @Autowired
     private TestRestTemplate testRestTemplate;
 
+    /**
+     * Verifies that the "/run" endpoint is accessible and returns the expected response.
+     *
+     * Sends an HTTP GET request to "/run" and checks if the response is
+     * "Pixelart API is running," if it is then the API is responsive.
+     */
     @Test
     public void stringMatch(){
         assertEquals("Pixelart API is running",

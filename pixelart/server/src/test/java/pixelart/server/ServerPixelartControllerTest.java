@@ -43,6 +43,10 @@ class ServerPixelartControllerTest {
 		objectMapper.writeValue(new File(correctFilePath), testGrid);
 	}
 
+	/**
+     * Tests that the server responds to the "/run" endpoint
+	 * with a running status message.
+     */
 	@Test
 	void returnPixelart() throws Exception {
 		mockMvc.perform(get("/run"))
@@ -50,6 +54,10 @@ class ServerPixelartControllerTest {
 				.andExpect(content().string("Pixelart is running"));
 	}
 
+	 /**
+     * Tests that the "/canvas" endpoint returns the canvas as
+	 * JSON when a valid file is available.
+     */
 	@Test
 	void returnCanvasWithValidFile() throws Exception {
 		mockMvc.perform(get("/canvas"))
@@ -58,6 +66,10 @@ class ServerPixelartControllerTest {
 				.andExpect(content().json(objectMapper.writeValueAsString(testGrid)));
 	}
 
+	/**
+     * Tests that the server successfully saves canvas data
+	 * sent to the "/canvas" endpoint.
+     */
 	@Test
 	void postCanvasWithValidData() throws Exception {
 
@@ -71,6 +83,10 @@ class ServerPixelartControllerTest {
 		assertArrayEquals(testGrid, savedGrid);
 	}
 
+	/**
+     * Tests that the server returns a Bad Request (400) status
+	 * when invalid JSON is sent to the "/canvas" endpoint.
+     */
 	@Test
 	void postCanvasWithInvalidJSON() throws Exception {
 		String invalidJson = "{ invalid: json }";
@@ -81,6 +97,10 @@ class ServerPixelartControllerTest {
 				.andExpect(status().isBadRequest());
 	}
 
+	/**
+     * Tests that the "/canvas" endpoint returns a Not Found (404) status
+	 * when the canvas file is missing.
+     */
 	@Test
 	void returnCanvasWithNoFile() throws Exception {
 		new File(testFilePath).delete();
@@ -91,14 +111,4 @@ class ServerPixelartControllerTest {
 						new String[][] {{"File not found: " + testFilePath}}
 				)));
 	}
-
-	/*@Test
-	void testCrossOriginSupport() throws Exception {
-		mockMvc.perform(options("/canvas")
-						.header("Access-Control-Request-Method", "GET")
-						.header("Origin", "http://localhost:3000"))
-				.andExpect(status().isOk())
-				.andExpect(header().exists("Access-Control-Allow-Origin"))
-				.andExpect(header().exists("Access-Control-Allow-Methods"));
-	}*/
 }
