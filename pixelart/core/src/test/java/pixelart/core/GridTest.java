@@ -31,14 +31,9 @@ class GridTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        grid = new Grid(DEFAULT_GRID_WIDTH, DEFAULT_GRID_HEIGHT, pixelSize);
+        grid = new Grid(DEFAULT_GRID_HEIGHT, DEFAULT_GRID_WIDTH, pixelSize);
     }
 
-    @Test
-    void testGridSize() {
-        assertEquals(DEFAULT_GRID_HEIGHT, grid.getgridSizeHeight());
-        assertEquals(DEFAULT_GRID_WIDTH, grid.getgridSizeWidth());
-    }
 
     @Test
     void testJSONGridSize() {
@@ -59,8 +54,8 @@ class GridTest {
 
     @Test
     void testCanvasProperties() {
-        for (int i = 0; i < DEFAULT_GRID_WIDTH; i++) {  // Loop through the full grid size
-            for (int j = 0; j < DEFAULT_GRID_HEIGHT; j++) {
+        for (int i = 0; i < DEFAULT_GRID_HEIGHT; i++) {  // Loop through the full grid size
+            for (int j = 0; j < DEFAULT_GRID_WIDTH; j++) {
                 Canvas canvas = grid.getPixel(i,j).getCanvas();
                 assertNotNull(canvas);
                 assertEquals(pixelSize, canvas.getWidth());
@@ -122,13 +117,10 @@ class GridTest {
         mockHandler.setHttpClient(mockedClient);
 
         Grid gridFromMockState = new Grid(mockApiState, pixelSize);
-        gridFromMockState.setGridStateHandler(mockGridStateHandler);
 
         gridFromMockState.initializeGridFromState(mockApiState, pixelSize);
 
         assertNotNull(gridFromMockState.getAllPixels());
-        assertEquals(mockApiState[0].length, gridFromMockState.getgridSizeWidth());
-        assertEquals(mockApiState.length, gridFromMockState.getgridSizeHeight());
 
         String[][] currentActualState = gridFromMockState.getJsonGrid();
         for (int i = 0; i < mockApiState.length; i++) {

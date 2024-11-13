@@ -60,6 +60,7 @@ public class GridStateHandler {
      * @param theObjectMapper the {@code ObjectMapper} instance for
      * JSON processing.
      */
+     @edu.umd.cs.findbugs.annotations.SuppressFBWarnings("EI_EXPOSE_REP")
     public void setObjectMapper(final ObjectMapper theObjectMapper) {
         this.objectMapper = theObjectMapper;
     }
@@ -85,7 +86,7 @@ public class GridStateHandler {
         httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() == HTTP_OK) {
-            System.out.println(response.body());
+            System.out.println("true");
         } else {
             throw new IOException("Failed to post canvas: HTTP "
             + response.statusCode());

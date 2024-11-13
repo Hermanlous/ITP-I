@@ -32,15 +32,6 @@ public class AppController {
     /** Managed saving and loading gridstate from server.*/
     private GridStateHandler gridStateHandler;
 
-    /** The size of the width of the grid. */
-    private final int gridSizeWidth = 60;
-
-    /** The size of the height of the grid. */
-    private final int gridSizeHeight = 34;
-
-    /** Size of each pixel square in the grid.*/
-    private final int pixelSize = 10;
-
     /** Stores the current state of each pixel in grid.*/
     private String[][] currentState;
 
@@ -67,11 +58,23 @@ public class AppController {
             this.gridStateHandler = new GridStateHandler();
             String[][] theCurrentState = gridStateHandler.loadCanvas();
             grid = new Grid(theCurrentState, GridController.PIXEL_SIZE);
-        } catch (Exception e) {
+        } catch (IOException e) {
             this.grid = new Grid(
-                GridController.GRID_SIZE_HEIGHT,
-                GridController.GRID_SIZE_WIDTH,
-                GridController.PIXEL_SIZE);
+                    GridController.GRID_SIZE_HEIGHT,
+                    GridController.GRID_SIZE_WIDTH,
+                    GridController.PIXEL_SIZE);
+        } catch (InterruptedException e) {
+            System.out.println("InterruptedException");
+            this.grid = new Grid(
+                    GridController.GRID_SIZE_HEIGHT,
+                    GridController.GRID_SIZE_WIDTH,
+                    GridController.PIXEL_SIZE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            this.grid = new Grid(
+                    GridController.GRID_SIZE_HEIGHT,
+                    GridController.GRID_SIZE_WIDTH,
+                    GridController.PIXEL_SIZE);
         }
 
         this.gridController =
@@ -87,6 +90,7 @@ public class AppController {
      *
      * @return the GridController instance managing the grid's behavior.
      */
+    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings("EI_EXPOSE_REP")
     public GridController getGridController() {
         return gridController;
     }

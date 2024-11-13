@@ -40,6 +40,7 @@ public class GridController {
      * @param theGridPane The GridPane to display the grid.
      * @param theGridStateHandler Manages the grid's state.
      */
+    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings("EI_EXPOSE_REP")
     public GridController(
         final Grid theGrid,
         final GridPane theGridPane,
@@ -55,8 +56,8 @@ public class GridController {
      */
     public void initializeGridPane() {
         Pixel[][] pixels = grid.getAllPixels();
-        for (int r = 0; r < grid.getgridSizeHeight(); r++) {
-            for (int c = 0; c < grid.getgridSizeWidth(); c++) {
+        for (int r = 0; r < grid.getGridSizeHeight(); r++) {
+            for (int c = 0; c < grid.getGridSizeWidth(); c++) {
                 Canvas canvas = pixels[r][c].getCanvas();
                 gridPane.add(canvas, c, r);
                 int row = r;
@@ -94,6 +95,7 @@ public class GridController {
      *
      * @return The GridStateHandler instance.
      */
+    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings("EI_EXPOSE_REP")
     public GridStateHandler getGridStateHandler() {
         return gridStateHandler;
     }

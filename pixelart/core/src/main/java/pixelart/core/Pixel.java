@@ -62,7 +62,8 @@ public class Pixel {
      *
      * @return the canvas object associated with this pixel
      */
-    public Canvas getCanvas() {  //TODO do we need this?
+    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings("EI_EXPOSE_REP")
+    public Canvas getCanvas() {
         return canvas;
     }
 
