@@ -4,7 +4,8 @@
 
 Åpne i [Eclipse Che](https://che.stud.ntnu.no/#https://gitlab.stud.idi.ntnu.no/it1901/groups-2024/gr2452/gr2452?new).
 
-Sjekk ut [nettsiden her](https://pixelart-5awn.onrender.com/). 
+Sjekk ut [nettsiden her](https://pixelart-5awn.onrender.com/).
+
 **NB: Det kan ta veldig lang tid for siden å laste, les hvorfor [her](#deployment)**
 
 PixelArt er en enkel tegne-app for pixelkunst som lar deg velge mellom ulike farger og tegne på et pikselbasert kanvas. Appen er designet for å være fri for forstyrrende elementer, og tilbyr en plattform der kreative sjeler kan uttrykke seg gjennom pixelkunst.
@@ -156,7 +157,7 @@ cd pixelart/maven/pixelart
 mvn checkstyle:check
 ```
 
-Vi har 1 stående checkstyle violation. Den lar vi stå, for at appen skal fungere. Standard prosedyre hadde vært å gjøre Server privat, siden det er anbefalt. Vi fant ikke en god løsning på dette, så vi bestemte oss for å fortsette med public. Vi mener at det ikke vil ha en stor innvirkning, og vi vil derfor ha denne checkstyle violationen.
+Vi har 1 stående checkstyle violation fordi `Server` deklareres som public. Som 'private' slutter appen å fungere som den skal. Standard prosedyre hadde vært å gjøre Server privat, men vi fant ikke en god løsning på dette. Vi mener at det ikke vil ha en stor innvirkning, og vi tolerere derfor denne ene checkstyle violationen.
 
 #### Spotbugs
 
@@ -220,9 +221,6 @@ cd pixelart/react/pixelart
 npm i
 npx eslint .
 ```
-
-I terminalen vil det oppstå en rapport på potensielle "error" og "problems". Her har vi fire, og vi konkluderte at disse ikke hadde stor innvirkning på prosjektet.
-
 Vi benytter oss av Typescript strict med eslint, som gir oss en svært streng kodesjekk. Dette gir oss god oversikt og høy kodekvalitet.
 
 ## Kode Evaluering
@@ -273,12 +271,9 @@ GET localhost:8080/canvas
 PUT localhost:8080/canvas
 ```
 
-Canvas elementet som returneres er en todimensjonal array som ser slik ut.
-JSON eksempel initialisert med kun fargen hvit:
+Eksempel på Canvas elementet som returnerer en todimensjonal array:
 
-``` bash
-
-``` bash
+``` javascript
 [
     [ "#FFFFFF", "#FFFFFF", "#FFFFFF", ... ],
     [ "#FFFFFF", "#FFFFFF", "#FFFFFF", ... ],
@@ -286,7 +281,7 @@ JSON eksempel initialisert med kun fargen hvit:
 ]
 ```
 
-See further [documentation](/pixelart/docs/release3/REST.md) on the API
+Les mer [dokumentasjon](/pixelart/docs/release3/REST.md) om APIet
 
 ## Deployment
 

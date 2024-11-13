@@ -6,8 +6,8 @@
 
 Vi har laget en pixel-kunst app. Vi ønsket å lage en simpel tegne app som ikke har forstyrrende elementer. Vi ønsker å lage en plattform for kreative sjeler som har lyst til å bidra med pixelkunst. Vi har derfor laget en enkel app som oppfyller disse kravene.
 
-[Brukerhistorier](Brukerhistorier.md)
-[Bruksanvisning](pixelart/docs/Bruksanvisning.md)
+[Brukerhistorier](../release2/Brukerhistorier.md)
+[Bruksanvisning](../release2/Bruksanvisning.md)
 
 ## Oppsett og kjøring
 
