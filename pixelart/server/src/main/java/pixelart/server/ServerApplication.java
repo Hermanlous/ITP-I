@@ -16,3 +16,4 @@ public class ServerApplication {
         System.out.println("Hello pixelart!");
     }
 }
+

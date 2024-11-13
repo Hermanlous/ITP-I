@@ -20,41 +20,87 @@ import java.net.http.HttpResponse;
 
 
 class GridTest {
+
+    /**
+     * Instance of Grid class to for testing
+     */
     private Grid grid;
-    private static int DEFAULT_GRID_WIDTH = 5;
+
+    /**
+     * Default width of the grid used for testing.
+     * Initializing a smaller grid for efficient tests
+     */
+    private static int DEFAULT_GRID_WIDTH = 4;
+
+    /**
+     * Default height of the grid used for testing.
+     * Initializing a smaller grid for efficient tests
+     */
     private static int DEFAULT_GRID_HEIGHT = 5;
+
+    /**
+     * The pixelsize used for testing
+     */
     private static int pixelSize = 10;
 
+    /**
+     * A mocked instance of a GridStateHandler used for testing
+     * */
     @Mock
     private GridStateHandler mockGridStateHandler;
 
+    /**
+     * Sets up the test environment before each test case.
+
+     * Initializes Mockito annotations for mock creation,
+     * and initializes a Grid with the default values.
+     */
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
         grid = new Grid(DEFAULT_GRID_HEIGHT, DEFAULT_GRID_WIDTH, pixelSize);
     }
 
+    /**
+     * Tests that the Grid's dimensions equals to the expected size
 
+     * This test verifies that the height of the JSON grid matches
+     * DEFAULT_GRID_HEIGHT and that each row within the grid has a width equal
+     * to DEFAULT_GRID_WIDTH.
+     */
     @Test
     void testJSONGridSize() {
-        assertEquals(DEFAULT_GRID_WIDTH, grid.getJsonGrid().length);
-        for (int i = 0; i < DEFAULT_GRID_WIDTH; i++) {
-            assertEquals(DEFAULT_GRID_HEIGHT, grid.getJsonGrid().length);
+        assertEquals(DEFAULT_GRID_HEIGHT, grid.getJsonGrid().length);
+        for (int i = 0; i < DEFAULT_GRID_HEIGHT; i++) {
+            assertEquals(DEFAULT_GRID_WIDTH, grid.getJsonGrid()[i].length);
         }
     }
 
+
+    /**
+     * Verifies that each cell in the JSON grid is initialized to the expected color.
+
+     * This test checks that every cell in the grid is set to #FFFFFF, ensuring
+     * the grid is fully initialized with the default color.
+     */
     @Test
     void testJSONGridContent() {
-        for (int i = 0; i < DEFAULT_GRID_WIDTH; i++) {
-            for (int j = 0; j < DEFAULT_GRID_HEIGHT; j++) {
+        for (int i = 0; i < DEFAULT_GRID_HEIGHT; i++) {
+            for (int j = 0; j < DEFAULT_GRID_WIDTH; j++) {
                 assertEquals("#FFFFFF", grid.getJsonGrid()[i][j].toString());  // Compare individual elements, not the whole row
             }
         }
     }
 
+
+    /**
+     * Verifies the initialization properties on each pixel in the grid
+
+     * This test asserts that the pixel has been initialized,
+     * and been initialized with the correct properties */
     @Test
     void testCanvasProperties() {
-        for (int i = 0; i < DEFAULT_GRID_HEIGHT; i++) {  // Loop through the full grid size
+        for (int i = 0; i < DEFAULT_GRID_HEIGHT; i++) {
             for (int j = 0; j < DEFAULT_GRID_WIDTH; j++) {
                 Canvas canvas = grid.getPixel(i,j).getCanvas();
                 assertNotNull(canvas);
@@ -64,6 +110,14 @@ class GridTest {
         }
     }
 
+
+    /**
+     * Verifies the successful retrieval of all pixels in the canvas
+
+     * This test verifies that the method {@link Grid#getAllPixels}
+     * returns a non-null 2D array of pixels that matches the default grid size.
+     * In addition, it checks that each pixel is non-null, that is, being initialized.
+     */
     @Test
     void successfullyRetrievingAllPixels() {
         Pixel[][] retrievedPixels = grid.getAllPixels();
@@ -78,6 +132,13 @@ class GridTest {
         }
     }
 
+
+    /**
+     * Tests a successful update of the color of each pixel in the grid
+
+     * This test updates the color of each pixel in the grid with {@link Grid#updatePixel},
+     * as well as verifying the pixel´s current color matches the updated value.
+     */
     @Test
     void successfullyUpdatingPixels() {
         String hexColor = "#000000";
@@ -90,6 +151,32 @@ class GridTest {
         }
     }
 
+    /**
+     * Testing a successful retrieval of the width of the Grid
+     */
+    @Test
+    void successfullyRetrievingWidth(){
+        assertEquals(DEFAULT_GRID_WIDTH, grid.getGridSizeWidth());
+    }
+
+    /**
+     * Testing a successful retrieval of the height of the Grid
+     */
+    @Test
+    void successfullyRetrievingHeight(){
+        assertEquals(DEFAULT_GRID_HEIGHT, grid.getGridSizeHeight());
+    }
+
+
+    /**
+     * Tests initialization of Grid from a simulated API state
+
+     * This test verifies that {@link Grid#initializeGridFromState}
+     * correctly initializes a Grid based on a mocked API response.
+     *
+     * @throws IOException if a JSON processing error occurs
+     * @throws InterruptedException if the HTTP request is interrupted
+     */
     @Test
     void successfullyInitializingGridFromCurrentStateTest() throws IOException, InterruptedException {
         String[][] mockApiState = {
@@ -129,6 +216,29 @@ class GridTest {
             }
         }
     }
+
+
+    /**
+     * Verifies that a RuntimeException is thrown with malformed data in the response
+     *
+     * This tests provides a Grid containing null to simulate malformed data for the 2D array.
+     * The test then verifies that the initializeGridFromState correctly throws a RuntimeException.
+     */
+    @Test
+    void correctlyThrowingRunTimeExceptionTest() throws IOException, InterruptedException {
+        String[][] malformedState = {
+                {"#FF0000", "#00FF00"},
+                null,
+                {"#0000FF", "#FFFFFF"}
+        };
+
+        Grid testGrid = new Grid(malformedState, pixelSize);
+
+        assertThrows(RuntimeException.class, () ->
+                testGrid.initializeGridFromState(malformedState, pixelSize)
+        );
+    }
+
 }
 
 

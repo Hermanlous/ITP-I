@@ -18,6 +18,10 @@ public class AppTest extends ApplicationTest {
     public void setup() throws Exception{
         ApplicationTest.launch(App.class);
     }
+
+    /**
+     * Tests correct launching of the application
+     * */
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/pixelart/ui/App.fxml"));
@@ -26,6 +30,13 @@ public class AppTest extends ApplicationTest {
         stage.setScene(scene);
         stage.show();
     }
+
+    /**
+     * Tests the width and height of the scene
+
+     * Ensures that the height and width corresponds
+     * to the expected values set.
+     */
     @Test
     void widthAndHeight(){
         Assertions.assertEquals(SCENE_WIDTH,scene.getWidth());
