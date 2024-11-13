@@ -1,1 +1,0 @@
-java tests for pixelart core goes here
