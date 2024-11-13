@@ -30,11 +30,39 @@ import static pixelart.ui.App.SCENE_HEIGHT;
 import static pixelart.ui.App.SCENE_WIDTH;
 
 public class AppControllerTest extends ApplicationTest {
+
+    /**
+     * AppController used for testing
+     */
     private AppController appController;
+
+    /**
+     * GridStateHandler used for testing
+     */
     private GridStateHandler gridStateHandler;
+
+    /**
+     * HttpClient used for testing
+     */
     private HttpClient mockHttpClient;
+
+    /**
+     * ObjectMapper used for testing
+     */
     private ObjectMapper mockObjectMapper;
 
+    /**
+     * Initializes the application stage with a mock HTTP client and object mapper.
+
+     * This method sets up the stage, loads the main application FXML, and
+     * initializes appController and gridStateHandler with mock dependencies.
+     * Mocks an HTTP response with status 200 and a body of "Success!" to
+     * simulate server interaction.
+     *
+     * @param stage the primary stage for the application
+     * @throws Exception if there is an error loading the FXML or initializing
+     * dependencies.
+     */
     @Override
     public void start(Stage stage) throws Exception {
 
@@ -59,6 +87,13 @@ public class AppControllerTest extends ApplicationTest {
         gridStateHandler.setObjectMapper(mockObjectMapper);
     }
 
+    /**
+     * Simulates clicks on specific canvas elements in the grid and verifies
+     * that each click triggers an HTTP request through the mocked HttpClient.
+     * It draws a moustache :D
+     *
+     * @throws Exception if an HTTP request or sleep operation fails
+     */
     @Test
     public void testClickOnCanvas() throws Exception {
 
@@ -77,6 +112,13 @@ public class AppControllerTest extends ApplicationTest {
         );
     }
 
+    /**
+     * Tests the initial color of a randomly selected canvas in the grid.
+
+     * This test randomly selects a canvas element from `gridPane` and verifies
+     * that its initial fill color is `Color.WHITE`, to ensure correct
+     * initialization of the Grid.
+     */
     @Test
     public void initGrid(){
         GridPane gridPane = lookup("#gridPane").query();
@@ -87,6 +129,12 @@ public class AppControllerTest extends ApplicationTest {
         Assertions.assertEquals(canvas.getGraphicsContext2D().getFill(), Color.WHITE);
     }
 
+    /**
+     * Verifies the number of columns and rows in the `gridPane`.
+
+     * This test checks that the grid has the correct dimensions, ensuring that
+     * the dimensions of the GridPane is as expected.
+     */
     @Test
     public void testHowManyCanvases(){
         GridPane gridPane = lookup("#gridPane").query();

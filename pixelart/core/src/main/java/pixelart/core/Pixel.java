@@ -28,7 +28,11 @@ public class Pixel {
      *
      * @param size The size of the pixel.
      */
-    public Pixel(final int size) {
+    public Pixel(final int size) throws IllegalArgumentException {
+        if (size <= 0) {
+            throw new
+                    IllegalArgumentException("Pixelsize must be bigger than 0");
+        }
         this.pixelSize = size;
         this.canvas = new Canvas(pixelSize, pixelSize);
         this.currentColor = "#FFFFFF"; // Default white color

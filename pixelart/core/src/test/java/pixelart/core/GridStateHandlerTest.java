@@ -19,14 +19,32 @@ import static org.mockito.Mockito.*;
 
 class GridStateHandlerTest {
 
+    /**
+     * Mocked HttpClient to simulate HTTP requests in tests
+     */
     @Mock
     private HttpClient mockHttpClient;
 
+    /**
+     * Mocked ObjectMapper to simulate JSON serialization
+     * and deserialization in tests
+     */
     @Mock
     private ObjectMapper mockObjectMapper;
 
+    /**
+     * Instance of the GridStateHandler class for testing
+     */
     private GridStateHandler gridStateHandler;
 
+
+    /**
+     * Prepares the test environment before each test case.
+     *
+     * Initializes Mockito annotations for mock creation, and
+     * sets up gridStateHandler with mocked instances of HttpClient and
+     * ObjectMapper.
+     */
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -35,8 +53,18 @@ class GridStateHandlerTest {
         gridStateHandler.setObjectMapper(mockObjectMapper);
     }
 
+
+    /**
+     * Tests {@link GridStateHandler#postCanvas} for a successful PUT request.
+     * Verifies that a 2D canvas array is serialized and sent via HTTP,
+     * ensuring a successful response with status 200.
+     *
+     * @throws IOException if an IOException occurs
+     * @throws InterruptedException if the instruction is interrupted
+     */
+
     @Test
-    void SuccessfullyPostingCanvasTest() throws IOException, InterruptedException {
+    void SuccessfullyPuttingCanvasTest() throws IOException, InterruptedException {
         String[][] canvasData = {
                 {"#FF0000", "#00FF00"},
                 {"#0000FF", "#FFFFFF", "#000000"}
@@ -56,9 +84,17 @@ class GridStateHandlerTest {
         verify(mockObjectMapper).writeValueAsString(canvasData);
     }
 
+
+    /**
+     * Testing error handling when posting canvas data fails with status 500.
+     * Simulates that {@link GridStateHandler#postCanvas} throws an IOException
+     * with an appropriate error message when failing.
+     *
+     * @throws IOException when an IOException occurs
+     * @throws InterruptedException if the instruction is interrupted
+     */
     @Test
     void unsuccessfullyPostingCanvasTest() throws IOException, InterruptedException {
-        // Arrange
         String[][] canvasData = {
                 {"#FF0000", "#00FF00"},
                 {"#0000FF", "#FFFFFF", "#000000"}
@@ -79,6 +115,15 @@ class GridStateHandlerTest {
         verify(mockHttpClient).send(any(HttpRequest.class), eq(BodyHandlers.ofString()));
         verify(mockObjectMapper).writeValueAsString(canvasData);
     }
+
+    /**
+     * Simulates a successful retrieval of canvas data through
+     * {@link GridStateHandler#loadCanvas}
+     * Verifies that the JSON response is properly deserialized to a 2D Array of colors.
+     *
+     * @throws IOException when an IOException occurs
+     * @throws InterruptedException if the instruction is interrupted
+     * */
 
     @Test
     void successfullyRetrievingCanvasTest() throws IOException, InterruptedException {
@@ -107,6 +152,18 @@ class GridStateHandlerTest {
         verify(mockHttpClient).send(any(HttpRequest.class), eq(BodyHandlers.ofString()));
         verify(mockObjectMapper).readValue(mockJsonResponse, String[][].class);
     }
+
+
+    /**
+     * Tests {@link GridStateHandler#loadCanvas} to ensure proper error handling
+     * when retrieving canvas data that fails with an HTTP 500 status.
+     *
+     * The test simulates a server error response and checks that an
+     * IOException with an appropriate error message is thrown.
+     *
+     * @throws IOException if an IOException occurs
+     * @throws InterruptedException if the instruction is interrupted
+     */
 
     @Test
     void unsuccessfullyRetrievingCanvasTest() throws IOException, InterruptedException {
