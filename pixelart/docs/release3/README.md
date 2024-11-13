@@ -13,3 +13,5 @@
 - [Les om vår bruk av AI-tools](AI-tools.md)
 - [Les våre brukerhistorier](UserStories.md)
 - [Se filstrukturen vår](FileTree.md)
+  
+![EksempelBildeAvAppen](Release3AppDesign.png)

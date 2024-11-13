@@ -6,7 +6,7 @@ module pixelart.core {
     requires spring.web;
     requires java.net.http;
     requires com.fasterxml.jackson.databind;
-    requires com.github.spotbugs.annotations; // JSON library required for saving and loading the grid state in JSON format.
+    requires com.github.spotbugs.annotations;
 
     exports pixelart.core; // Exports the pixelart.core package to make it usable to other modules. 
 }

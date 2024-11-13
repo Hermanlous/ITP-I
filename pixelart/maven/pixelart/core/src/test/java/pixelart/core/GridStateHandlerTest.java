@@ -37,7 +37,6 @@ class GridStateHandlerTest {
      */
     private GridStateHandler gridStateHandler;
 
-
     /**
      * Prepares the test environment before each test case.
      *
@@ -53,16 +52,14 @@ class GridStateHandlerTest {
         gridStateHandler.setObjectMapper(mockObjectMapper);
     }
 
-
     /**
-     * Tests {@link GridStateHandler#postCanvas} for a successful PUT request.
+     * Tests {@link GridStateHandler#sendCanvasToServer} for a successful PUT request.
      * Verifies that a 2D canvas array is serialized and sent via HTTP,
      * ensuring a successful response with status 200.
      *
      * @throws IOException if an IOException occurs
      * @throws InterruptedException if the instruction is interrupted
      */
-
     @Test
     void SuccessfullyPuttingCanvasTest() throws IOException, InterruptedException {
         String[][] canvasData = {
@@ -79,15 +76,14 @@ class GridStateHandlerTest {
                 .thenReturn(mockResponse);
         when(mockObjectMapper.writeValueAsString(any())).thenReturn("mockJsonString");
 
-        assertDoesNotThrow(() -> gridStateHandler.postCanvas(canvasData));
+        assertDoesNotThrow(() -> gridStateHandler.sendCanvasToServer(canvasData));
         verify(mockHttpClient).send(any(HttpRequest.class), eq(BodyHandlers.ofString()));
         verify(mockObjectMapper).writeValueAsString(canvasData);
     }
 
-
     /**
      * Testing error handling when posting canvas data fails with status 500.
-     * Simulates that {@link GridStateHandler#postCanvas} throws an IOException
+     * Simulates that {@link GridStateHandler#sendCanvasToServer} throws an IOException
      * with an appropriate error message when failing.
      *
      * @throws IOException when an IOException occurs
@@ -109,7 +105,7 @@ class GridStateHandlerTest {
         when(mockObjectMapper.writeValueAsString(any())).thenReturn("mockJsonString");
 
         Exception exception = assertThrows(IOException.class, () ->
-                gridStateHandler.postCanvas(canvasData)
+                gridStateHandler.sendCanvasToServer(canvasData)
         );
         assertTrue(exception.getMessage().contains("Failed to post canvas"));
         verify(mockHttpClient).send(any(HttpRequest.class), eq(BodyHandlers.ofString()));
@@ -123,8 +119,7 @@ class GridStateHandlerTest {
      *
      * @throws IOException when an IOException occurs
      * @throws InterruptedException if the instruction is interrupted
-     * */
-
+     */
     @Test
     void successfullyRetrievingCanvasTest() throws IOException, InterruptedException {
         String[][] expectedData = {
@@ -153,7 +148,6 @@ class GridStateHandlerTest {
         verify(mockObjectMapper).readValue(mockJsonResponse, String[][].class);
     }
 
-
     /**
      * Tests {@link GridStateHandler#loadCanvas} to ensure proper error handling
      * when retrieving canvas data that fails with an HTTP 500 status.
@@ -164,7 +158,6 @@ class GridStateHandlerTest {
      * @throws IOException if an IOException occurs
      * @throws InterruptedException if the instruction is interrupted
      */
-
     @Test
     void unsuccessfullyRetrievingCanvasTest() throws IOException, InterruptedException {
         @SuppressWarnings("unchecked")

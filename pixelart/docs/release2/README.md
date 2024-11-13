@@ -50,13 +50,14 @@ The data is saved as "canvas" where the canvas key in the json canvas file has a
 
 Vi har prøvd å forbedre vår bruk a standard prosedyre. Vi har begynt å bruke standard commit melding oppsett. Med bruk av denne malen:
 
-```
+``` bash
 <type>[optional scope]: <description>
 
 [optional body]
 
 [optional footer(s)]
 ```
+
 Vi har som mål at alle commits som er synlige på main branchen følger denne malen.
 Vi sletter overflødige grener. Vi har valgt å bruke squash commits for å slå sammen tidligere commits når vi merger til master.
 
@@ -70,7 +71,7 @@ Vi benytter oss av spotbugs og checkstyle, selvom det er vanskelig å anvende n�
 
 PlantUML code
 
-```
+``` bash
 @startuml
 package "pixelart.core" {
     class GridManager {

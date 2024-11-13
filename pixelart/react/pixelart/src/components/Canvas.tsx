@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { CanvasProps } from '../types/canvas.types';
 
 const Canvas: React.FC<CanvasProps> = ({
@@ -58,42 +58,48 @@ const Canvas: React.FC<CanvasProps> = ({
    * @param y is the y dimension for the given position.
    * @returns calculated positions for x and y.
    **/
-  const getPixelPosition = (x: number, y: number) => {
-    const xPos = x * (pixelSize + (showGrid ? gridGap : 0));
-    const yPos = y * (pixelSize + (showGrid ? gridGap : 0));
-    return { x: xPos, y: yPos };
-  };
+  const getPixelPosition = useCallback(
+    (x: number, y: number) => {
+      const xPos = x * (pixelSize + (showGrid ? gridGap : 0));
+      const yPos = y * (pixelSize + (showGrid ? gridGap : 0));
+      return { x: xPos, y: yPos };
+    },
+    [pixelSize, gridGap, showGrid]
+  );
 
   /**
    * Draws the canvas based on rendered pixelData
    * @param ctx is CanvasRenderingContext2D, which is the 2d context of the canvas.
    * @param pixelData is the rendered canvas data.
    **/
-  const drawCanvas = (ctx: CanvasRenderingContext2D, pixelData: string[][]) => {
-    for (let y = 0; y < pixelData.length; y++) {
-      for (let x = 0; x < pixelData[y].length; x++) {
-        const { x: xPos, y: yPos } = getPixelPosition(x, y);
-        ctx.fillStyle = pixelData[y][x];
-        ctx.fillRect(xPos, yPos, pixelSize, pixelSize);
+  const drawCanvas = useCallback(
+    (ctx: CanvasRenderingContext2D, pixelData: string[][]) => {
+      for (let y = 0; y < pixelData.length; y++) {
+        for (let x = 0; x < pixelData[y].length; x++) {
+          const { x: xPos, y: yPos } = getPixelPosition(x, y);
+          ctx.fillStyle = pixelData[y][x];
+          ctx.fillRect(xPos, yPos, pixelSize, pixelSize);
+        }
       }
-    }
-  };
+    },
+    [pixelSize, getPixelPosition]
+  );
+
   /**
    * Draws an outline of the hovered position of the pixel
    * @param ctx is CanvasRenderingContext2D, which is the 2d context of the canvas.
    * @param pixelX is the calculated positions of x so that it can be applied to the canvas.
    * @param pixelY is the calculated positions of x so that it can be applied to the canvas.
    **/
-  const drawHoveredPixelBorder = (
-    ctx: CanvasRenderingContext2D,
-    pixelX: number,
-    pixelY: number
-  ) => {
-    const { x: xPos, y: yPos } = getPixelPosition(pixelX, pixelY);
-    ctx.strokeStyle = '#202020';
-    ctx.lineWidth = 1;
-    ctx.strokeRect(xPos + 1, yPos + 1, pixelSize - 2, pixelSize - 2);
-  };
+  const drawHoveredPixelBorder = useCallback(
+    (ctx: CanvasRenderingContext2D, pixelX: number, pixelY: number) => {
+      const { x: xPos, y: yPos } = getPixelPosition(pixelX, pixelY);
+      ctx.strokeStyle = '#202020';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(xPos + 1, yPos + 1, pixelSize - 2, pixelSize - 2);
+    },
+    [pixelSize, getPixelPosition]
+  );
 
   /**
    * Gets current pixel from mouse event.
@@ -123,6 +129,7 @@ const Canvas: React.FC<CanvasProps> = ({
     }
     return null;
   };
+
   /** Paints selected pixel, to selected color.
    * @param pixel pixel at given coordinates
    **/
@@ -183,6 +190,7 @@ const Canvas: React.FC<CanvasProps> = ({
     setIsDrawing(false);
     lastPixelRef.current = null;
   };
+
   /**
    * Handling state and drawing the canvas
    **/
@@ -198,7 +206,14 @@ const Canvas: React.FC<CanvasProps> = ({
     if (hoveredPixel) {
       drawHoveredPixelBorder(ctx, hoveredPixel.x, hoveredPixel.y);
     }
-  }, [hoveredPixel, initialData, showGrid, gridGap]);
+  }, [
+    hoveredPixel,
+    initialData,
+    showGrid,
+    gridGap,
+    drawCanvas,
+    drawHoveredPixelBorder,
+  ]);
 
   return (
     <canvas

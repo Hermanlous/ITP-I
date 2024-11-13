@@ -2,7 +2,7 @@
 
 Her viser vi hvordan det fungerer om kunstner Bjarte har lyst til å begynne å tegne.
 
-![PlantUMLAsPNG](SequenceDiagram.png)
+![PlantUMLAsPNG](DiagramsAsPNGs/SequenceDiagram.png)
 
 ``` bash
 

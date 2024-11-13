@@ -16,7 +16,9 @@ import pixelart.core.GridStateHandler;
  */
 public class AppController {
 
-    /** The main grid containing the canvas element.*/
+    /**
+     * The main grid containing the canvas element.
+     */
     @FXML
     private GridPane gridPane;
 
@@ -26,19 +28,22 @@ public class AppController {
     @FXML
     private HBox colorPalette;
 
-    /** The grid model containing our pixeldata.*/
+    /**
+     * The grid model containing our pixeldata.
+     */
     private Grid grid;
 
-    /** Managed saving and loading gridstate from server.*/
+    /**
+     * Managed saving and loading gridstate from server.
+     */
     private GridStateHandler gridStateHandler;
-
-    /** Stores the current state of each pixel in grid.*/
-    private String[][] currentState;
 
     /** Manages color selection and palette operations. */
     private ColorController colorController;
 
-    /** Controls the grid’s visual and interactive behavior. */
+    /**
+     * Controls the grid’s visual and interactive behavior.
+     */
     private GridController gridController;
 
     /**
@@ -47,8 +52,7 @@ public class AppController {
      *
      * @throws IOException if there´s an error initializing
      * @throws InterruptedException if the loading from server process fails
-     * */
-
+     */
     @FXML
     public void initialize() throws IOException, InterruptedException {
         this.colorController = new ColorController(colorPalette);

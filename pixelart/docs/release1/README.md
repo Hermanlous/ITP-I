@@ -1,13 +1,13 @@
 # PixelArt
 
-Åpne i Eclipse Che [her](https://che.stud.ntnu.no/#https://gitlab.stud.idi.ntnu.no/it1901/groups-2024/gr2452/gr2452?new). 
+Åpne i Eclipse Che [her](https://che.stud.ntnu.no/#https://gitlab.stud.idi.ntnu.no/it1901/groups-2024/gr2452/gr2452?new).
 
 ## Om appen
 
 Vi har laget en pixel-kunst app. Vi ønsket å lage en simpel tegne app som ikke har forstyrrende elementer. Vi ønsker å lage en plattform for kreative sjeler som har lyst til å bidra med pixelkunst. Vi har derfor laget en enkel app som oppfyller disse kravene.
 
-[Brukerhistorier](Brukerhistorier.md)
-[Bruksanvisning](pixelart/docs/Bruksanvisning.md)
+[Brukerhistorier](../release2/Brukerhistorier.md)
+[Bruksanvisning](../release2/Bruksanvisning.md)
 
 ## Oppsett og kjøring
 
@@ -41,15 +41,16 @@ Vi har konstruert en enkel tegneapp
 
 ## Utgivelser
 
-[Release 1](pixelart/docs/release1/)
-[Release 2](pixelart/docs/release2/)
+[Release 1](../release1/README.md)
+[Release 2](../release2/README.md)
+[Release 3](../release3/README.md)
 
 ## Brukerhistorier
 
 Her kan lese om brukerhistorier som støtter utviklingsarbeidet:
-[Brukerhistorier](Brukerhistorier.md)
+[Brukerhistorier](../release2/Brukerhistorier.md)
 
 ## Bruksanvisning
 
 Her kan du lese dokumentasjon om hvordan du bruker appen.
-[Bruksanvisning](pixelart/docs/Bruksanvisning.md)
+[Bruksanvisning](../release2//Bruksanvisning.md)
