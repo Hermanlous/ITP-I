@@ -22,6 +22,7 @@ public class ServerPixelartController {
     /**
      * Path to the file storing the canvas data.
      */
+    //Chatgpt and Claude was used here for correct filepath. Since downgraded spring-boot.
     private final String filePath =
             System.getProperty("user.dir")
                     + "/src/main/resources/persistence/jsonCanvas.json";
@@ -53,10 +54,11 @@ public class ServerPixelartController {
     public ResponseEntity<String[][]> getCanvas() {
         File file = new File(filePath);
         try {
+            //Claude was used here for file not found. From here:
             if (!file.exists()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body(new String[][] {{"File not found: " + filePath}});
-            }
+            }//To here.
             String[][] canvasGrid = mapper.readValue(file, String[][].class);
             return ResponseEntity.ok(canvasGrid);
         } catch (IOException e) {
