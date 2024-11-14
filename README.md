@@ -35,6 +35,7 @@ PixelArt er en enkel tegne-app for pixelkunst som lar deg velge mellom ulike far
       - [Spotbugs](#spotbugs)
   - [React](#react)
     - [React Build](#react-build)
+      - [React Build for Mac med ARM-arkitektur](#react-build-for-mac-med-arm-arkitektur)
     - [React Run](#react-run)
     - [React Testing](#react-testing)
     - [React Test Coverage](#react-test-coverage)
@@ -180,6 +181,17 @@ mvn spotbugs:gui
 
 ```bash
 cd pixelart/react/pixelart
+npm i
+```
+
+#### React Build for Mac med ARM-arkitektur
+
+På Mac med ARM-arkitektur skaper Canvas ofte problemer, det anbefales å bruke en annen Canvas-type. Dette løses ved å kjøre følgende kommandoer:
+
+``` bash
+cd pixelart/react/pixelart
+npm uninstall canvas
+npm install @napi-rs/canvas
 npm i
 ```
 

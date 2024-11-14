@@ -74,3 +74,5 @@ userInterfaceJava --> core : "Uses"
 @enduml
 
 ```
+
+[Tilbake til innholdsfortegnelsen](README.md)
