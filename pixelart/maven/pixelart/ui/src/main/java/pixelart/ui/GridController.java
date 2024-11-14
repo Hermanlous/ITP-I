@@ -54,12 +54,15 @@ public class GridController {
     /**
      * Initializes and sets up the GridPane with clickable pixel canvases.
      */
+    //Chatgpt was used here for initializing gridPanes as a canvas with each r and c coordintate
     public void initializeGridPane() {
         Pixel[][] pixels = grid.getAllPixels();
         for (int r = 0; r < grid.getGridSizeHeight(); r++) {
             for (int c = 0; c < grid.getGridSizeWidth(); c++) {
+                //Chatgpt was used here for initializing gridPanes as a canvas with each r and c coordintate, from here:
                 Canvas canvas = pixels[r][c].getCanvas();
                 gridPane.add(canvas, c, r);
+                //to here.
                 int row = r;
                 int column = c;
                 canvas.addEventHandler(MouseEvent.MOUSE_CLICKED,
@@ -84,7 +87,7 @@ public class GridController {
         if (event.getButton() == MouseButton.PRIMARY) {
             colorToApply = currentColor;
         } else {
-            colorToApply = "#FFFFFF"; // Right click for eraser (white)
+            colorToApply = "#FFFFFF";
         }
         grid.getPixel(row, column).updateColor(colorToApply);
         saveCanvasToServer();
