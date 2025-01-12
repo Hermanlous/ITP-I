@@ -319,7 +319,7 @@ Deployment er inspirert av [denne guiden](https://hostingtutorials.dev/blog/free
 
 ### Backend
 
-- Sprin Boot server: [pixelart-server.onrender.com](https://pixelart-server.onrender.com/canvas).
+- Spring Boot server: [pixelart-server.onrender.com](https://pixelart-server.onrender.com/canvas).
 - Docker image: [hub.docker.com/r/johannesaas/pixelart-server](https://hub.docker.com/r/johannesaas/pixelart-server)
 
 ## Utviklere
