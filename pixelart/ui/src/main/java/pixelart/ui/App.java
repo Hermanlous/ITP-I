@@ -15,7 +15,6 @@ import java.io.IOException;
  * The application is for making pixel art.
  */
 public class App extends Application {
-
     /** The width of the application scene in pixels. */
     private static final int SCENE_WIDTH = 800;
 
@@ -33,7 +32,7 @@ public class App extends Application {
     public void start(final Stage primaryStage) throws IOException {
         try {
             FXMLLoader loader =
-            new FXMLLoader(getClass().getResource("/pixelart/ui/App.fxml"));
+                    new FXMLLoader(getClass().getResource("/pixelart/ui/App.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
             primaryStage.setTitle("PixelArt");
@@ -42,7 +41,7 @@ public class App extends Application {
 
             // Only add the icon if the resource exists
             var iconStream =
-            getClass().getResourceAsStream("/pixelart/ui/taskbarLogo.png");
+                    getClass().getResourceAsStream("/pixelart/ui/taskbarLogo.png");
             if (iconStream != null) {
                 Image taskbarLogo = new Image(iconStream);
                 primaryStage.getIcons().add(taskbarLogo);

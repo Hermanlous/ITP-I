@@ -5,9 +5,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import javafx.scene.canvas.Canvas;
 
-
 class GridInitializationTest {
-   private Grid grid;
+    private Grid grid;
     private static int DEFAULT_GRID_WIDTH = 5;
     private static int DEFAULT_GRID_HEIGHT = 5;
     private static int pixelSize = 10;
@@ -44,7 +43,7 @@ class GridInitializationTest {
     void testCanvasProperties() {
         for (int i = 0; i < DEFAULT_GRID_WIDTH; i++) {  // Loop through the full grid size
             for (int j = 0; j < DEFAULT_GRID_HEIGHT; j++) {
-                Canvas canvas = grid.getPixel(i,j).getCanvas();
+                Canvas canvas = grid.getPixel(i, j).getCanvas();
                 assertNotNull(canvas);
                 assertEquals(pixelSize, canvas.getWidth());
                 assertEquals(pixelSize, canvas.getHeight());
@@ -52,5 +51,3 @@ class GridInitializationTest {
         }
     }
 }
-
-

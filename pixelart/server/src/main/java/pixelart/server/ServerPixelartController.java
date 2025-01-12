@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
 import java.io.File;
 import java.io.IOException;
 
@@ -45,17 +44,16 @@ public class ServerPixelartController {
      */
     @GetMapping("run")
     public ResponseEntity<String> getPixelart() {
-
-        /**
-         * Endpoint to get the current canvas data.
-         *
-         * @return A ResponseEntity containing the canvas data as a
-         * 2D array of strings.
-         * If an error occurs while retrieving the data, an
-         * INTERNAL_SERVER_ERROR status is returned.
-         */
         return ResponseEntity.ok("Pixelart is running");
     }
+
+    /**
+     * Endpoint to get the current canvas data.
+     *
+     * @return A ResponseEntity containing the canvas data as a
+     * 2D array of strings. If an error occurs while retrieving the data, an
+     * INTERNAL_SERVER_ERROR status is returned.
+     */
     @GetMapping(value = "/canvas", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String[][]> getCanvas() {
         File file = new File(filePath);
@@ -76,7 +74,7 @@ public class ServerPixelartController {
      * Endpoint to post a new canvas and update the stored canvas data.
      *
      * @param currentGrid The new canvas data to be saved,
-     * passed as a 2D array of strings.
+     *                    passed as a 2D array of strings.
      * @return A ResponseEntity containing the updated
      * canvas data. If an error occurs while saving the
      * data, an INTERNAL_SERVER_ERROR status is returned.
@@ -90,7 +88,6 @@ public class ServerPixelartController {
         File file = new File(filePath);
 
         try {
-
             mapper.writerWithDefaultPrettyPrinter()
                     .writeValue(file, currentGrid);
 

@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Canvas from './components/Canvas';
 import useCanvas from "./hook/useCanvas.ts";
 
 
 const App: React.FC = () => {
   const [selectedColor, setSelectedColor] = useState<string>('#000000'); // default color is black
-  const  canvasData  = useCanvas();
+  const canvasData = useCanvas();
   console.log(canvasData)
 
 
@@ -17,9 +17,9 @@ const App: React.FC = () => {
       try {
         if (Array.isArray(canvasData)) {
           const translatedFromApiData = canvasData.map((row: string[]) =>
-              row.map((col: string) => col === 'W' ? '#ffffff' : col === 'B' ? '#000000' : col) //Subject to change, may not need to convert, still need to iterate.
+            row.map((col: string) => col === 'W' ? '#ffffff' : col === 'B' ? '#000000' : col) // Subject to change, may not need to convert, still need to iterate.
           );
-          //console.log(translatedFromApiData)
+          // console.log(translatedFromApiData)
           setPixelData(translatedFromApiData);
         }
       } catch (error) {
@@ -31,43 +31,37 @@ const App: React.FC = () => {
 
   // Function to update a specific pixel's color
   const handlePixelChange = (x: number, y: number, color: string) => {
-    //const newPixelData = [...pixelData];
-    //newPixelData[y][x] = color;
-    //setPixelData(newPixelData);
+    // const newPixelData = [...pixelData];
+    // newPixelData[y][x] = color;
+    // setPixelData(newPixelData);
     if (canvasData) {
-      //console.log(canvasData.canvas, "want to return")
-       //first parse
-      //console.log(canvasString, "middle")
-      //console.log(parsed);
-      canvasData[y][x] = 'B'
-      //console.log(parsed.canvas)
+      // console.log(canvasData.canvas, "want to return")
+      // first parse
+      // console.log(canvasString, "middle")
+      // console.log(parsed);
+      canvasData[y][x] = 'B';
+      // console.log(parsed.canvas)
       const newPixelData = [...pixelData];
-      newPixelData[y][x] = color
-      //console.log(newPixelData)
-      setPixelData(newPixelData)
+      newPixelData[y][x] = color;
+      // console.log(newPixelData)
+      setPixelData(newPixelData);
 
 
-      //console.log(canvasData)
+      // console.log(canvasData)
 
-      fetch('http://localhost:8080/canvas',{
+      fetch('http://localhost:8080/canvas', {
         method: "PUT",
         body: JSON.stringify(canvasData),
-        headers:{
-          "Content-type":"application/json; charset=utf-8",
+        headers: {
+          "Content-type": "application/json; charset=utf-8",
           'Accept': 'application/json'
         },
 
-      }).then(response=>response.json)
-      .then((data)=>{console.log(data)})
-        .catch(error => console.error(error))
+      }).then(response => response.json)
+        .then((data) => { console.log(data) })
+        .catch(error => console.error(error));
     }
-    //console.log(pixelData)
-
-
-
-
-
-
+    // console.log(pixelData)
   };
   // TODO - handlePixelChange, function above may be redundant. We may change 'W' to hex code for color
 
@@ -86,7 +80,6 @@ const App: React.FC = () => {
   return (
     <main className="w-full max-w-5xl mx-auto p-4">
       <h1 className="text-red-500 text-center p-4">Pixel Art</h1>
-
       <div className='flex justify-center'>
         {/* Color Palette */}
         <div className="flex flex-col gap-2 m-4 pt-4">
@@ -108,7 +101,6 @@ const App: React.FC = () => {
         <div>
           <p className='text-xl'>Selected Color: <span style={{ color: selectedColor }}>{selectedColor}</span></p>
           <Canvas
-
             // TODO: set width, height and pixel size based on pixeldata fetched from api
             width={600}
             height={600}

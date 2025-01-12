@@ -36,16 +36,12 @@ public class Grid {
      */
     private String[][] currentState;
 
-
     /**
      * A 2D array that holds all the pixels.
      * Each pixel is a {@link Pixel} object
      */
     private Pixel[][] pixels; //[][] = all pixels, not just one
 
-    /**
-     * Handles the state, saving and loading of the grid.
-     */
     private GridStateHandler gridStateHandler;
 
     /**
@@ -67,7 +63,7 @@ public class Grid {
     /**
      * Constructs a {@code Grid} from an existing state.
      * Initializes the grid based on the 2D array state and pixel size.
-     * If it can't find the gris it defaults to an empty grid.
+     * If it can't find the grid it defaults to an empty grid.
      *
      * @param newState 2D array representing the initial state of each pixel
      * ("B" for black, "W" for white).
@@ -86,14 +82,10 @@ public class Grid {
         try {
             this.gridStateHandler = new GridStateHandler();
             this.currentState = gridStateHandler.loadCanvas();
-            // this.gridSizeWidth = newState.length;
-            // this.gridSizeHeight = newState[0].length;
             this.pixels = new Pixel[gridSizeHeight][gridSizeWidth];
             initializeGridFromState(newState, pixelSize);
         } catch (Exception e) {
             System.out.println("Error loading grid");
-            // this.gridSizeWidth = DEFAULT_GRID_WIDTH;
-            // this.gridSizeHeight = DEFAULT_GRID_HEIGHT;
             initializeEmptyGrid(pixelSize);
         }
     }
@@ -160,22 +152,11 @@ public class Grid {
         return gridSizeHeight;
     }
 
-    /**
-     * Return a specific pixel.
-     *
-     * @param row is the row index of the pixel.
-     * @param col is the column index of the pixel.
-     * @return returns one {@link Pixel}
-     */
-    public Pixel getPixel(final int row, final int col) { //This sends one pixel
+    public Pixel getPixel(int row, int col) {
         return pixels[row][col];
     }
 
-    /**
-     * Returns all the pixels in the grid.
-     * @return a 2D array of {@link Pixel} objects. All pixels in the grid.
-     */
-    public Pixel[][] getAllPixels() { //This sends all of them
+    public Pixel[][] getAllPixels() {
         return pixels;
     }
 

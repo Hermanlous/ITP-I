@@ -1,4 +1,5 @@
 package pixelart.core;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URI;
@@ -7,7 +8,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class GridStateHandler {
-
     /**
      * The HTTP client used to send and receive HTTP requests.
      */
@@ -82,8 +82,7 @@ public class GridStateHandler {
 
         HttpResponse<String> response = httpClient.send(request,
                 HttpResponse.BodyHandlers.ofString());
-        /* Claude AI: "How can I ensure that the response is a String array?
-          from here: "*/
+
         if (response.statusCode() >= HTTP_OK
         && response.statusCode() < HTTP_MAX_SUCCESS) {
             try {
@@ -94,7 +93,6 @@ public class GridStateHandler {
                 throw new IOException("Failed to parse canvas data: "
                 + e.getMessage());
             }
-        /* To here*/
         } else {
             throw new IOException("Failed to fetch canvas data: HTTP "
             + response.statusCode());

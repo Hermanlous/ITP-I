@@ -9,13 +9,11 @@ interface CanvasProps {
   onPixelChange: (x: number, y: number, color: string) => void;
 }
 
-
-
 const Canvas: React.FC<CanvasProps> = ({ width, height, pixelSize, initialData, selectedColor, onPixelChange }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [hoveredPixel, setHoveredPixel] = useState<{ x: number; y: number } | null>(null);
 
-  // draw the entire canvas based on pixel data
+  // Draw the entire canvas based on pixel data
   const drawCanvas = (ctx: CanvasRenderingContext2D, pixelData: string[][]) => {
     for (let y = 0; y < pixelData.length; y++) {
       for (let x = 0; x < pixelData[y].length; x++) {
@@ -25,7 +23,7 @@ const Canvas: React.FC<CanvasProps> = ({ width, height, pixelSize, initialData, 
     }
   };
 
-  // draw a border around the hovered pixel
+  // Draw a border around the hovered pixel
   const drawHoveredPixelBorder = (ctx: CanvasRenderingContext2D, pixelX: number, pixelY: number) => {
     ctx.strokeStyle = '#333333';
     ctx.lineWidth = 1;
@@ -37,7 +35,7 @@ const Canvas: React.FC<CanvasProps> = ({ width, height, pixelSize, initialData, 
     );
   };
 
-  // track mouse position
+  // Track mouse position
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -46,7 +44,7 @@ const Canvas: React.FC<CanvasProps> = ({ width, height, pixelSize, initialData, 
     const x = Math.floor((e.clientX - rect.left) / pixelSize);
     const y = Math.floor((e.clientY - rect.top) / pixelSize);
 
-    // check if the hovered pixel is within bounds
+    // Check if the hovered pixel is within bounds
     if (x >= 0 && y >= 0 && y < initialData.length && x < initialData[0].length) {
       setHoveredPixel({ x, y });
     } else {
@@ -54,14 +52,14 @@ const Canvas: React.FC<CanvasProps> = ({ width, height, pixelSize, initialData, 
     }
   };
 
-  // handle pixel click to change color
+  // Handle pixel click to change color
   const handleClick = () => {
     if (hoveredPixel) {
       onPixelChange(hoveredPixel.x, hoveredPixel.y, selectedColor);
     }
   };
 
-  // reset hover when mouse leaves the canvas
+  // Reset hover when mouse leaves the canvas
   const handleMouseLeave = () => {
     setHoveredPixel(null);
   };
@@ -73,16 +71,14 @@ const Canvas: React.FC<CanvasProps> = ({ width, height, pixelSize, initialData, 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // initial drawing of the canvas
+    // Initial drawing of the canvas
     drawCanvas(ctx, initialData);
 
-    // if a pixel is hovered, draw a border around it
+    // If a pixel is hovered, draw a border around it
     if (hoveredPixel) {
       drawHoveredPixelBorder(ctx, hoveredPixel.x, hoveredPixel.y);
     }
   }, [hoveredPixel, initialData]);
-
-
 
   return (
     <canvas

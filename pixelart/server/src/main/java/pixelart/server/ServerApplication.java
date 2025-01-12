@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ServerApplication {
 
+refactor-38/splitting-appcontroller
     /**
      * The main entry point for the Spring Boot application.
      *
